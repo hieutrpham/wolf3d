@@ -17,7 +17,7 @@ CFLAGS = -Wall -Werror -Wextra -Iinclude
 SRC_DIR = .
 OBJ_DIR = ./object
 
-MAIN_FILES = main.c
+MAIN_FILES = main.c message.c ft_strcmp.c
 # parsing.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES))

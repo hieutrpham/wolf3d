@@ -11,19 +11,6 @@ int main(int argc, char *argv[])
 	return (SUCC);
 }
 
-int	err_message(char *string, int code)
-{
-	int	i;
-
-	i = 0;
-	while (string[i])
-	{
-		write(2, &string[i], 1);
-		i++;
-	}
-	return (code);
-}
-
 int check_file(char *str)
 {
 	int	i;
@@ -34,16 +21,4 @@ int check_file(char *str)
 	if (ft_strcmp(&str[i + 1], "cub") == 0 && (str[i + 4] == '\0'))
 		return (SUCC);
 	return (FAIL);
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1); // this is wrong
-	while ((s1[i] == s2[i]) && s1[i] && s2[i])
-		i++;
-	return (s1[i] - s2[i]);
 }
