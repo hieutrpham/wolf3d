@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:28:46 by trupham           #+#    #+#             */
-/*   Updated: 2025/12/07 15:34:13 by trupham          ###   ########.fr       */
+/*   Updated: 2025/12/07 15:51:46 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,16 @@ int main(int argc, char *argv[])
 	if (check_file(argv[1]) == FAIL)
 		return (err_message("map is wrong\n", FAIL));
 	printf("Start to load map\n");
+	int fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		return (printf("%m\n"));
+	while(true)
+	{
+		char *line = get_next_line(fd);
+		if (!line)
+			break;
+		printf("%s", line);
+	}
 	return (SUCC);
 }
 
