@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2025/12/07 15:51:22 by trupham          ###   ########.fr       */
+/*   Updated: 2025/12/13 10:57:52 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,28 @@
 # include <unistd.h>
 # include <stdbool.h>
 #include <fcntl.h>
+#include <string.h>
 
 # define FAIL 1
 # define SUCC 0
+
+typedef struct s_str
+{
+	char *str;
+	size_t count;
+	size_t cap;
+} t_str;
+
+typedef struct game
+{
+	char *no;
+	char *so;
+	char *we;
+	char *ea;
+	char *floor;
+	char *ceil;
+	t_str *map;
+} t_game;
 
 int	err_message(char *string, int code);
 int	ft_strcmp(char *s1, char *s2);
@@ -37,5 +56,6 @@ size_t	ft_strlen(const char *s);
 char	*get_next_line(int fd);
 char	*gnl_strjoin(char *s1, char *s2);
 int					has_nl(const char *str);
+bool ft_strncmp(char *s1, char *s2, size_t n);
 
 #endif
