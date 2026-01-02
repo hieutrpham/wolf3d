@@ -27,9 +27,12 @@
 # include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
+# include <MLX42/MLX42.h>
 
 # define FAIL 1
 # define SUCC 0
+# define WIDTH 800
+# define HEIGHT 600
 
 typedef struct s_str
 {
@@ -38,7 +41,7 @@ typedef struct s_str
 	size_t cap;
 } t_str;
 
-typedef struct game
+typedef struct s_file
 {
 	char *no;
 	char *so;
@@ -47,6 +50,23 @@ typedef struct game
 	char *floor;
 	char *ceil;
 	t_str *map;
+} t_file;
+
+typedef struct s_stex
+{
+	mlx_texture_t *no;
+	mlx_texture_t *so;
+	mlx_texture_t *we;
+	mlx_texture_t *ea;
+} t_tex;
+
+typedef struct s_game
+{
+	mlx_t	*mlx;
+	mlx_image_t	*img;
+	t_tex	tex;
+	uint32_t floor_color;
+	uint32_t ceil_color;
 } t_game;
 
 int	err_message(char *string, int code);
@@ -57,5 +77,8 @@ char	*get_next_line(int fd);
 char	*gnl_strjoin(char *s1, char *s2);
 int					has_nl(const char *str);
 bool ft_strncmp(char *s1, char *s2, size_t n);
+
+void    start_to_display(t_game *game, t_file *files);
+void load_textures(t_game *game, t_file *files);
 
 #endif
