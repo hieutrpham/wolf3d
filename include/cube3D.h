@@ -27,9 +27,13 @@
 # include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
+<<<<<<< HEAD
 // # include <MLX42/MLX42.h>
 
 # include "libft.h"
+=======
+#include "MLX42/MLX42.h"
+>>>>>>> d5c3479 (feat: add mlx42 lib and putting some pixels on screen)
 
 # define FAIL 1
 # define SUCC 0

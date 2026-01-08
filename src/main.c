@@ -11,8 +11,31 @@
 /* ************************************************************************** */
 
 #include "../include/cube3D.h"
+#include "MLX42/MLX42.h"
+#define ft_strdup strdup
+#define ft_realloc realloc
+#define ft_calloc calloc
 
-int	main(int argc, char *argv[])
+t_str *str_append(t_str *str, char *line)
+{
+	int i;
+
+	i = 0;
+	if (str->count >= str->cap)
+	{
+		if (str->cap == 0)
+			str->cap = 256;
+		else
+			str->cap *=2;
+		str->str = ft_realloc(str->str, str->cap * sizeof(*str->str));
+	}
+	while (line[i] != '\n')
+		str->str[str->count++] = line[i++];
+	return str;
+}
+
+#if 0
+int main(int argc, char *argv[])
 {
 	t_file	file;
 
@@ -29,3 +52,50 @@ int	main(int argc, char *argv[])
 	free_file(&file);
 	return (SUCC);
 }
+#else
+#define WIDTH 1920
+#define HEIGHT 1080
+
+typedef struct
+{
+	int32_t r;
+	int32_t g;
+	int32_t b;
+	int32_t a;
+} t_color;
+
+static mlx_image_t *image;
+
+int32_t ft_pixel(t_color color)
+{
+    return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
+}
+
+void draw(void *param)
+{
+	(void)param;
+	uint32_t c = 0xFF0000FF;
+	for (uint32_t y = 0; y < image->height; y++)
+	{
+		for (uint32_t x = 0; x < image->width; x++)
+		{
+			mlx_put_pixel(image, x, y, c);
+		}
+	}
+}
+
+int main()
+{
+	mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
+	if (!mlx)
+		return 1;
+	image = mlx_new_image(mlx, WIDTH, HEIGHT);
+	if (!image)
+		return 1;
+	mlx_image_to_window(mlx, image, 0, 0);
+	mlx_loop_hook(mlx, draw, mlx);
+	mlx_loop(mlx);
+	mlx_terminate(mlx);
+	return 0;
+}
+#endif

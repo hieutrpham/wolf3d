@@ -12,22 +12,14 @@
 
 NAME = cub3D
 CC = cc -g
-CFLAGS = -Wall -Werror -Wextra -Iinclude -Ilibft
-
+CFLAGS = -Wall -Werror -Wextra -MMD -MP -Wunreachable-code -Ofast
 SRC_DIR = ./src
-# SRC_DIR = ./src
 SRC_SUBDIRS = 0_file_parsing 1_map_parsing utilities 2_display
 
 OBJ_DIR = ./object
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
-
-# MLX42_DIR = ./MLX42
-# MLX42_LIB = $(MLX42_DIR)/build/libmlx42.a
-# MLX42_LINK_FLAGS = $(MLX42_LIB) -ldl -lglfw -pthread -lm
-# MLX42_FLAGS = -I$(MLX42_DIR)/include/
-
 MAIN_FILES = main.c \
 # 			check_file.c check_dir_fc.c par_dir.c check_fc.c\
 # 			map_read.c  map_utilities.c\
@@ -38,37 +30,31 @@ MAIN_FILES = main.c \
 SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
       $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
 
-OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
-# SRC = $(shell find $(SRC_DIR) -name "*.c")
-# OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+# MLX lib
+LIBMLX = ./MLX42
+LIBX := $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-# all: $(NAME)
-all:$(LIBFT) $(NAME)
+INCLUDE = -I. -Iinclude/ -I$(LIBMLX)/include
+
+OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
+
+all: libmlx $(LIBFT) $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
+libmlx:
+	@git submodule update --init --recursive
+	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 .SECONDARY: $(OBJ) $(LIBFT_OBJ)
 
-# $(MLX42_LIB):
-# 	@echo "Cloning and building MLX42..."
-# 	@if [ ! -d "$(MLX42_DIR)" ]; then \
-# 		git clone https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR); \
-# 	fi
-# 	@cmake -B $(MLX42_DIR)/build $(MLX42_DIR)
-# 	@cmake --build $(MLX42_DIR)/build
-
-# $(NAME): $(OBJ) $(MLX42_LIB)
-# 	$(CC) $(CFLAGS) $(OBJ) $(MLX42_LINK_FLAGS) -o $(NAME) $(LDLIBS)
-# 	@echo "cube3D execution created"
-
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
-	@echo "program execution created"
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME) $(LIBX)
 
 #cleaning
 clean:

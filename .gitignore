@@ -7,3 +7,5 @@
 /libft/*.o
 /libft/obj/
 /libft/libft.a
+/.cache/
+Session.vim
