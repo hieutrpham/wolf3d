@@ -29,6 +29,7 @@ int check_first(char *line, int *res)
 	return (SUCC);
 }
 
+//have the issue with new_line
 int check_dir(char *dir, char *line)
 {
 	int	i;
@@ -45,12 +46,61 @@ int check_dir(char *dir, char *line)
 		return (FAIL);
 	while(line[i] == ' ')
 		i++;
+	printf("Path link: %s", &line[i]);
 	fd = open(&line[i], O_RDONLY);
 	if (fd == -1)
 		return(err_message("path of direction error\n", FAIL));
 	close (fd);
 	return (SUCC);
 }
+
+// int check_dir(char *dir, char *line)
+// {
+// 	int		i;
+// 	int		fd;
+// 	char	path[256];
+// 	int		j;
+
+// 	if (!dir || !line)
+// 		return (FAIL);
+// 	i = 0;
+// 	while (line[i] == ' ')
+// 		i++;
+// 	if (line[i] == dir[0] && line[i + 1] == dir[1])
+// 		i = i + 2;
+// 	else
+// 		return (FAIL);
+// 	while (line[i] == ' ')
+// 		i++;
+	
+// 	// Copy path until newline or end of string
+// 	j = 0;
+// 	while (line[i] && line[i] != '\n' && line[i] != '\r' && j < 255)
+// 	{
+// 		path[j] = line[i];
+// 		i++;
+// 		j++;
+// 	}
+// 	path[j] = '\0';
+	
+// 	// Trim trailing spaces
+// 	while (j > 0 && path[j - 1] == ' ')
+// 	{
+// 		path[j - 1] = '\0';
+// 		j--;
+// 	}
+	
+// 	fd = open(path, O_RDONLY);
+// 	if (fd == -1)
+// 	{
+// 		printf("Cannot open texture file: \n");
+// 		write(2, path, ft_strlen(path));
+// 		write(2, "\n", 1);
+// 		return (FAIL);
+// 	}
+// 	close(fd);
+// 	return (SUCC);
+// }
 
 int check_fc(char c, char *line)
 {
