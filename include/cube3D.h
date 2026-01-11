@@ -27,7 +27,7 @@
 # include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
-# include <MLX42/MLX42.h>
+// # include <MLX42/MLX42.h>
 
 # define FAIL 1
 # define SUCC 0
@@ -52,33 +52,47 @@ typedef struct s_file
 	t_str *map;
 } t_file;
 
-typedef struct s_stex
-{
-	mlx_texture_t *no;
-	mlx_texture_t *so;
-	mlx_texture_t *we;
-	mlx_texture_t *ea;
-} t_tex;
+// typedef struct s_stex
+// {
+// 	mlx_texture_t *no;
+// 	mlx_texture_t *so;
+// 	mlx_texture_t *we;
+// 	mlx_texture_t *ea;
+// } t_tex;
 
-typedef struct s_game
-{
-	mlx_t	*mlx;
-	mlx_image_t	*img;
-	t_tex	tex;
-	uint32_t floor_color;
-	uint32_t ceil_color;
-} t_game;
+// typedef struct s_game
+// {
+// 	mlx_t	*mlx;
+// 	mlx_image_t	*img;
+// 	t_tex	tex;
+// 	uint32_t floor_color;
+// 	uint32_t ceil_color;
+// } t_game;
 
-int	err_message(char *string, int code);
-int	ft_strcmp(char *s1, char *s2);
-int check_file(char *str);
+int		err_message(char *string, int code);
+int 	clean_up(char *map, char *line, int fd, int code);
+
+int		ft_strcmp(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
 char	*get_next_line(int fd);
 char	*gnl_strjoin(char *s1, char *s2);
-int					has_nl(const char *str);
-bool ft_strncmp(char *s1, char *s2, size_t n);
+int		has_nl(const char *str);
+bool 	ft_strncmp(char *s1, char *s2, size_t n);
 
-void    start_to_display(t_game *game, t_file *files);
-void load_textures(t_game *game, t_file *files);
+void	ft_bzero(void *s, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *s);
+
+int 	check_exter(char *str);
+int 	check_inter(char *str);
+int 	check_first(char *line, int *res);
+int 	check_dir(char *dir, char *line);
+int 	check_fc(char c, char *line);
+int 	check_color(char *num);
+int 	check_value(char *num, int *i);
+int		process_infile(int fd, char **map, int *res);
+
+// void    start_to_display(t_game *game, t_file *files);
+// void	load_textures(t_game *game, t_file *files);
 
 #endif

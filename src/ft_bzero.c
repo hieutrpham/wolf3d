@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*   By: vinguyen <vinguyen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/07 15:28:46 by trupham           #+#    #+#             */
-/*   Updated: 2025/12/13 12:12:10 by trupham          ###   ########.fr       */
+/*   Created: 2025/04/15 12:51:50 by vinguyen          #+#    #+#             */
+/*   Updated: 2025/07/23 11:12:57 by vinguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cube3D.h"
 
-int main(int argc, char *argv[])
+void	ft_bzero(void *s, size_t n)
 {
-	if (argc != 2)
-		return (err_message("Usage: ./cub3D <map.cub>\n", FAIL));
-	if (check_exter(argv[1]) == FAIL)
-		return (err_message("map is wrong\n", FAIL));
-	if (check_inter(argv[1]) == FAIL)
-		return (FAIL);
+	unsigned char	*p;
+	size_t			i;
 
-	return (SUCC);
+	i = 0;
+	p = (unsigned char *)s;
+	while (i < n)
+	{
+		p[i] = 0;
+		i++;
+	}
 }
-
