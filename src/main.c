@@ -12,6 +12,7 @@
 
 #include "../include/cube3D.h"
 #include "MLX42/MLX42.h"
+#include "cube3D.h"
 #define ft_strdup strdup
 #define ft_realloc realloc
 #define ft_calloc calloc
@@ -55,7 +56,8 @@ int main(int argc, char *argv[])
 #else
 #define WIDTH 1920
 #define HEIGHT 1080
-
+#define RADIUS 20
+#define BG 0x222222FF
 typedef struct
 {
 	int32_t r;
@@ -74,12 +76,17 @@ int32_t ft_pixel(t_color color)
 void draw(void *param)
 {
 	(void)param;
-	uint32_t c = 0xFF0000FF;
+	int c_x = WIDTH/2;
+	int c_y = HEIGHT/2;
+	uint32_t d = c_x * c_x + c_y*c_y;
 	for (uint32_t y = 0; y < image->height; y++)
 	{
 		for (uint32_t x = 0; x < image->width; x++)
 		{
-			mlx_put_pixel(image, x, y, c);
+			if (x*x + y*y <= d)
+				mlx_put_pixel(image, x, y, 0xFF0000FF);
+			else
+				mlx_put_pixel(image, x, y, BG);
 		}
 	}
 }
