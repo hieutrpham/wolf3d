@@ -21,36 +21,21 @@ int check_exter(char *str)
 	return (FAIL);
 }
 
-int check_inter(char *str)
+int	check_inter(t_file *file, char *str)
 {
-	int 	fd;
-	int		res[6];
-	char 	*map;
-	int		result;
-
-	fd = open(str, O_RDONLY);
-	if (fd == -1)
+	file->fd = open(str, O_RDONLY);
+	if (file->fd == -1)
 		return(err_message("open file error\n", FAIL));
-	map = ft_strdup("");
-	if (!map)
-		return(clean_up(NULL, NULL, fd, FAIL));
-	ft_bzero(res, sizeof(res));
-	result = process_infile(fd, &map, res);
-	if (result == FAIL)
-		return(clean_up(map, NULL, fd, FAIL));
-	// if(check_map(map) == FAIL)
-	// 	return(clean_up(map, NULL, fd, FAIL));
-	return(clean_up(map, NULL, fd, SUCC));
+	return(process_infile(file));
 }
 
-int process_infile(int fd, char **map, int *res)
+int process_infile(t_file *file)
 {
 	char	*line;
-	char	*map_temp;
 	
 	while(true)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(file->fd);
 		if (!line)
 			break ;
 		if (*line == '\n' || *line == '\0')
@@ -58,14 +43,17 @@ int process_infile(int fd, char **map, int *res)
 			free(line);
 			continue;
 		}
-		if(check_first(line, res) == FAIL)
-			return(clean_up(NULL, line, 0, FAIL));
-		map_temp = ft_strjoin(*map, line);
-		if (!map_temp)
-			return(clean_up(NULL, line, 0, FAIL));
-		free(*map);
-		free(line);
-		*map = map_temp;
+		if (file->start_map == 0)
+		{
+			if(check_dir_fc(file, line) == FAIL)
+			{
+				printf("Fail here\n");
+				return(FAIL);
+			}
+			printf("We read direction\n");
+		}
 	}
+	if (file->no_direc < 6)
+		return (FAIL);
 	return (SUCC);
 }

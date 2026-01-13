@@ -23,8 +23,9 @@ OBJ_DIR = ./object
 # MLX42_FLAGS = -I$(MLX42_DIR)/include/
 
 MAIN_FILES = main.c \
-			check_file.c check_first.c \
-			message.c  \
+			check_file.c check_dir_fc.c check_fc.c\
+			message.c free_mem.c\
+			file_utilities.c \
 			ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c \
 			ft_bzero.c ft_strdup.c ft_strjoin.c\
 			#start_to_display.c

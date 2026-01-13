@@ -1,0 +1,33 @@
+
+#include "../include/cube3D.h"
+
+void free_file(t_file *file)
+{
+	if (file->no_path)
+		free(file->no_path);
+	if (file->so_path)
+		free(file->so_path);
+	if (file->we_path)
+		free(file->we_path);
+	if (file->ea_path)
+		free(file->ea_path);
+	// if (file->fl_rgb)
+	// 	free(file->fl_rgb);
+	// if (file->ce_rgb)
+	// 	free(file->ce_rgb);
+	if (file->map)
+		free(file->map);
+	if (file->fd != -1)
+		close(file->fd);
+}
+
+int clean_up(char *map, char *line, int fd, int code)
+{
+	if(map)
+		free(map);
+	if(line)
+		free(line);
+	if(fd != -1)
+		close(fd);
+	return (code);
+}

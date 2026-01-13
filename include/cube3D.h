@@ -43,34 +43,27 @@ typedef struct s_str
 
 typedef struct s_file
 {
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *floor;
-	char *ceil;
-	t_str *map;
+	int		fd;
+	int		no_direc;
+	char	*no_path;
+	char	*so_path;
+	char	*we_path;
+	char	*ea_path;
+	int		no;
+	int		so;
+	int		we;
+	int		ea;
+	int		fl_rgb[3];
+	int		ce_rgb[3];
+	int		fl;
+	int		ce;
+	int		start_map;
+	char	*map;
 } t_file;
-
-// typedef struct s_stex
-// {
-// 	mlx_texture_t *no;
-// 	mlx_texture_t *so;
-// 	mlx_texture_t *we;
-// 	mlx_texture_t *ea;
-// } t_tex;
-
-// typedef struct s_game
-// {
-// 	mlx_t	*mlx;
-// 	mlx_image_t	*img;
-// 	t_tex	tex;
-// 	uint32_t floor_color;
-// 	uint32_t ceil_color;
-// } t_game;
 
 int		err_message(char *string, int code);
 int 	clean_up(char *map, char *line, int fd, int code);
+void 	free_file(t_file *file);
 
 int		ft_strcmp(char *s1, char *s2);
 size_t	ft_strlen(const char *s);
@@ -84,15 +77,19 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
 
 int 	check_exter(char *str);
-int 	check_inter(char *str);
-int 	check_first(char *line, int *res);
-int 	check_dir(char *dir, char *line);
-int 	check_fc(char c, char *line);
-int 	check_color(char *num);
-int 	check_value(char *num, int *i);
-int		process_infile(int fd, char **map, int *res);
+int 	check_inter(t_file *file, char *str);
+int 	check_dir_fc(t_file *file, char *line);
+void	parse_dir_fc(t_file *file, char *line);
+char 	*check_dir(char *line, char *dir);
 
-// void    start_to_display(t_game *game, t_file *files);
-// void	load_textures(t_game *game, t_file *files);
+
+int 	check_fc(t_file *file, char *line, char *dir);
+int 	check_color(char *num, int *color);
+int 	check_value(char *num, int *i);
+int 	process_infile(t_file *file);
+
+char 	*get_path(char *line);
+void 	skip_space(char **str);
+void 	print_file(t_file *file);
 
 #endif
