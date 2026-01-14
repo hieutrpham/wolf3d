@@ -32,28 +32,37 @@ int	check_inter(t_file *file, char *str)
 int process_infile(t_file *file)
 {
 	char	*line;
+	int		status;
 	
+	status = SUCC;
 	while(true)
 	{
 		line = get_next_line(file->fd);
 		if (!line)
 			break ;
-		if (*line == '\n' || *line == '\0')
+		// if (*line == '\n' || *line == '\0')
+		// {
+		// 	free(line);
+		// 	continue;
+		// }
+		if (status == SUCC && file->start_map == 0 && *line != '\n' && *line != '\0')
 		{
-			free(line);
-			continue;
-		}
-		if (file->start_map == 0)
-		{
+			// printf("line value: %s\n", line);
 			if(check_dir_fc(file, line) == FAIL)
-			{
-				printf("Fail here\n");
-				return(FAIL);
-			}
-			printf("We read direction\n");
+			// {
+			// 	// free(line);
+			// 	// free_file(file);
+			// 	printf("Fail here\n");
+				status = FAIL;
+			// }
+			// else
+			// 	free(line);	
 		}
+		// else
+		free(line);
 	}
-	if (file->no_direc < 6)
+	printf("Finish reading\n");
+	if (status == FAIL || file->no_direc < 6)
 		return (FAIL);
 	return (SUCC);
 }

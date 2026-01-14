@@ -11,10 +11,10 @@ void free_file(t_file *file)
 		free(file->we_path);
 	if (file->ea_path)
 		free(file->ea_path);
-	// if (file->fl_rgb)
-	// 	free(file->fl_rgb);
-	// if (file->ce_rgb)
-	// 	free(file->ce_rgb);
+    file->no_path = NULL;
+    file->so_path = NULL;
+    file->we_path = NULL;
+    file->ea_path = NULL;
 	if (file->map)
 		free(file->map);
 	if (file->fd != -1)

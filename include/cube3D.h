@@ -58,6 +58,7 @@ typedef struct s_file
 	int		fl;
 	int		ce;
 	int		start_map;
+	int		err_dir;
 	char	*map;
 } t_file;
 
@@ -79,9 +80,15 @@ char	*ft_strdup(const char *s);
 int 	check_exter(char *str);
 int 	check_inter(t_file *file, char *str);
 int 	check_dir_fc(t_file *file, char *line);
-void	parse_dir_fc(t_file *file, char *line);
+int		parse_dir_fc(t_file *file, char *line);
+int 	parse_no(t_file *file, char *line);
+int 	parse_so(t_file *file, char *line);
+int 	parse_we(t_file *file, char *line);
+int 	parse_ea(t_file *file, char *line);
+int 	parse_floor(t_file *file, char *line);
+int 	parse_ceil(t_file *file, char *line);
+int 	find_wall(char *line);
 char 	*check_dir(char *line, char *dir);
-
 
 int 	check_fc(t_file *file, char *line, char *dir);
 int 	check_color(char *num, int *color);

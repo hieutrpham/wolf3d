@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = cub3D
-CC = cc
+CC = cc -g
 CFLAGS = -Wall -Werror -Wextra -Iinclude
 
 SRC_DIR = ./src
@@ -23,7 +23,7 @@ OBJ_DIR = ./object
 # MLX42_FLAGS = -I$(MLX42_DIR)/include/
 
 MAIN_FILES = main.c \
-			check_file.c check_dir_fc.c check_fc.c\
+			check_file.c check_dir_fc.c par_dir.c check_fc.c\
 			message.c free_mem.c\
 			file_utilities.c \
 			ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c \

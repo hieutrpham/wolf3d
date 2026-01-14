@@ -1,6 +1,22 @@
 
 #include "../include/cube3D.h"
 
+int parse_floor(t_file *file, char *line)
+{
+	file->fl++;
+	if	(file->fl > 1)
+		return(err_message("duplicate floor\n", FAIL));
+	return(check_fc(file, line, "F "));
+}
+
+int parse_ceil(t_file *file, char *line)
+{
+	file->ce++;
+	if	(file->ce > 1)
+		return(err_message("duplicate ceil\n", FAIL));
+	return(check_fc(file, line, "C "));
+}
+
 int check_fc(t_file *file, char *line, char *dir)
 {
 	int	i;
@@ -14,9 +30,9 @@ int check_fc(t_file *file, char *line, char *dir)
 		i++;
 	while(line[i] == ' ')
 		i++;
-	if (ft_strncmp(dir, "F ", 2) == 0)
+	if (ft_strncmp(dir, "F ", 2))
 		return(check_color(&line[i], file->fl_rgb));
-	if (ft_strncmp(dir, "C ", 2) == 0)
+	else if (ft_strncmp(dir, "C ", 2))
 		return(check_color(&line[i], file->ce_rgb));
 	return(FAIL);
 }
