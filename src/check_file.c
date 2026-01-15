@@ -40,27 +40,29 @@ int process_infile(t_file *file)
 		line = get_next_line(file->fd);
 		if (!line)
 			break ;
-		// if (*line == '\n' || *line == '\0')
-		// {
-		// 	free(line);
-		// 	continue;
-		// }
 		if (status == SUCC && file->start_map == 0 && *line != '\n' && *line != '\0')
 		{
-			// printf("line value: %s\n", line);
 			if(check_dir_fc(file, line) == FAIL)
-			// {
-			// 	// free(line);
-			// 	// free_file(file);
-			// 	printf("Fail here\n");
+			{
 				status = FAIL;
-			// }
-			// else
-			// 	free(line);	
+			}
 		}
-		// else
-		free(line);
+		else if (status == SUCC && file->start_map == 1 && *line != '\0')
+		{
+			// printf("Value of line: %s\n", line);
+			// printf("Map is%s\n", file->map);
+			if(map_read(file, line) == FAIL)
+			{
+				// printf("We are here\n");
+				status = FAIL;
+			}
+			// printf("Map is%s\n", file->map);
+		}
+		if(line)
+			free(line);
 	}
+	if (map_check(file) == FAIL)
+		status = FAIL;
 	printf("Finish reading\n");
 	if (status == FAIL || file->no_direc < 6)
 		return (FAIL);

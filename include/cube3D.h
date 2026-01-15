@@ -60,6 +60,7 @@ typedef struct s_file
 	int		start_map;
 	int		err_dir;
 	char	*map;
+	int		line_count;
 } t_file;
 
 int		err_message(char *string, int code);
@@ -94,6 +95,11 @@ int 	check_fc(t_file *file, char *line, char *dir);
 int 	check_color(char *num, int *color);
 int 	check_value(char *num, int *i);
 int 	process_infile(t_file *file);
+
+int 	map_read(t_file *file, char *line);
+int 	map_check(t_file *file);
+int		map_wrong_character(t_file *file);
+int		map_empty(t_file *file);
 
 char 	*get_path(char *line);
 void 	skip_space(char **str);

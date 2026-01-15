@@ -34,7 +34,7 @@ int find_wall(char *line)
 	i = 0;
 	while(line[i])
 	{
-		if(line[i] != ' ' && line[i] != '1' && line[i] != '\0' && line[i] != '\n')
+		if(line[i] != ' ' && line[i] != '1' && line[i] != '\t' && line[i] != '\n')
 			return (FAIL);
 		i++;
 	}

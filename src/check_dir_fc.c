@@ -28,8 +28,10 @@ int	parse_dir_fc(t_file *file, char *line)
 		return(parse_floor(file, line));
 	else if (ft_strncmp(line, "C ", 2))
 		return(parse_ceil(file, line));
-	else if (find_wall(line) == FAIL)
-		return(err_message("Wrong character before map\n", FAIL));
-	else
-		return (err_message("Start to read the map\n", SUCC));
+	else if (file->start_map == 1)
+	{
+		return (map_read(file, line));
+		// return (err_message("Start to read the map\n", SUCC));
+	}
+	return(err_message("Wrong character before map\n", FAIL));
 }

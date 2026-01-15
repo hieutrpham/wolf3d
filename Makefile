@@ -24,6 +24,7 @@ OBJ_DIR = ./object
 
 MAIN_FILES = main.c \
 			check_file.c check_dir_fc.c par_dir.c check_fc.c\
+			map_read.c \
 			message.c free_mem.c\
 			file_utilities.c \
 			ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c \
