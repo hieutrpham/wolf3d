@@ -61,6 +61,12 @@ typedef struct s_file
 	int		err_dir;
 	char	*map;
 	int		line_count;
+	char	**parse_map;
+	int		map_height;
+	int		map_width;
+	int		player_x;
+	int		player_y;
+	char	player_dir;
 } t_file;
 
 int		err_message(char *string, int code);
@@ -73,6 +79,7 @@ char	*get_next_line(int fd);
 char	*gnl_strjoin(char *s1, char *s2);
 int		has_nl(const char *str);
 bool 	ft_strncmp(char *s1, char *s2, size_t n);
+char	**ft_split(char const *s, char c);
 
 void	ft_bzero(void *s, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -100,6 +107,17 @@ int 	map_read(t_file *file, char *line);
 int 	map_check(t_file *file);
 int		map_wrong_character(t_file *file);
 int		map_empty(t_file *file);
+void 	print_map(char **map);
+void 	find_height_width(t_file *file, char **map);
+char 	**pad_map(t_file *file, char **map);
+void	clear_previous(char **str, int len);
+void 	free_2d_array(char **str);
+void	find_player_pos(t_file *file);
+int 	player_can_move(t_file *file);
+int		is_walkable(char c);
+char 	**arr_2d_copy(char **str, int len);
+int 	check_map_close(t_file *file);
+int		flood_fill(char **map, int x, int y, int w, int h);
 
 char 	*get_path(char *line);
 void 	skip_space(char **str);

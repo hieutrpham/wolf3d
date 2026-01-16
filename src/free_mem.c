@@ -17,6 +17,8 @@ void free_file(t_file *file)
     file->ea_path = NULL;
 	if (file->map)
 		free(file->map);
+	if (file ->parse_map)
+		free_2d_array(file->parse_map);
 	if (file->fd != -1)
 		close(file->fd);
 }
@@ -30,4 +32,20 @@ int clean_up(char *map, char *line, int fd, int code)
 	if(fd != -1)
 		close(fd);
 	return (code);
+}
+
+void free_2d_array(char **str)
+{
+	int	i;
+
+	if(!str)
+		return;
+	i = 0;
+	while (str[i])
+	{
+		if(str[i])
+			free(str[i]);
+		i++;
+	}
+	free(str);
 }

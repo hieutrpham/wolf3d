@@ -24,11 +24,11 @@ OBJ_DIR = ./object
 
 MAIN_FILES = main.c \
 			check_file.c check_dir_fc.c par_dir.c check_fc.c\
-			map_read.c \
+			map_read.c  map_utilities.c\
 			message.c free_mem.c\
 			file_utilities.c \
 			ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c \
-			ft_bzero.c ft_strdup.c ft_strjoin.c\
+			ft_bzero.c ft_strdup.c ft_strjoin.c ft_split.c\
 			#start_to_display.c
 # parsing.c
 
