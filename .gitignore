@@ -8,4 +8,8 @@
 /libft/obj/
 /libft/libft.a
 /.cache/
+<<<<<<< HEAD
 Session.vim
+=======
+/Session.vim
+>>>>>>> ac8e18a (wip)

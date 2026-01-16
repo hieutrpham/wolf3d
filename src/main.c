@@ -66,6 +66,30 @@ typedef struct
 	int32_t a;
 } t_color;
 
+typedef struct
+{
+	int x;
+	int y;
+} vector_t;
+
+vector_t v2_add(vector_t v1, vector_t v2) {
+	vector_t ret = {v1.x + v2.x, v1.y + v2.y};
+	return ret;
+}
+
+vector_t v2_sub(vector_t v2, vector_t v1) {
+	vector_t ret = {v1.x - v2.x, v1.y - v2.y};
+	return ret;
+}
+
+unsigned int v2_sqlen(vector_t v) {
+	return v.x * v.x + v.y * v.y;
+}
+
+// vector_t v2_distance_sq(vector_t v1, vector_t v2) {
+// 	return (vector_t){v2.x }
+// }
+
 static mlx_image_t *image;
 
 int32_t ft_pixel(t_color color)
@@ -76,17 +100,14 @@ int32_t ft_pixel(t_color color)
 void draw(void *param)
 {
 	(void)param;
-	int c_x = WIDTH/2;
-	int c_y = HEIGHT/2;
-	uint32_t d = c_x * c_x + c_y*c_y;
+	uint radius = RADIUS;
 	for (uint32_t y = 0; y < image->height; y++)
 	{
 		for (uint32_t x = 0; x < image->width; x++)
 		{
-			if (x*x + y*y <= d)
+			vector_t p = {x, y};
+			if (v2_sqlen(p) <= radius * radius)
 				mlx_put_pixel(image, x, y, 0xFF0000FF);
-			else
-				mlx_put_pixel(image, x, y, BG);
 		}
 	}
 }
