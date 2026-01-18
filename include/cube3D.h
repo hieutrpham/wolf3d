@@ -29,6 +29,8 @@
 #include <string.h>
 // # include <MLX42/MLX42.h>
 
+# include "libft.h"
+
 # define FAIL 1
 # define SUCC 0
 # define WIDTH 800
@@ -73,13 +75,13 @@ int		err_message(char *string, int code);
 int 	clean_up(char *map, char *line, int fd, int code);
 void 	free_file(t_file *file);
 
-int		ft_strcmp(char *s1, char *s2);
-size_t	ft_strlen(const char *s);
-char	*get_next_line(int fd);
-char	*gnl_strjoin(char *s1, char *s2);
-int		has_nl(const char *str);
-bool 	ft_strncmp(char *s1, char *s2, size_t n);
-char	**ft_split(char const *s, char c);
+// int		ft_strcmp(char *s1, char *s2);
+// size_t	ft_strlen(const char *s);
+// char	*get_next_line(int fd);
+// char	*gnl_strjoin(char *s1, char *s2);
+// int		has_nl(const char *str);
+// bool 	ft_strncmp(char *s1, char *s2, size_t n);
+// char	**ft_split(char const *s, char c);
 
 void	ft_bzero(void *s, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);

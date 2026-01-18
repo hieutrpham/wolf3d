@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"
-#include "../include/cube3D.h"
+#include "libft.h"
 
 static unsigned int	ft_count(const char *s, char c)
 {

@@ -12,10 +12,13 @@
 
 NAME = cub3D
 CC = cc -g
-CFLAGS = -Wall -Werror -Wextra -Iinclude
+CFLAGS = -Wall -Werror -Wextra -Iinclude -Ilibft
 
 SRC_DIR = ./src
 OBJ_DIR = ./object
+
+LIBFT_DIR = ./libft
+LIBFT = $(LIBFT_DIR)/libft.a
 
 # MLX42_DIR = ./MLX42
 # MLX42_LIB = $(MLX42_DIR)/build/libmlx42.a
@@ -27,17 +30,16 @@ MAIN_FILES = main.c \
 			map_read.c  map_utilities.c\
 			message.c free_mem.c\
 			file_utilities.c \
-			ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c \
-			ft_bzero.c ft_strdup.c ft_strjoin.c ft_split.c\
-			#start_to_display.c
-# parsing.c
 
 SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES))
 		
 OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 
-all: $(NAME)
-#all:$(LIBFT_LIB) $(NAME)
+# all: $(NAME)
+all:$(LIBFT) $(NAME)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
@@ -58,14 +60,17 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # 	@echo "cube3D execution created"
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
 	@echo "program execution created"
+
 #cleaning
 clean:
 	rm -rf $(OBJ_DIR)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

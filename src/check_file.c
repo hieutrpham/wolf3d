@@ -3,20 +3,18 @@
 
 int check_exter(char *str)
 {
-	int	i;
+	// int	i;
 	int len;
 
-	i = 0;
+	// i = 0;
 	if (!str)
 		return (FAIL);
 	len = ft_strlen(str);
-	if (len < 5)
+	if (len < 4)
 		return (FAIL);
-	while (str[i] != '.' && str[i])
-		i++;
-	if (i == len)
-		return(FAIL);
-	if (ft_strcmp(&str[i + 1], "cub") == 0 && (str[i + 4] == '\0'))
+	if (str[len - 4] != '.')
+        return (FAIL);
+	if (ft_strcmp(str + len - 3, "cub") == 0)
 		return (SUCC);
 	return (FAIL);
 }
@@ -43,20 +41,12 @@ int process_infile(t_file *file)
 		if (status == SUCC && file->start_map == 0 && *line != '\n' && *line != '\0')
 		{
 			if(check_dir_fc(file, line) == FAIL)
-			{
 				status = FAIL;
-			}
 		}
 		else if (status == SUCC && file->start_map == 1 && *line != '\0')
 		{
-			// printf("Value of line: %s\n", line);
-			// printf("Map is%s\n", file->map);
 			if(map_read(file, line) == FAIL)
-			{
-				// printf("We are here\n");
 				status = FAIL;
-			}
-			// printf("Map is%s\n", file->map);
 		}
 		if(line)
 			free(line);

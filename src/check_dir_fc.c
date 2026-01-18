@@ -5,7 +5,7 @@ int check_dir_fc(t_file *file, char *line)
 {
 	if (file->start_map == 0)
 	{	
-		print_file(file);
+		// print_file(file);
 		return(parse_dir_fc(file, line));
 	}
 	return (SUCC);

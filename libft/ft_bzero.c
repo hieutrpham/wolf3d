@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vinguyen <vinguyen@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/21 19:25:02 by vinguyen          #+#    #+#             */
-/*   Updated: 2025/07/23 11:14:01 by vinguyen         ###   ########.fr       */
+/*   Created: 2025/04/15 12:51:50 by vinguyen          #+#    #+#             */
+/*   Updated: 2025/07/23 11:12:57 by vinguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "libft.h"
+#include "libft.h"
 
-#include "../include/cube3D.h"
-
-char	*ft_strdup(const char *s)
+void	ft_bzero(void *s, size_t n)
 {
-	char				*out;
-	char				*temp_in;
-	unsigned int		i;
+	unsigned char	*p;
+	size_t			i;
 
 	i = 0;
-	temp_in = (char *)s;
-	while (temp_in[i])
-		i++;
-	out = malloc(i + 1);
-	if (!out)
-		return (0);
-	i = 0;
-	while (temp_in[i])
+	p = (unsigned char *)s;
+	while (i < n)
 	{
-		out[i] = temp_in[i];
+		p[i] = 0;
 		i++;
 	}
-	out[i] = '\0';
-	return (out);
 }

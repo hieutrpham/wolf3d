@@ -35,7 +35,7 @@ int map_check(t_file *file)
 		return (FAIL);
 	if (map_empty(file) == FAIL)
 		return (err_message("Empty line inside map\n", FAIL));
-	printf("Value of map: %s\n", file->map);
+	// printf("Value of map: %s\n", file->map);
 	map_2d_draft = ft_split(file->map, '\n');
 	if(!map_2d_draft)
 		return (err_message("Copy map error\n", FAIL));
@@ -46,19 +46,12 @@ int map_check(t_file *file)
 	free_2d_array(map_2d_draft);
 	if(!file->parse_map)
 		return (FAIL);
-	print_map(file->parse_map);
+	// print_map(file->parse_map);
 	find_player_pos(file);
 	if (player_can_move(file) == FAIL)
 		return (err_message("Player cannot move\n", FAIL));
 	if (check_map_close(file) == FAIL)
 		return (FAIL);
-	// printf("Player pos at: row: %d col: %d and value is %c\n", file->player_x, file->player_y, file->player_dir);
-	// file->parse_map = parse_map(map_2d_draft);
-	// if (!file->parse_map)
-	// {
-	// 	free_2d_map(map_2d_draft);
-	// 	return (FAIL);
-	// }
 	return(SUCC);
 }
 
