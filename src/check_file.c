@@ -3,10 +3,8 @@
 
 int check_exter(char *str)
 {
-	// int	i;
 	int len;
 
-	// i = 0;
 	if (!str)
 		return (FAIL);
 	len = ft_strlen(str);
