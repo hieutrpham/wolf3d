@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 #else
 #define WIDTH 1920
 #define HEIGHT 1080
-#define RADIUS 20
+#define RADIUS 50
 #define BG 0x222222FF
 typedef struct
 {
@@ -72,6 +72,11 @@ typedef struct
 	int y;
 } vector_t;
 
+vector_t build_v2(uint x, uint y)
+{
+	return (vector_t){x, y};
+}
+
 vector_t v2_add(vector_t v1, vector_t v2) {
 	vector_t ret = {v1.x + v2.x, v1.y + v2.y};
 	return ret;
@@ -86,28 +91,28 @@ unsigned int v2_sqlen(vector_t v) {
 	return v.x * v.x + v.y * v.y;
 }
 
-// vector_t v2_distance_sq(vector_t v1, vector_t v2) {
-// 	return (vector_t){v2.x }
-// }
-
 static mlx_image_t *image;
 
 int32_t ft_pixel(t_color color)
 {
-    return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
+	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
 }
 
 void draw(void *param)
 {
 	(void)param;
 	uint radius = RADIUS;
+	vector_t center = build_v2(WIDTH/2, HEIGHT/2);
 	for (uint32_t y = 0; y < image->height; y++)
 	{
 		for (uint32_t x = 0; x < image->width; x++)
 		{
-			vector_t p = {x, y};
-			if (v2_sqlen(p) <= radius * radius)
+			vector_t p = build_v2(x, y);
+			vector_t d = v2_sub(p, center);
+			if (v2_sqlen(d) <= radius * radius)
 				mlx_put_pixel(image, x, y, 0xFF0000FF);
+			else
+				mlx_put_pixel(image, x, y, 0xFFFFFFFF);
 		}
 	}
 }
