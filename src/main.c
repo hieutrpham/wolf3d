@@ -12,9 +12,9 @@
 
 #include "MLX42/MLX42.h"
 #include "cube3D.h"
-#define ft_strdup strdup
-#define ft_realloc realloc
-#define ft_calloc calloc
+#include <stdint.h>
+#include <stdio.h>
+#include <sys/types.h>
 
 t_str *str_append(t_str *str, char *line)
 {
@@ -27,7 +27,7 @@ t_str *str_append(t_str *str, char *line)
 			str->cap = 256;
 		else
 			str->cap *=2;
-		str->str = ft_realloc(str->str, str->cap * sizeof(*str->str));
+		str->str = realloc(str->str, str->cap * sizeof(*str->str));
 	}
 	while (line[i] != '\n')
 		str->str[str->count++] = line[i++];
@@ -95,7 +95,36 @@ int32_t ft_pixel(t_color color)
 	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
 }
 
-void draw(void *param)
+// y = mx + b
+// m is the slope, b is the intersect with y axix (when x == 0)
+// we have 2 vector (x1, y1) (x2, y2) that satify the line equation
+// y1 - m*x1 = y2 - m*x2
+// y1 - y2 = mx1 - mx2
+// m = (y1 - y2)/(x1 - x2)
+// once we get the slope, just plug in the vector to solve for b
+float get_slope(vector_t v1, vector_t v2)
+{
+	return (v1.y - v2.y)/(v1.x - v2.x);
+}
+
+void draw_line(void *param)
+{
+	(void)param;
+	vector_t v1 = build_v2(WIDTH/2, HEIGHT/2);
+	vector_t v2 = build_v2(WIDTH/2, HEIGHT);
+	float slope = get_slope(v1, v2);
+	float y_intersect = (v1.y - slope*v1.x);
+	for (uint32_t y = 0; y < image->height; y++)
+	{
+		for (uint32_t x = 0; x < image->width; x++)
+		{
+			if (y == slope * x + y_intersect)
+				mlx_put_pixel(image, x, y, 0xFF0000FF);
+		}
+	}
+}
+
+void draw_circle(void *param)
 {
 	(void)param;
 	uint radius = RADIUS;
@@ -108,10 +137,14 @@ void draw(void *param)
 			vector_t d = v2_sub(p, center);
 			if (v2_sqlen(d) <= radius * radius)
 				mlx_put_pixel(image, x, y, 0xFF0000FF);
-			else
-				mlx_put_pixel(image, x, y, 0xFFFFFFFF);
 		}
 	}
+}
+
+void game_loop(mlx_t *mlx)
+{
+	mlx_loop_hook(mlx, draw_circle, mlx);
+	mlx_loop_hook(mlx, draw_line, mlx);
 }
 
 int main()
@@ -123,7 +156,7 @@ int main()
 	if (!image)
 		return 1;
 	mlx_image_to_window(mlx, image, 0, 0);
-	mlx_loop_hook(mlx, draw, mlx);
+	game_loop(mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
 	return 0;
