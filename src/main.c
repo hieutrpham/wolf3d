@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cube3D.h"
 #include "MLX42/MLX42.h"
 #include "cube3D.h"
 #define ft_strdup strdup
@@ -54,8 +53,6 @@ int main(int argc, char *argv[])
 	return (SUCC);
 }
 #else
-#define WIDTH 1920
-#define HEIGHT 1080
 #define RADIUS 50
 #define BG 0x222222FF
 typedef struct

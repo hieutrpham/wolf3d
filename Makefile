@@ -34,7 +34,7 @@ SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
 LIBMLX = ./MLX42
 LIBX := $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 
-INCLUDE = -I. -Iinclude/ -I$(LIBMLX)/include
+INCLUDE = -I. -Iinclude/ -I$(LIBMLX)/include -I./libft/
 
 OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 
