@@ -8,12 +8,8 @@
 /libft/obj/
 /libft/libft.a
 /.cache/
-<<<<<<< HEAD
 Session.vim
-=======
-/Session.vim
-<<<<<<< HEAD
->>>>>>> ac8e18a (wip)
-=======
 /compile_commands.json
->>>>>>> d20261f (feat: japan flag)
+/MLX42
+/libft/libft.a
+/libft/obj/
