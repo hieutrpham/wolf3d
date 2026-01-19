@@ -11,21 +11,35 @@
 # **************************************************************************** #
 
 NAME = cub3D
-CC = cc
-CFLAGS = -Wall -Werror -Wextra -Iinclude -I./include/
+CC = cc -g
+CFLAGS = -Wall -Werror -Wextra -Iinclude -Ilibft
 
 SRC_DIR = ./src
 OBJ_DIR = ./object
 
-MAIN_FILES = main.c message.c ft_strcmp.c get_next_line_bonus.c get_next_line_utils_bonus.c
-# parsing.c
+LIBFT_DIR = ./libft
+LIBFT = $(LIBFT_DIR)/libft.a
+
+# MLX42_DIR = ./MLX42
+# MLX42_LIB = $(MLX42_DIR)/build/libmlx42.a
+# MLX42_LINK_FLAGS = $(MLX42_LIB) -ldl -lglfw -pthread -lm
+# MLX42_FLAGS = -I$(MLX42_DIR)/include/
+
+MAIN_FILES = main.c \
+			check_file.c check_dir_fc.c par_dir.c check_fc.c\
+			map_read.c  map_utilities.c\
+			message.c free_mem.c\
+			file_utilities.c \
 
 SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES))
 		
 OBJ = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC))
 
-all: $(NAME)
-#all:$(LIBFT_LIB) $(NAME)
+# all: $(NAME)
+all:$(LIBFT) $(NAME)
+
+$(LIBFT):
+	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	mkdir -p $(dir $@)
@@ -33,15 +47,30 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 
 .SECONDARY: $(OBJ) $(LIBFT_OBJ)
 
+# $(MLX42_LIB):
+# 	@echo "Cloning and building MLX42..."
+# 	@if [ ! -d "$(MLX42_DIR)" ]; then \
+# 		git clone https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR); \
+# 	fi
+# 	@cmake -B $(MLX42_DIR)/build $(MLX42_DIR)
+# 	@cmake --build $(MLX42_DIR)/build
+
+# $(NAME): $(OBJ) $(MLX42_LIB)
+# 	$(CC) $(CFLAGS) $(OBJ) $(MLX42_LINK_FLAGS) -o $(NAME) $(LDLIBS)
+# 	@echo "cube3D execution created"
+
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDLIBS)
+	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+	@echo "program execution created"
 
 #cleaning
 clean:
 	rm -rf $(OBJ_DIR)
+	$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

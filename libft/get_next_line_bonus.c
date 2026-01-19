@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cube3D.h"
+#include "libft.h"
 
 static int	get_line_length(const char *line);
 static char	*build_line(int fd, char *line);

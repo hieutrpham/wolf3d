@@ -27,9 +27,14 @@
 # include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
+// # include <MLX42/MLX42.h>
+
+# include "libft.h"
 
 # define FAIL 1
 # define SUCC 0
+# define WIDTH 800
+# define HEIGHT 600
 
 typedef struct s_str
 {
@@ -38,24 +43,86 @@ typedef struct s_str
 	size_t cap;
 } t_str;
 
-typedef struct game
+typedef struct s_file
 {
-	char *no;
-	char *so;
-	char *we;
-	char *ea;
-	char *floor;
-	char *ceil;
-	t_str *map;
-} t_game;
+	int		fd;
+	int		no_direc;
+	char	*no_path;
+	char	*so_path;
+	char	*we_path;
+	char	*ea_path;
+	int		no;
+	int		so;
+	int		we;
+	int		ea;
+	int		fl_rgb[3];
+	int		ce_rgb[3];
+	int		fl;
+	int		ce;
+	int		start_map;
+	int		err_dir;
+	char	*map;
+	int		line_count;
+	char	**parse_map;
+	int		map_height;
+	int		map_width;
+	int		player_x;
+	int		player_y;
+	char	player_dir;
+} t_file;
 
-int	err_message(char *string, int code);
-int	ft_strcmp(char *s1, char *s2);
-int check_file(char *str);
-size_t	ft_strlen(const char *s);
-char	*get_next_line(int fd);
-char	*gnl_strjoin(char *s1, char *s2);
-int					has_nl(const char *str);
-bool ft_strncmp(char *s1, char *s2, size_t n);
+int		err_message(char *string, int code);
+int 	clean_up(char *map, char *line, int fd, int code);
+void 	free_file(t_file *file);
+
+// int		ft_strcmp(char *s1, char *s2);
+// size_t	ft_strlen(const char *s);
+// char	*get_next_line(int fd);
+// char	*gnl_strjoin(char *s1, char *s2);
+// int		has_nl(const char *str);
+// bool 	ft_strncmp(char *s1, char *s2, size_t n);
+// char	**ft_split(char const *s, char c);
+
+void	ft_bzero(void *s, size_t n);
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(const char *s);
+
+int 	check_exter(char *str);
+int 	check_inter(t_file *file, char *str);
+int 	check_dir_fc(t_file *file, char *line);
+int		parse_dir_fc(t_file *file, char *line);
+int 	parse_no(t_file *file, char *line);
+int 	parse_so(t_file *file, char *line);
+int 	parse_we(t_file *file, char *line);
+int 	parse_ea(t_file *file, char *line);
+int 	parse_floor(t_file *file, char *line);
+int 	parse_ceil(t_file *file, char *line);
+int 	find_wall(char *line);
+char 	*check_dir(char *line, char *dir);
+
+int 	check_fc(t_file *file, char *line, char *dir);
+int 	check_color(char *num, int *color);
+int 	check_value(char *num, int *i);
+int 	process_infile(t_file *file);
+
+int 	map_read(t_file *file, char *line);
+int 	map_check(t_file *file);
+int		map_wrong_character(t_file *file);
+int		map_empty(t_file *file);
+void 	print_map(char **map);
+void 	find_height_width(t_file *file, char **map);
+char 	**pad_map(t_file *file, char **map);
+void	clear_previous(char **str, int len);
+void 	free_2d_array(char **str);
+void	find_player_pos(t_file *file);
+int 	player_can_move(t_file *file);
+int		is_walkable(char c);
+char 	**arr_2d_copy(char **str, int len);
+int 	check_map_close(t_file *file);
+int		flood_fill(char **map, int x, int y, int w, int h);
+
+char 	*get_path(char *line);
+void 	skip_space(char **str);
+void 	print_file(t_file *file);
 
 #endif
