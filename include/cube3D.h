@@ -33,10 +33,10 @@
 # define FAIL 1
 # define SUCC 0
 #ifndef WIDTH
-# define WIDTH 800
+# define WIDTH 1920
 #endif // !WIDTH
 #ifndef HEIGHT
-# define HEIGHT 600
+# define HEIGHT 1080
 #endif // !height
 
 typedef struct s_str

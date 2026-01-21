@@ -14,6 +14,7 @@
 #include "cube3D.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 
 t_str *str_append(t_str *str, char *line)
@@ -55,6 +56,7 @@ int main(int argc, char *argv[])
 #else
 #define RADIUS 50
 #define BG 0x222222FF
+#define RED 0xFF0000FF
 typedef struct
 {
 	int32_t r;
@@ -96,30 +98,43 @@ int32_t ft_pixel(t_color color)
 }
 
 // y = mx + b
-// m is the slope, b is the intersect with y axix (when x == 0)
+// m is the slope, b is the intersect with y axis (when x == 0)
 // we have 2 vector (x1, y1) (x2, y2) that satify the line equation
 // y1 - m*x1 = y2 - m*x2
 // y1 - y2 = mx1 - mx2
 // m = (y1 - y2)/(x1 - x2)
 // once we get the slope, just plug in the vector to solve for b
-float get_slope(vector_t v1, vector_t v2)
+
+vector_t player_pos = {WIDTH/2, HEIGHT/2};
+
+void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, int color)
 {
-	return (v1.y - v2.y)/(v1.x - v2.x);
+	if (x < img->width && y < img->height)
+		mlx_put_pixel(img, x, y, color);
 }
 
+// y2 - y1 = mx2
 void draw_line(void *param)
 {
-	(void)param;
-	vector_t v1 = build_v2(WIDTH/2, HEIGHT/2);
-	vector_t v2 = build_v2(WIDTH/2, HEIGHT);
-	float slope = get_slope(v1, v2);
-	float y_intersect = (v1.y - slope*v1.x);
-	for (uint32_t y = 0; y < image->height; y++)
+	mlx_t *mlx = param;
+	int32_t mouse_x, mouse_y;
+	mlx_get_mouse_pos(mlx, &mouse_x, &mouse_y);
+
+	vector_t mouse_pos = build_v2(mouse_x, mouse_y);
+	int64_t dx = player_pos.x - mouse_pos.x;
+	int64_t dy = player_pos.y - mouse_pos.y;
+	if (dx == 0)
 	{
-		for (uint32_t x = 0; x < image->width; x++)
+		for (uint32_t y = 0; y < image->height; y++)
+			put_pixel(image, player_pos.x, y, RED);
+	}
+	else
+	{
+		int64_t slope = dy/dx;
+		for (int x = player_pos.x; x < mouse_pos.x; x++)
 		{
-			if (y == slope * x + y_intersect)
-				mlx_put_pixel(image, x, y, 0xFF0000FF);
+			int64_t y = (int32_t)(slope * (x - player_pos.x) + player_pos.y);
+			put_pixel(image, x, y, RED);
 		}
 	}
 }
@@ -141,10 +156,30 @@ void draw_circle(void *param)
 	}
 }
 
+void clear_bg(void *param)
+{
+	(void)param;
+	for (uint32_t y = 0; y < image->height; y++)
+	{
+		for (uint32_t x = 0; x < image->width; x++)
+			mlx_put_pixel(image, x, y, BG);
+	}
+}
+
 void game_loop(mlx_t *mlx)
 {
-	mlx_loop_hook(mlx, draw_circle, mlx);
+	// mlx_loop_hook(mlx, draw_circle, mlx);
+	// mlx_loop_hook(mlx, clear_bg, mlx);
 	mlx_loop_hook(mlx, draw_line, mlx);
+}
+
+void	close_win(mlx_key_data_t keydata, void *param)
+{
+	mlx_t	*mlx;
+
+	mlx = param;
+	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
+		mlx_close_window(mlx);
 }
 
 int main()
@@ -156,6 +191,7 @@ int main()
 	if (!image)
 		return 1;
 	mlx_image_to_window(mlx, image, 0, 0);
+	mlx_key_hook(mlx, close_win, mlx);
 	game_loop(mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
