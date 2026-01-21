@@ -97,45 +97,57 @@ int32_t ft_pixel(t_color color)
 	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
 }
 
-// y = mx + b
-// m is the slope, b is the intersect with y axis (when x == 0)
-// we have 2 vector (x1, y1) (x2, y2) that satify the line equation
-// y1 - m*x1 = y2 - m*x2
-// y1 - y2 = mx1 - mx2
-// m = (y1 - y2)/(x1 - x2)
-// once we get the slope, just plug in the vector to solve for b
-
-vector_t player_pos = {WIDTH/2, HEIGHT/2};
-
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, int color)
 {
 	if (x < img->width && y < img->height)
 		mlx_put_pixel(img, x, y, color);
 }
 
-// y2 - y1 = mx2
+void swap_int(int *i1, int *i2)
+{
+	int temp = *i1;
+	*i1 = *i2;
+	*i2 = temp;
+}
+
+vector_t player_pos = {WIDTH/2, HEIGHT/2};
+
 void draw_line(void *param)
 {
+	// (void)param;
 	mlx_t *mlx = param;
-	int32_t mouse_x, mouse_y;
+	int mouse_x = WIDTH/2;
+	int mouse_y = 0;
 	mlx_get_mouse_pos(mlx, &mouse_x, &mouse_y);
 
 	vector_t mouse_pos = build_v2(mouse_x, mouse_y);
-	int64_t dx = player_pos.x - mouse_pos.x;
-	int64_t dy = player_pos.y - mouse_pos.y;
-	if (dx == 0)
+	int dx = mouse_pos.x - player_pos.x;
+	int dy = mouse_pos.y - player_pos.y;
+	if (dx != 0)
 	{
-		for (uint32_t y = 0; y < image->height; y++)
-			put_pixel(image, player_pos.x, y, RED);
+		int intercept = player_pos.y - (dy*player_pos.x)/dx;
+		int player_x = player_pos.x;
+		int mouse_x = mouse_pos.x;
+		if (player_x > mouse_x)
+			swap_int(&(player_x), &(mouse_x));
+		for (int x = player_x; x < mouse_x; x++)
+		{
+			int y1 = dy*x/dx + intercept;
+			int y2 = dy*(x+1)/dx + intercept;
+			if (y1 > y2)
+				swap_int(&y1, &y2);
+			for (int y = y1; y <= y2; y++)
+				put_pixel(image, x, y, RED);
+		}
 	}
 	else
 	{
-		int64_t slope = dy/dx;
-		for (int x = player_pos.x; x < mouse_pos.x; x++)
-		{
-			int64_t y = (int32_t)(slope * (x - player_pos.x) + player_pos.y);
-			put_pixel(image, x, y, RED);
-		}
+		int player_y = player_pos.y;
+		int mouse_y = mouse_pos.y;
+		if (player_y > mouse_y)
+			swap_int(&(player_y), &(mouse_y));
+		for (int y = player_y; y < mouse_y; y++)
+			put_pixel(image, player_pos.x, y, RED);
 	}
 }
 
@@ -169,7 +181,7 @@ void clear_bg(void *param)
 void game_loop(mlx_t *mlx)
 {
 	// mlx_loop_hook(mlx, draw_circle, mlx);
-	// mlx_loop_hook(mlx, clear_bg, mlx);
+	mlx_loop_hook(mlx, clear_bg, mlx);
 	mlx_loop_hook(mlx, draw_line, mlx);
 }
 
