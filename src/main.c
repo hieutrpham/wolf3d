@@ -124,14 +124,15 @@ typedef struct
 	int intercept;
 } t_line;
 
+// draw a line from vector v1 to v2
 void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 {
 	t_line line = {};
 	int i;
 	int j;
 	
-	line.dy = v1.y - v2.y;
-	line.dx = v1.x - v2.x;
+	line.dy = v2.y - v1.y;
+	line.dx = v2.x - v1.x;
 	if (line.dx != 0)
 	{
 		line.intercept = v2.y - (line.dy*v2.x)/line.dx;
@@ -156,51 +157,35 @@ void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 	}
 }
 
+// draw infinite line given 2 vectors
 void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 {
-	t_line line = {};
-	int i;
-	int j;
-	
-	line.dy = v1.y - v2.y;
-	line.dx = v1.x - v2.x;
-	if (line.dx != 0)
+	int dy = v2.y - v1.y;
+	int dx = v2.x - v1.x;
+
+	if (dx != 0)
 	{
-		line.intercept = v2.y - (line.dy*v2.x)/line.dx; // y intercept
-		int x_intercept = -line.intercept*line.dx/line.dy; // extending the ray
+		int y_intercept = v2.y - dy*v2.x/dx;
+		int x_intercept = -y_intercept*dx/dy;
 		if (v2.y > v1.y)
-			x_intercept = x_intercept - 2*line.dx;
-		if (line.dy != 0)
 		{
-			if (v1.x > x_intercept)
-				swap_int(&v1.x, &x_intercept);
-			for (i = v1.x; i < x_intercept; i++)
-			{
-				line.y1 = line.dy*i/line.dx + line.intercept;
-				line.y2 = line.dy*(i+1)/line.dx + line.intercept;
-				if (line.y1 > line.y2)
-					swap_int(&line.y1, &line.y2);
-				for (j = line.y1; j <= line.y2; j++)
-					put_pixel(image, i, j, color);
-			}
+			// if (v2.x > v1.x)
+			printf("%d\n", x_intercept);
+			draw_line(image, v1, (vector_t){x_intercept, image->height}, color);
 		}
 		else
-		{
-			for (int x = 0; x < (int)image->width; x++)
-				put_pixel(image, x, v1.y, color);
-		}
+			draw_line(image, v1, (vector_t){x_intercept, 0}, color);
 	}
-	else
-	{
-		if (v1.y > v2.y)
-			swap_int(&v1.y, &v2.y);
-		for (int y = v1.y; y < v2.y; y++)
-			put_pixel(image, v2.x, y, color);
-	}
+	// TODO: handle dx = 0
+	// else
+	// {
+	// 	draw_line(image, v1, (vector_t){}, color)
+	// }
 }
 
 #define PI 3.14159265358979323846f
 #define DR (PI/180f)
+#define GREEN 0x00FF00FF
 void draw_rays(void *param)
 {
 	// (void)param;
@@ -210,20 +195,9 @@ void draw_rays(void *param)
 	mlx_get_mouse_pos(mlx, &mouse_x, &mouse_y);
 
 	vector_t mouse_pos = build_v2(mouse_x, mouse_y);
-	if (mouse_pos.x - player_pos.x == 0)
-		return;
-	float tan_A = (mouse_pos.y - player_pos.y)/(mouse_pos.x - player_pos.x);
-	float ra = atanf(tan_A);
-	if (ra < 0)
-		ra += 2*PI;
-	if (ra > 2*PI)
-		ra -= 2*PI;
-
-	// printf("angle: %f\n", ra);
-
 	draw_line2(image, player_pos, mouse_pos, RED);
-	// draw_line(image, (vector_t){0, 0}, (vector_t){WIDTH, HEIGHT}, RED);
-	// draw_line(image, (vector_t){0, HEIGHT}, (vector_t){WIDTH, 0}, RED);
+	draw_line(image, (vector_t){0, 0}, (vector_t){WIDTH, HEIGHT}, GREEN);
+	draw_line(image, (vector_t){0, HEIGHT}, (vector_t){WIDTH, 0}, GREEN);
 }
 
 void clear_bg(void *param)
