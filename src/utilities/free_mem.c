@@ -1,7 +1,7 @@
 
 #include "../include/cube3D.h"
 
-void free_file(t_file *file)
+void	free_file(t_file *file)
 {
 	if (file->no_path)
 		free(file->no_path);
@@ -11,10 +11,10 @@ void free_file(t_file *file)
 		free(file->we_path);
 	if (file->ea_path)
 		free(file->ea_path);
-    file->no_path = NULL;
-    file->so_path = NULL;
-    file->we_path = NULL;
-    file->ea_path = NULL;
+	file->no_path = NULL;
+	file->so_path = NULL;
+	file->we_path = NULL;
+	file->ea_path = NULL;
 	if (file->map)
 		free(file->map);
 	if (file ->parse_map)
@@ -23,27 +23,27 @@ void free_file(t_file *file)
 		close(file->fd);
 }
 
-int clean_up(char *map, char *line, int fd, int code)
+int	clean_up(char *map, char *line, int fd, int code)
 {
-	if(map)
+	if (map)
 		free(map);
-	if(line)
+	if (line)
 		free(line);
-	if(fd != -1)
+	if (fd != -1)
 		close(fd);
 	return (code);
 }
 
-void free_2d_array(char **str)
+void	free_2d_array(char **str)
 {
 	int	i;
 
-	if(!str)
-		return;
+	if (!str)
+		return ;
 	i = 0;
 	while (str[i])
 	{
-		if(str[i])
+		if (str[i])
 			free(str[i]);
 		i++;
 	}
