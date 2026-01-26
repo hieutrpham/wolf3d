@@ -66,12 +66,6 @@ typedef struct
 	int32_t a;
 } t_color;
 
-typedef struct
-{
-	int x;
-	int y;
-} vector_t;
-
 vector_t build_v2(uint x, uint y)
 {
 	return (vector_t){x, y};
@@ -203,11 +197,6 @@ void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 #define DR (PI/180f)
 #define GREEN 0x00FF00FF
 
-typedef struct {
-	vector_t pos;
-	float angle;
-} t_player;
-
 int map[] =
 {
 	1,1,1,1,1,1,1,1,
@@ -250,49 +239,50 @@ void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, 
 
 void draw_map(void *param)
 {
-	(void)param;
+	t_game *game = param;
 	for (int y = 0; y < mapY; y++)
 	{
 		for (int x = 0; x < mapY; x++)
 		{
 			if (map[y*mapX + x] == 1)
-				draw_rectangle(image, (vector_t){x * cell_size, y * HEIGHT/mapY}, cell_size, HEIGHT/mapY, 0x0000ffff);
-			draw_line(image, (vector_t){x*cell_size, 0}, (vector_t){x*cell_size, HEIGHT}, 0x202020ff);
-			draw_line(image, (vector_t){0, y*HEIGHT/mapY}, (vector_t){WIDTH, y*HEIGHT/mapY}, 0x202020ff);
+				draw_rectangle(game->image, (vector_t){x * cell_size, y * HEIGHT/mapY}, cell_size, HEIGHT/mapY, 0x0000ffff);
+			draw_line(game->image, (vector_t){x*cell_size, 0}, (vector_t){x*cell_size, HEIGHT}, 0x202020ff);
+			draw_line(game->image, (vector_t){0, y*HEIGHT/mapY}, (vector_t){WIDTH, y*HEIGHT/mapY}, 0x202020ff);
 		}
 	}
 }
 
-void game_loop(mlx_t *mlx)
+void game_loop(t_game *game)
 {
 	// mlx_loop_hook(mlx, draw_circle, mlx);
-	mlx_loop_hook(mlx, clear_bg, NULL);
-	mlx_loop_hook(mlx, draw_map, NULL);
+	// mlx_loop_hook(game->mlx, clear_bg, NULL);
+	mlx_loop_hook(game->mlx, draw_map, game);
 	// mlx_loop_hook(mlx, draw_rays, &player);
 }
 
 void	key_control(mlx_key_data_t keydata, void *param)
 {
-	mlx_t	*mlx;
+	t_game *game = param;
 
-	mlx = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
-		mlx_close_window(mlx);
+		mlx_close_window(game->mlx);
+	// if (keydata.key == MLX_KEY_A)
 }
 
 int main()
 {
-	mlx_t* mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
-	if (!mlx)
+	t_game game = {0};
+	game.mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
+	if (!game.mlx)
 		return 1;
-	image = mlx_new_image(mlx, WIDTH, HEIGHT);
-	if (!image)
+	game.image = mlx_new_image(game.mlx, WIDTH, HEIGHT);
+	if (!game.image)
 		return 1;
-	mlx_image_to_window(mlx, image, 0, 0);
-	mlx_key_hook(mlx, key_control, mlx);
-	game_loop(mlx);
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_image_to_window(game.mlx, game.image, 0, 0);
+	mlx_key_hook(game.mlx, key_control, &game);
+	game_loop(&game);
+	mlx_loop(game.mlx);
+	mlx_terminate(game.mlx);
 	return 0;
 }
 #endif

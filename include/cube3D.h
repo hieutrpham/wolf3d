@@ -39,6 +39,23 @@
 # define HEIGHT 600
 #endif // !height
 
+typedef struct
+{
+	int x;
+	int y;
+} vector_t;
+
+typedef struct {
+	vector_t pos;
+	float angle;
+} t_player;
+
+typedef struct {
+	mlx_t *mlx;
+	mlx_image_t *image;
+	t_player *player;
+} t_game;
+
 typedef struct s_str
 {
 	char *str;
