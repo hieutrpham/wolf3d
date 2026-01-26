@@ -98,7 +98,7 @@ int32_t ft_pixel(t_color color)
 	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
 }
 
-void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, int color)
+void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
 {
 	if (x < img->width && y < img->height)
 		mlx_put_pixel(img, x, y, color);
@@ -112,8 +112,6 @@ void swap_int(int *i1, int *i2)
 	*i1 = *i2;
 	*i2 = temp;
 }
-
-vector_t player_pos = {WIDTH/2, HEIGHT/2};
 
 typedef struct
 {
@@ -204,19 +202,32 @@ void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 #define PI 3.14159265358979323846f
 #define DR (PI/180f)
 #define GREEN 0x00FF00FF
-void draw_rays(void *param)
-{
-	// (void)param;
-	mlx_t *mlx = param;
-	int mouse_x = WIDTH/2;
-	int mouse_y = 0;
-	mlx_get_mouse_pos(mlx, &mouse_x, &mouse_y);
 
-	vector_t mouse_pos = build_v2(mouse_x, mouse_y);
-	draw_line2(image, player_pos, mouse_pos, RED);
-	draw_line(image, (vector_t){0, 0}, (vector_t){WIDTH, HEIGHT}, GREEN);
-	draw_line(image, (vector_t){0, HEIGHT}, (vector_t){WIDTH, 0}, GREEN);
-}
+typedef struct {
+	vector_t pos;
+	float angle;
+} t_player;
+
+int map[] =
+{
+	1,1,1,1,1,1,1,1,
+	1,0,0,0,1,0,0,1,
+	1,0,1,0,1,0,0,1,
+	1,0,0,0,1,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,1,0,0,1,0,1,
+	1,0,1,0,0,0,0,1,
+	1,1,1,1,1,1,1,1,
+};
+
+#define mapX 8
+#define mapY 8
+#define cell_size (WIDTH/mapX)
+
+// void draw_rays(void *param)
+// {
+// 	t_player *p = param;
+// }
 
 void clear_bg(void *param)
 {
@@ -224,18 +235,43 @@ void clear_bg(void *param)
 	for (uint32_t y = 0; y < image->height; y++)
 	{
 		for (uint32_t x = 0; x < image->width; x++)
-			mlx_put_pixel(image, x, y, BG);
+			put_pixel(image, x, y, BG);
+	}
+}
+
+t_player player = {.angle = PI/2};
+
+void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, uint color)
+{
+	for (int y = origin.y; y < origin.y + height; y++)
+		for (int x = origin.x; x < origin.x + width; x++)
+			put_pixel(image, x, y, color);
+}
+
+void draw_map(void *param)
+{
+	(void)param;
+	for (int y = 0; y < mapY; y++)
+	{
+		for (int x = 0; x < mapY; x++)
+		{
+			if (map[y*mapX + x] == 1)
+				draw_rectangle(image, (vector_t){x * cell_size, y * HEIGHT/mapY}, cell_size, HEIGHT/mapY, 0x0000ffff);
+			draw_line(image, (vector_t){x*cell_size, 0}, (vector_t){x*cell_size, HEIGHT}, 0x202020ff);
+			draw_line(image, (vector_t){0, y*HEIGHT/mapY}, (vector_t){WIDTH, y*HEIGHT/mapY}, 0x202020ff);
+		}
 	}
 }
 
 void game_loop(mlx_t *mlx)
 {
 	// mlx_loop_hook(mlx, draw_circle, mlx);
-	mlx_loop_hook(mlx, clear_bg, mlx);
-	mlx_loop_hook(mlx, draw_rays, mlx);
+	mlx_loop_hook(mlx, clear_bg, NULL);
+	mlx_loop_hook(mlx, draw_map, NULL);
+	// mlx_loop_hook(mlx, draw_rays, &player);
 }
 
-void	close_win(mlx_key_data_t keydata, void *param)
+void	key_control(mlx_key_data_t keydata, void *param)
 {
 	mlx_t	*mlx;
 
@@ -253,7 +289,7 @@ int main()
 	if (!image)
 		return 1;
 	mlx_image_to_window(mlx, image, 0, 0);
-	mlx_key_hook(mlx, close_win, mlx);
+	mlx_key_hook(mlx, key_control, mlx);
 	game_loop(mlx);
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
