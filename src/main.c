@@ -163,24 +163,42 @@ void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 	int dy = v2.y - v1.y;
 	int dx = v2.x - v1.x;
 
+	if (dx == 0 && dy == 0)
+		return;
 	if (dx != 0)
 	{
 		int y_intercept = v2.y - dy*v2.x/dx;
-		int x_intercept = -y_intercept*dx/dy;
-		if (v2.y > v1.y)
+		if (dy != 0)
 		{
-			// if (v2.x > v1.x)
-			printf("%d\n", x_intercept);
-			draw_line(image, v1, (vector_t){x_intercept, image->height}, color);
+			int x_intercept = -y_intercept*dx/dy;
+			if (v2.y > v1.y) // lower quadrant
+			{
+				if (v2.x > v1.x)
+				{
+					x_intercept = (image->height - y_intercept)*dx/dy;
+					draw_line(image, v1, (vector_t){x_intercept, image->height}, color);
+				}
+				else
+				draw_line(image, v1, (vector_t){0, y_intercept}, color);
+			}
+			else // upper quadrant
+				draw_line(image, v1, (vector_t){x_intercept, 0}, color);
 		}
-		else
-			draw_line(image, v1, (vector_t){x_intercept, 0}, color);
+		else if (dy == 0)
+		{
+			if (v2.x < v1.x)
+				draw_line(image, v1, (vector_t){0, v1.y}, color);
+			if (v2.x > v1.x)
+				draw_line(image, v1, (vector_t){image->width, v1.y}, color);
+		}
 	}
-	// TODO: handle dx = 0
-	// else
-	// {
-	// 	draw_line(image, v1, (vector_t){}, color)
-	// }
+	else if (dx == 0)
+	{
+		if (v2.y < v1.y)
+			draw_line(image, v1, (vector_t){v1.x, 0}, color);
+		if (v2.y > v1.y)
+			draw_line(image, v1, (vector_t){v1.x, image->height}, color);
+	}
 }
 
 #define PI 3.14159265358979323846f
