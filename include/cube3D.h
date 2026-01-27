@@ -43,6 +43,12 @@ typedef struct s_str
 	size_t cap;
 } t_str;
 
+typedef struct s_bounds
+{
+	int	w;
+	int	h;
+}	t_bounds;
+
 typedef struct s_file
 {
 	int		fd;
@@ -75,14 +81,6 @@ int		err_message(char *string, int code);
 int 	clean_up(char *map, char *line, int fd, int code);
 void 	free_file(t_file *file);
 
-// int		ft_strcmp(char *s1, char *s2);
-// size_t	ft_strlen(const char *s);
-// char	*get_next_line(int fd);
-// char	*gnl_strjoin(char *s1, char *s2);
-// int		has_nl(const char *str);
-// bool 	ft_strncmp(char *s1, char *s2, size_t n);
-// char	**ft_split(char const *s, char c);
-
 void	ft_bzero(void *s, size_t n);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
@@ -105,7 +103,7 @@ int 	check_color(char *num, int *color);
 int 	check_value(char *num, int *i);
 int 	process_infile(t_file *file);
 
-int 	map_read(t_file *file, char *line);
+int 	map_read_from_file(t_file *file, char *line);
 int 	map_check(t_file *file);
 int		map_wrong_character(t_file *file);
 int		map_empty(t_file *file);
@@ -119,7 +117,8 @@ int 	player_can_move(t_file *file);
 int		is_walkable(char c);
 char 	**arr_2d_copy(char **str, int len);
 int 	check_map_close(t_file *file);
-int		flood_fill(char **map, int x, int y, int w, int h);
+// int		flood_fill(char **map, int x, int y, int w, int h);
+int		flood_fill(char **map, int x, int y, t_bounds b);
 
 char 	*get_path(char *line);
 void 	skip_space(char **str);
