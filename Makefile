@@ -6,7 +6,7 @@
 #    By: vinguyen <vinguyen@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/08/16 12:30:39 by vinguyen          #+#    #+#              #
-#    Updated: 2025/12/07 15:38:38 by trupham          ###   ########.fr        #
+#    Updated: 2026/01/27 13:49:53 by trupham          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,19 +14,14 @@ NAME = cub3D
 CC = cc -g
 CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -Ofast
 SRC_DIR = ./src
-SRC_SUBDIRS = 0_file_parsing 1_map_parsing utilities 2_display
+SRC_SUBDIRS = 0_file_parsing 1_map_parsing utilities display control math game
 
 OBJ_DIR = ./object
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
 MAIN_FILES = main.c \
-# 			check_file.c check_dir_fc.c par_dir.c check_fc.c\
-# 			map_read.c  map_utilities.c\
-# 			message.c free_mem.c\
-# 			file_utilities.c \
 
-# SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES))
 SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
       $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
 

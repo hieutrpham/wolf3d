@@ -1,44 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   message.c                                          :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/27 11:25:02 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 11:25:13 by trupham          ###   ########.fr       */
+/*   Created: 2026/01/27 11:30:56 by trupham           #+#    #+#             */
+/*   Updated: 2026/01/27 11:32:53 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3D.h"
 
-int	err_message(char *string, int code)
+void swap_int(int *i1, int *i2)
 {
-	int	i;
+	int temp;
 
-	i = 0;
-	while (string[i])
-	{
-		write(2, &string[i], 1);
-		i++;
-	}
-	return (code);
+	temp = *i1;
+	*i1 = *i2;
+	*i2 = temp;
 }
 
-t_str *str_append(t_str *str, char *line)
+int32_t ft_pixel(t_color color)
 {
-	int i;
+	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
+}
 
-	i = 0;
-	if (str->count >= str->cap)
-	{
-		if (str->cap == 0)
-			str->cap = 256;
-		else
-			str->cap *=2;
-		str->str = realloc(str->str, str->cap * sizeof(*str->str));
-	}
-	while (line[i] != '\n')
-		str->str[str->count++] = line[i++];
-	return str;
+void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
+{
+	if (x < img->width && y < img->height)
+		mlx_put_pixel(img, x, y, color);
 }

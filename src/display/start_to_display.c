@@ -1,5 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   start_to_display.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/27 11:32:43 by trupham           #+#    #+#             */
+/*   Updated: 2026/01/27 11:40:10 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// #include "../include/cube3D.h"
+#include "cube3D.h"
 
 // void    start_to_display(t_game *game, t_file *files)
 // {
@@ -22,3 +33,29 @@
 //     || !game->tex.ea)
 //         err_message("Failed to load texture", FAIL);
 // }
+
+void clear_bg(void *param)
+{
+	t_game *game = param;
+	for (uint32_t y = 0; y < game->image->height; y++)
+	{
+		for (uint32_t x = 0; x < game->image->width; x++)
+			put_pixel(game->image, x, y, BG);
+	}
+}
+
+void draw_map(void *param)
+{
+	t_game *game = param;
+	for (int y = 0; y < game->mapY; y++)
+	{
+		for (int x = 0; x < game->mapX; x++)
+		{
+			if (game->map[y*game->mapX + x] == 1)
+				draw_rectangle(game->image, (vector_t){x * WIDTH/game->mapX, y * HEIGHT/game->mapY}, WIDTH/game->mapX, HEIGHT/game->mapY, 0x0000ffff);
+			draw_line(game->image, (vector_t){x*WIDTH/game->mapX, 0}, (vector_t){x*WIDTH/game->mapX, HEIGHT}, 0x202020ff);
+			draw_line(game->image, (vector_t){0, y*HEIGHT/game->mapY}, (vector_t){WIDTH, y*HEIGHT/game->mapY}, 0x202020ff);
+		}
+	}
+}
+
