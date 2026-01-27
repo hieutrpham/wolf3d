@@ -1,2 +1,9 @@
 /object/
 /cub3D
+# Ignore all object files
+*.o
+
+# Ignore libft build outputs
+/libft/*.o
+/libft/obj/
+/libft/libft.a
