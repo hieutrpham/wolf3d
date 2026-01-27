@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 13:48:59 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/27 15:05:46 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@
 # define WIDTH 800
 # define HEIGHT 600
 #define PI 3.14159265358979323846f
-#define DR (PI/180f)
+#define DR (PI/180.f)
 #define GREEN 0x00FF00FF
-
+#define WALL_HEIGHT 600.0f
+#define FOV 60.0f
 
 typedef struct
 {
@@ -178,4 +179,7 @@ void swap_int(int *i1, int *i2);
 // game
 void game_loop(t_game *game);
 int game_init(t_game *game);
+
+//vector
+vector_t build_v2(uint x, uint y);
 #endif
