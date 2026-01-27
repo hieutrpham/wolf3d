@@ -16,5 +16,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
+    - name: Update packages
+      run: sudo apt-get update |
+            sudo apt-get install libgl1-mesa-dev libxrandr
+
+    - name: Install packages
+      run: sudo apt-get install --fix-missing libgl1-mesa-dev
+
     - name: build cub3d
       run: make
+

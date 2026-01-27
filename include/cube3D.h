@@ -6,35 +6,77 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2025/12/13 10:57:52 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/27 13:48:59 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE3D_H
 # define CUBE3D_H
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 64
-#endif
-
-# ifndef MAX_FD
-#  define MAX_FD 1024
-# endif
-
 # include <stdio.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
 #include <fcntl.h>
 #include <string.h>
-// # include <MLX42/MLX42.h>
-
 # include "libft.h"
+#include "MLX42/MLX42.h"
 
+#define BUFFER_SIZE 64
+# define MAX_FD 1024
+#define RADIUS 50
+#define BG 0x222222FF
+#define RED 0xFF0000FF
 # define FAIL 1
 # define SUCC 0
 # define WIDTH 800
 # define HEIGHT 600
+#define PI 3.14159265358979323846f
+#define DR (PI/180f)
+#define GREEN 0x00FF00FF
+
+
+typedef struct
+{
+	int32_t r;
+	int32_t g;
+	int32_t b;
+	int32_t a;
+} t_color;
+
+typedef struct
+{
+	int dx;
+	int dy;
+	int y1;
+	int y2;
+	int intercept;
+} t_line;
+
+typedef struct
+{
+	int x;
+	int y;
+} vector_t;
+
+typedef struct {
+	vector_t pos;
+	float angle;
+} t_player;
+
+typedef struct {
+	mlx_t *mlx;
+	mlx_image_t *image;
+	t_player *player;
+	int mapX;
+	int mapY;
+	int *map;
+} t_game;
 
 typedef struct s_str
 {
@@ -117,11 +159,23 @@ int 	player_can_move(t_file *file);
 int		is_walkable(char c);
 char 	**arr_2d_copy(char **str, int len);
 int 	check_map_close(t_file *file);
-// int		flood_fill(char **map, int x, int y, int w, int h);
 int		flood_fill(char **map, int x, int y, t_bounds b);
 
 char 	*get_path(char *line);
 void 	skip_space(char **str);
 void 	print_file(t_file *file);
 
+// draw functions
+void	key_control(mlx_key_data_t keydata, void *param);
+void draw_map(void *param);
+void clear_bg(void *param);
+void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, uint color);
+void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
+void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
+void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
+void swap_int(int *i1, int *i2);
+
+// game
+void game_loop(t_game *game);
+int game_init(t_game *game);
 #endif

@@ -6,13 +6,14 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:28:46 by trupham           #+#    #+#             */
-/*   Updated: 2025/12/13 12:12:10 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/27 13:48:27 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cube3D.h"
+#include "cube3D.h"
 
-int	main(int argc, char *argv[])
+#if 0
+int main(int argc, char *argv[])
 {
 	t_file	file;
 
@@ -29,3 +30,19 @@ int	main(int argc, char *argv[])
 	free_file(&file);
 	return (SUCC);
 }
+#else
+
+int main()
+{
+	t_game game = {0};
+
+	if (game_init(&game) == 1)
+		return 1;
+	mlx_image_to_window(game.mlx, game.image, 0, 0);
+	mlx_key_hook(game.mlx, key_control, &game);
+	game_loop(&game);
+	mlx_loop(game.mlx);
+	mlx_terminate(game.mlx);
+	return 0;
+}
+#endif

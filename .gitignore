@@ -7,3 +7,9 @@
 /libft/*.o
 /libft/obj/
 /libft/libft.a
+/.cache/
+Session.vim
+/compile_commands.json
+/MLX42
+/libft/libft.a
+/libft/obj/
