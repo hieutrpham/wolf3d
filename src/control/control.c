@@ -19,12 +19,30 @@ void	key_control(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(game->mlx);
 	if (keydata.key == MLX_KEY_A)
+	{
 		game->player->angle -= 0.1f;
+		if (game->player->angle < 0)
+			game->player->angle += 2*PI;
+		game->player->dx = cosf(game->player->angle) * 10;
+		game->player->dy = sinf(game->player->angle) * 10;
+	}
 	if (keydata.key == MLX_KEY_D)
+	{
 		game->player->angle += 0.1f;
+		if (game->player->angle < 0)
+			game->player->angle += 2*PI;
+		game->player->dx = cosf(game->player->angle) * 10;
+		game->player->dy = sinf(game->player->angle) * 10;
+	}
 	if (keydata.key == MLX_KEY_W)
-		game->player->pos = v2_add(game->player->pos, (vector_t){1, 1});
+	{
+		game->player->pos.x = game->player->pos.x + (int)game->player->dx;
+		game->player->pos.y = game->player->pos.y + (int)game->player->dy;
+	}
 	if (keydata.key == MLX_KEY_S)
-		game->player->pos = v2_sub(game->player->pos, (vector_t){1, 1});
+	{
+		game->player->pos.x = game->player->pos.x - (int)game->player->dx;
+		game->player->pos.y = game->player->pos.y - (int)game->player->dy;
+	}
 }
 

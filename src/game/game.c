@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube3D.h"
+#include <math.h>
 
 static int map[] =
 {
@@ -41,7 +42,6 @@ void draw_rays(void *param)
 			ra += 2*PI;
 		if (ra > 2*PI)
 			ra -= 2*PI;
-		// float distH = 1e9;
 		// NOTE: find horizontal intersection
 		// looking up
 		if (ra > PI) {
@@ -143,8 +143,21 @@ void draw_rays(void *param)
 void game_loop(t_game *game)
 {
 	mlx_loop_hook(game->mlx, clear_bg, game);
-	mlx_loop_hook(game->mlx, draw_map, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
+	mlx_loop_hook(game->mlx, draw_map, game);
+}
+
+int player_init(t_game *game)
+{
+	game->player = malloc(sizeof(*game->player));
+	if (!game->player)
+		return FAIL;
+	game->player->angle = PI/2;
+	game->player->pos.x = game->image->width/2;
+	game->player->pos.y = game->image->height/2;
+	game->player->dx = cosf(game->player->angle);
+	game->player->dy = sinf(game->player->angle);
+	return SUCC;
 }
 
 int game_init(t_game *game)
@@ -158,13 +171,6 @@ int game_init(t_game *game)
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
-	game->player = malloc(sizeof(*game->player));
-	if (!game->player)
-		return FAIL;
-	game->player->angle = PI/2;
-	game->player->pos.x = game->image->width/2;
-	game->player->pos.y = game->image->height/2;
-
-	return 0;
+	player_init(game);
+	return SUCC;
 }
-

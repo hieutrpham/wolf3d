@@ -34,14 +34,14 @@
 #define RED 0xFF0000FF
 # define FAIL 1
 # define SUCC 0
-# define WIDTH 800
-# define HEIGHT 800
+# define WIDTH 1920
+# define HEIGHT 1080
 #define PI 3.14159265358979323846f
 #define DR (PI/180.f)
 #define GREEN 0x00FF00FF
 #define WALL_HEIGHT 600.0f
 #define FOV 60.0f
-#define MINIMAP_SIZE 80
+#define MINIMAP_SIZE 180
 
 typedef struct
 {
@@ -69,6 +69,8 @@ typedef struct
 typedef struct {
 	vector_t pos;
 	float angle;
+	float dx;
+	float dy;
 } t_player;
 
 typedef struct {
@@ -185,4 +187,5 @@ int game_init(t_game *game);
 vector_t build_v2(uint x, uint y);
 vector_t v2_add(vector_t v1, vector_t v2);
 vector_t v2_sub(vector_t v2, vector_t v1);
+float v2_sqlen(vector_t v);
 #endif
