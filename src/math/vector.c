@@ -22,7 +22,7 @@ vector_t v2_add(vector_t v1, vector_t v2) {
 	return ret;
 }
 
-vector_t v2_sub(vector_t v2, vector_t v1) {
+vector_t v2_sub(vector_t v1, vector_t v2) {
 	vector_t ret = {v1.x - v2.x, v1.y - v2.y};
 	return ret;
 }
