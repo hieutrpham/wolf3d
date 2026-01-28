@@ -47,7 +47,8 @@ void draw_rays(void *param)
 		if (ra > PI) {
 			hy = floorf((float)p->pos.y / (float)cell_size) * (float)cell_size - 0.001f;
 			hx = (p->pos.y - hy)*aTan + p->pos.x;
-			yo = (float)cell_size * -1.;
+			// yo = (float)cell_size * -1.;
+			yo = (float)cell_size * -1.0f; //modify to ignore error double to float conversion
 			xo = -yo*aTan;
 		}
 		// looking down
