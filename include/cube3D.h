@@ -187,5 +187,6 @@ int game_init(t_game *game);
 vector_t build_v2(uint x, uint y);
 vector_t v2_add(vector_t v1, vector_t v2);
 vector_t v2_sub(vector_t v2, vector_t v1);
-float v2_sqlen(vector_t v);
+// float v2_sqlen(vector_t v);
+unsigned int v2_sqlen(vector_t v);
 #endif

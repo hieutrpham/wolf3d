@@ -14,12 +14,14 @@
 
 int	err_message(char *string, int code)
 {
-	int	i;
+	int		i;
+	ssize_t	written;
 
 	i = 0;
 	while (string[i])
 	{
-		write(2, &string[i], 1);
+		written = write(2, &string[i], 1);
+		(void)written;
 		i++;
 	}
 	return (code);
