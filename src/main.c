@@ -36,13 +36,14 @@ int main()
 {
 	t_game game = {0};
 
-	if (game_init(&game) == 1)
-		return 1;
+	if (game_init(&game))
+		return FAIL;
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
 	game_loop(&game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
-	return 0;
+	free(game.player);
+	return SUCC;
 }
 #endif

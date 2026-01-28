@@ -27,13 +27,11 @@ static int map[] =
 void draw_rays(void *param)
 {
 	t_game *game = param;
-	t_player p = {.pos = (vector_t){WIDTH/2, HEIGHT/2}, .angle = PI/2};
+	t_player *p = game->player;
 
-	printf("player x: %d, player y: %d\n", p->pos.x, p->pos.y);
 	float cell_size = WIDTH/game->mapX;
 	float yo, xo;
 	float ra = p->angle - 30.0f * DR;
-	// TraceLog(LOG_INFO, "player angle: %f", p->angle);
 	for (int r = 0; r < 60; r++, ra += DR)
 	{
 		int dof = 0;
@@ -123,45 +121,49 @@ void draw_rays(void *param)
 		float dist = distV > distH ? distH : distV;
 		dist = sqrtf(dist);
 		float corrected_dist = dist * cosf(ra - p->angle);
-		int player_size = 10;
+
+		// TODO: implement minimap
 #if 1
-		int x1 = (int)p->pos.x + player_size/2;
-		int y1 = (int)p->pos.y + player_size/2;
+		int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
+		int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
 		if ( distH > distV)
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)vx, (int)vy), RED);
+			draw_line(game->image, build_v2(x1, y1), build_v2((int)vx* MINIMAP_SIZE / WIDTH, (int)vy* MINIMAP_SIZE / WIDTH), RED);
 		else
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)hx, (int)hy), RED);
+			draw_line(game->image, build_v2(x1, y1), build_v2((int)hx* MINIMAP_SIZE / WIDTH, (int)hy* MINIMAP_SIZE / WIDTH), RED);
 #endif
 		// NOTE: draw wall
 		float lineH = (cell_size * WALL_HEIGHT)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		draw_rectangle(game->image, build_v2(800 + r*(800)/(int)FOV, (int)line_offset), 800/(int)FOV, (int)lineH, GREEN);
+		draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, GREEN);
 	}
 }
 
 void game_loop(t_game *game)
 {
-	// mlx_loop_hook(game->mlx, clear_bg, game);
+	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, draw_map, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
 }
 
 int game_init(t_game *game)
 {
-	t_player player = {.pos = (vector_t){WIDTH/2, HEIGHT/2}, .angle = PI/2};
-
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!game->mlx)
-		return 1;
+		return FAIL;
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
-		return 1;
+		return FAIL;
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
-	game->player = &player;
+	game->player = malloc(sizeof(*game->player));
+	if (!game->player)
+		return FAIL;
+	game->player->angle = PI/2;
+	game->player->pos.x = game->image->width/2;
+	game->player->pos.y = game->image->height/2;
 
 	return 0;
 }

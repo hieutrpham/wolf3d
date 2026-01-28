@@ -52,9 +52,9 @@ void draw_map(void *param)
 		for (int x = 0; x < game->mapX; x++)
 		{
 			if (game->map[y*game->mapX + x] == 1)
-				draw_rectangle(game->image, (vector_t){x * WIDTH/game->mapX, y * HEIGHT/game->mapY}, WIDTH/game->mapX, HEIGHT/game->mapY, 0x0000ffff);
-			draw_line(game->image, (vector_t){x*WIDTH/game->mapX, 0}, (vector_t){x*WIDTH/game->mapX, HEIGHT}, 0x202020ff);
-			draw_line(game->image, (vector_t){0, y*HEIGHT/game->mapY}, (vector_t){WIDTH, y*HEIGHT/game->mapY}, 0x202020ff);
+				draw_rectangle(game->image, (vector_t){x * MINIMAP_SIZE/game->mapX, y * MINIMAP_SIZE/game->mapY}, MINIMAP_SIZE/game->mapX, MINIMAP_SIZE/game->mapY, 0x0000ffff);
+			draw_line(game->image, (vector_t){x*MINIMAP_SIZE/game->mapX, 0}, (vector_t){x*MINIMAP_SIZE/game->mapX, MINIMAP_SIZE}, 0x202020ff);
+			draw_line(game->image, (vector_t){0, y*MINIMAP_SIZE/game->mapY}, (vector_t){MINIMAP_SIZE, y*MINIMAP_SIZE/game->mapY}, 0x202020ff);
 		}
 	}
 }
