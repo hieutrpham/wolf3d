@@ -137,7 +137,10 @@ void draw_rays(void *param)
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, GREEN);
+		if (distV > distH)
+			draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, 0x90E0EFff);
+		else
+			draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, 0x48CAE4ff);
 	}
 }
 
