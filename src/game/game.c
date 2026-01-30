@@ -34,12 +34,12 @@ void draw_rays(void *param)
 	float x_step;
 	float hx;
 	float hy;
-	float player_angle = p->angle - 30.0f * DR;
+	float player_angle = p->angle - 30.0f * RAD;
 	int map_x;
 	int map_y;
 	int map_index;
 	// casting rays from the player's perspective
-	for (int r = 0; r < FOV; r++, player_angle += DR)
+	for (int r = 0; r < 60; r++, player_angle += RAD)
 	{
 		int dof = 0;
 		float aTan = -1/tanf(player_angle); // tan(player_angle) = -tan(2PI - player_angle)

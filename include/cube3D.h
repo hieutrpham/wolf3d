@@ -37,7 +37,7 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 #define PI 3.14159265358979323846f
-#define DR (PI/180.f)
+#define RAD 0.017453292519943295f
 #define GREEN 0x00FF00FF
 #define WALL_HEIGHT 600.0f
 #define FOV 60
