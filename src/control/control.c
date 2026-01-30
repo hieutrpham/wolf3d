@@ -35,9 +35,9 @@ void	key_control(mlx_key_data_t keydata, void *param)
 		game->player->dy = sinf(game->player->angle) * 10;
 	}
 	if (keydata.key == MLX_KEY_A)
-		game->player->pos.x = game->player->pos.x - (int)game->player->dx;
+		game->player->pos.x = game->player->pos.x - (int)game->player->dx * 10;
 	if (keydata.key == MLX_KEY_D)
-		game->player->pos.x = game->player->pos.x + (int)game->player->dx;
+		game->player->pos.x = game->player->pos.x + (int)game->player->dx * 10;
 	if (keydata.key == MLX_KEY_W)
 	{
 		game->player->pos.x = game->player->pos.x + (int)game->player->dx;

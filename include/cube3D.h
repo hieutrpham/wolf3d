@@ -40,7 +40,7 @@
 #define DR (PI/180.f)
 #define GREEN 0x00FF00FF
 #define WALL_HEIGHT 600.0f
-#define FOV 60.0f
+#define FOV 60
 #define MINIMAP_SIZE 180
 
 typedef struct

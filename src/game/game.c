@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "cube3D.h"
-#include <math.h>
 
 static int map[] =
 {
@@ -31,32 +30,37 @@ void draw_rays(void *param)
 	t_player *p = game->player;
 
 	float cell_size = WIDTH/game->mapX;
-	float yo, xo;
-	float ra = p->angle - 30.0f * DR;
-	for (int r = 0; r < 60; r++, ra += DR)
+	float y_step;
+	float x_step;
+	float hx;
+	float hy;
+	float player_angle = p->angle - 30.0f * DR;
+	int map_x;
+	int map_y;
+	int map_index;
+	// casting rays from the player's perspective
+	for (int r = 0; r < FOV; r++, player_angle += DR)
 	{
 		int dof = 0;
-		float aTan = -1/tanf(ra);
-		float hx, hy;
-		if (ra < 0)
-			ra += 2*PI;
-		if (ra > 2*PI)
-			ra -= 2*PI;
+		float aTan = -1/tanf(player_angle); // tan(player_angle) = -tan(2PI - player_angle)
+		if (player_angle < 0)
+			player_angle += 2*PI;
+		if (player_angle > 2*PI)
+			player_angle -= 2*PI;
 		// NOTE: find horizontal intersection
 		// looking up
-		if (ra > PI) {
+		if (player_angle > PI) {
 			hy = floorf((float)p->pos.y / (float)cell_size) * (float)cell_size - 0.001f;
 			hx = (p->pos.y - hy)*aTan + p->pos.x;
-			// yo = (float)cell_size * -1.;
-			yo = (float)cell_size * -1.0f; //modify to ignore error double to float conversion
-			xo = -yo*aTan;
+			y_step = -cell_size;
+			x_step = -y_step*aTan;
 		}
 		// looking down
-		else if (ra < PI && ra > 0) {
+		else if (player_angle < PI && player_angle > 0) {
 			hy = floorf(p->pos.y / cell_size) * cell_size + cell_size;
 			hx = (p->pos.y - hy)*aTan + p->pos.x;
-			yo = cell_size;
-			xo = -yo*aTan;
+			y_step = cell_size;
+			x_step = -y_step*aTan;
 		}
 		else {
 			hx = p->pos.x;
@@ -65,37 +69,38 @@ void draw_rays(void *param)
 		}
 		while (dof < game->mapX)
 		{
-			int mx = (int)(hx/cell_size);
-			int my = (int)(hy/cell_size);
-			int mp = my * game->mapX + mx;
-			if (mp > 0 && mp < game->mapX * game->mapY && game->map[mp] == 1)
+			map_x = (int)(hx/cell_size);
+			map_y = (int)(hy/cell_size);
+			map_index = map_y * game->mapX + map_x;
+			if (map_index > 0 && map_index < game->mapX * game->mapY && game->map[map_index] == 1)
 				dof = game->mapX;
 			else
 			{
-				hx += xo;
-				hy += yo;
+				hx += x_step;
+				hy += y_step;
 				dof++;
 			}
 		}
+
 		// NOTE: find vertical intersection
-		aTan = -tanf(ra);
+		aTan = -tanf(player_angle);
 		dof = 0;
 		float vx = p->pos.x, vy = p->pos.y;
 		// looking right
-		if ((ra > 3*PI/2 && ra < 2*PI) || (ra < PI/2 && ra > 0))
+		if ((player_angle > 3*PI/2 && player_angle < 2*PI) || (player_angle < PI/2 && player_angle > 0))
 		{
 			vx = floorf(p->pos.x / cell_size) * cell_size + cell_size;
 			vy = p->pos.y + (p->pos.x - vx)*aTan;
-			xo = cell_size;
-			yo = -xo*aTan;
+			x_step = cell_size;
+			y_step = -x_step*aTan;
 		}
 		// looking left
-		else if (ra > PI/2 && ra < 3*PI/2)
+		else if (player_angle > PI/2 && player_angle < 3*PI/2)
 		{
 			vx = floorf(p->pos.x / cell_size) * cell_size - 0.001f;
 			vy = p->pos.y + (p->pos.x - vx)*aTan;
-			xo = -cell_size;
-			yo = -xo*aTan;
+			x_step = -cell_size;
+			y_step = -x_step*aTan;
 		}
 		else {
 			vx = p->pos.x;
@@ -104,26 +109,29 @@ void draw_rays(void *param)
 		}
 		while (dof < game->mapX)
 		{
-			int mx = (int)(vx/cell_size);
-			int my = (int)(vy/cell_size);
-			int mp = my * game->mapX + mx;
-			if (mp > 0 && mp < game->mapX * game->mapY && map[mp] == 1)
+			map_x = (int)(vx/cell_size);
+			map_y = (int)(vy/cell_size);
+			map_index = map_y * game->mapX + map_x;
+			if (map_index > 0 && map_index < game->mapX * game->mapY && map[map_index] == 1)
 				dof = game->mapX;
 			else
 			{
-				vx += xo;
-				vy += yo;
+				vx += x_step;
+				vy += y_step;
 				dof++;
 			}
 		}
 
 		float distH = (hy - p->pos.y)*(hy - p->pos.y) + (hx - p->pos.x)*(hx - p->pos.x);
 		float distV = (vy - p->pos.y)*(vy - p->pos.y) + (vx - p->pos.x)*(vx - p->pos.x);
-		float dist = distV > distH ? distH : distV;
-		dist = sqrtf(dist);
-		float corrected_dist = dist * cosf(ra - p->angle);
 
-		// TODO: implement minimap
+		float dist;
+		if (distV > distH)
+			dist = sqrtf(distH);
+		else
+			dist = sqrtf(distV);
+		float corrected_dist = dist * cosf(player_angle - p->angle);
+
 #if 1
 		int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
 		int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
@@ -138,9 +146,9 @@ void draw_rays(void *param)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		if (distV > distH)
-			draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, 0x90E0EFff);
+			draw_rectangle(game->image, build_v2(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x90E0EFff);
 		else
-			draw_rectangle(game->image, build_v2(r*game->image->width/(int)FOV, (int)line_offset), game->image->width/(int)FOV, (int)lineH, 0x48CAE4ff);
+			draw_rectangle(game->image, build_v2(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x48CAE4ff);
 	}
 }
 
