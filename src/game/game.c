@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 16:19:44 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/31 17:56:01 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,27 +30,29 @@ void draw_rays(void *param)
 	t_player *p = game->player;
 
 	float cell_size = WIDTH/game->mapX;
-	float y_step;
-	float x_step;
-	float hx;
-	float hy;
+	float y_step = 0;
+	float x_step = 0;
+	float hx = p->pos.x;
+	float hy = p->pos.y;
 	float player_angle = p->angle - 30.0f * RAD;
 	int map_x;
 	int map_y;
 	int map_index;
-	// casting rays from the player's perspective
-	for (int r = 0; r < 60; r++, player_angle += RAD)
+
+	// casting 60 rays from the player's perspective
+	for (int r = 0; r < FOV; r++, player_angle += RAD)
 	{
+		// NOTE: find horizontal intersection
 		int dof = 0;
-		float aTan = -1/tanf(player_angle); // tan(player_angle) = -tan(2PI - player_angle)
+		float aTan = -1/tanf(player_angle);
 		if (player_angle < 0)
 			player_angle += 2*PI;
 		if (player_angle > 2*PI)
 			player_angle -= 2*PI;
-		// NOTE: find horizontal intersection
+
 		// looking up
 		if (player_angle > PI) {
-			hy = floorf((float)p->pos.y / (float)cell_size) * (float)cell_size - 0.001f;
+			hy = floorf((float)p->pos.y / cell_size) * cell_size - 0.1f;
 			hx = (p->pos.y - hy)*aTan + p->pos.x;
 			y_step = -cell_size;
 			x_step = -y_step*aTan;
@@ -62,11 +64,8 @@ void draw_rays(void *param)
 			y_step = cell_size;
 			x_step = -y_step*aTan;
 		}
-		else {
-			hx = p->pos.x;
-			hy = p->pos.y;
+		else
 			dof = game->mapX;
-		}
 		while (dof < game->mapX)
 		{
 			map_x = (int)(hx/cell_size);
@@ -85,7 +84,8 @@ void draw_rays(void *param)
 		// NOTE: find vertical intersection
 		aTan = -tanf(player_angle);
 		dof = 0;
-		float vx = p->pos.x, vy = p->pos.y;
+		float vx = p->pos.x;
+		float vy = p->pos.y;
 		// looking right
 		if ((player_angle > 3*PI/2 && player_angle < 2*PI) || (player_angle < PI/2 && player_angle > 0))
 		{
@@ -102,18 +102,15 @@ void draw_rays(void *param)
 			x_step = -cell_size;
 			y_step = -x_step*aTan;
 		}
-		else {
-			vx = p->pos.x;
-			vy = p->pos.y;
+		else
 			dof = game->mapX;
-		}
-		while (dof < game->mapX)
+		while (dof < game->mapY)
 		{
 			map_x = (int)(vx/cell_size);
 			map_y = (int)(vy/cell_size);
 			map_index = map_y * game->mapX + map_x;
 			if (map_index > 0 && map_index < game->mapX * game->mapY && map[map_index] == 1)
-				dof = game->mapX;
+				dof = game->mapY;
 			else
 			{
 				vx += x_step;
@@ -122,8 +119,9 @@ void draw_rays(void *param)
 			}
 		}
 
-		float distH = (hy - p->pos.y)*(hy - p->pos.y) + (hx - p->pos.x)*(hx - p->pos.x);
-		float distV = (vy - p->pos.y)*(vy - p->pos.y) + (vx - p->pos.x)*(vx - p->pos.x);
+		// calculating distance from player to the intersections
+		float distH = v2_sqlen(v2_sub(p->pos, (vector_t){(int)hx, (int)hy}));
+		float distV = v2_sqlen(v2_sub(p->pos, (vector_t){(int)vx, (int)vy}));
 
 		float dist;
 		if (distV > distH)
@@ -164,9 +162,9 @@ int player_init(t_game *game)
 	game->player = malloc(sizeof(*game->player));
 	if (!game->player)
 		return FAIL;
-	game->player->angle = PI/2;
-	game->player->pos.x = game->image->width/2;
-	game->player->pos.y = game->image->height/2;
+	game->player->angle = PI/3;
+	game->player->pos.x = 300;
+	game->player->pos.y = 300;
 	game->player->dx = cosf(game->player->angle);
 	game->player->dy = sinf(game->player->angle);
 	return SUCC;

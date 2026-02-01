@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 15:05:46 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/31 17:30:38 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,5 @@ int game_init(t_game *game);
 vector_t build_v2(uint x, uint y);
 vector_t v2_add(vector_t v1, vector_t v2);
 vector_t v2_sub(vector_t v2, vector_t v1);
-// float v2_sqlen(vector_t v);
 unsigned int v2_sqlen(vector_t v);
 #endif
