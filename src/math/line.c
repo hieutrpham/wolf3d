@@ -13,7 +13,7 @@
 #include "cube3D.h"
 
 // draw a line from vector v1 to v2
-void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
+void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color)
 {
 	t_line line = {};
 	int i;
@@ -46,7 +46,7 @@ void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 }
 
 // draw infinite line given 2 vectors
-void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
+void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color)
 {
 	int dy = v2.y - v1.y;
 	int dx = v2.x - v1.x;
@@ -64,32 +64,32 @@ void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color)
 				if (v2.x > v1.x)
 				{
 					x_intercept = (image->height - y_intercept)*dx/dy;
-					draw_line(image, v1, (vector_t){x_intercept, image->height}, color);
+					draw_line(image, v1, (t_vector){x_intercept, image->height}, color);
 				}
 				else
-				draw_line(image, v1, (vector_t){0, y_intercept}, color);
+				draw_line(image, v1, (t_vector){0, y_intercept}, color);
 			}
 			else // upper quadrant
-				draw_line(image, v1, (vector_t){x_intercept, 0}, color);
+				draw_line(image, v1, (t_vector){x_intercept, 0}, color);
 		}
 		else if (dy == 0)
 		{
 			if (v2.x < v1.x)
-				draw_line(image, v1, (vector_t){0, v1.y}, color);
+				draw_line(image, v1, (t_vector){0, v1.y}, color);
 			if (v2.x > v1.x)
-				draw_line(image, v1, (vector_t){image->width, v1.y}, color);
+				draw_line(image, v1, (t_vector){image->width, v1.y}, color);
 		}
 	}
 	else if (dx == 0)
 	{
 		if (v2.y < v1.y)
-			draw_line(image, v1, (vector_t){v1.x, 0}, color);
+			draw_line(image, v1, (t_vector){v1.x, 0}, color);
 		if (v2.y > v1.y)
-			draw_line(image, v1, (vector_t){v1.x, image->height}, color);
+			draw_line(image, v1, (t_vector){v1.x, image->height}, color);
 	}
 }
 
-void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, uint color)
+void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color)
 {
 	for (int y = origin.y; y < origin.y + height; y++)
 		for (int x = origin.x; x < origin.x + width; x++)

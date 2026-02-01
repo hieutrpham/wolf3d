@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/31 17:30:38 by trupham          ###   ########.fr       */
+/*   Updated: 2026/01/27 15:05:46 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,14 +64,22 @@ typedef struct
 {
 	int x;
 	int y;
-} vector_t;
+} t_vector;
 
 typedef struct {
-	vector_t pos;
+	t_vector pos;
 	float angle;
 	float dx;
 	float dy;
 } t_player;
+
+typedef struct
+{
+	float hx;
+	float hy;
+	float vx;
+	float vy;
+} t_sect;
 
 typedef struct {
 	mlx_t *mlx;
@@ -173,19 +181,20 @@ void 	print_file(t_file *file);
 void	key_control(mlx_key_data_t keydata, void *param);
 void draw_map(void *param);
 void clear_bg(void *param);
-void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, uint color);
-void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
-void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
+void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color);
+void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
+void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 
 // game
 void game_loop(t_game *game);
 int game_init(t_game *game);
+t_sect cast_ray(t_game *game, float player_angle);
 
 //vector
-vector_t build_v2(uint x, uint y);
-vector_t v2_add(vector_t v1, vector_t v2);
-vector_t v2_sub(vector_t v2, vector_t v1);
-unsigned int v2_sqlen(vector_t v);
+t_vector build_v2(uint x, uint y);
+t_vector v2_add(t_vector v1, t_vector v2);
+t_vector v2_sub(t_vector v2, t_vector v1);
+unsigned int v2_sqlen(t_vector v);
 #endif
