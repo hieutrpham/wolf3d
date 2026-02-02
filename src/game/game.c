@@ -36,8 +36,8 @@ void draw_rays(void *param)
 	{
 		t_sect sect = cast_ray(game, player_angle);
 		// calculating distance from player to the intersections
-		float distH = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.hx, (int)sect.hy}));
-		float distV = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.vx, (int)sect.vy}));
+		float distH = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.hori.x, (int)sect.hori.y}));
+		float distV = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.vert.x, (int)sect.vert.y}));
 
 		float dist;
 		if (distV > distH)
@@ -46,15 +46,15 @@ void draw_rays(void *param)
 			dist = sqrtf(distV);
 		float corrected_dist = dist * cosf(player_angle - p->angle);
 
-#if 1
+		// draw rays vision in minimap
 		int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
 		int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
 		if ( distH > distV)
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.vx* MINIMAP_SIZE / WIDTH, (int)sect.vy* MINIMAP_SIZE / WIDTH), RED);
+			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.vert.x* MINIMAP_SIZE / WIDTH, (int)sect.vert.y* MINIMAP_SIZE / WIDTH), RED);
 		else
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.hx* MINIMAP_SIZE / WIDTH, (int)sect.hy* MINIMAP_SIZE / WIDTH), RED);
-#endif
-		// NOTE: draw wall
+			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.hori.x* MINIMAP_SIZE / WIDTH, (int)sect.hori.y* MINIMAP_SIZE / WIDTH), RED);
+
+		// 3D projection
 		float lineH = (WIDTH * WALL_HEIGHT/game->mapX)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
@@ -78,7 +78,7 @@ int player_init(t_game *game)
 	game->player = malloc(sizeof(*game->player));
 	if (!game->player)
 		return FAIL;
-	game->player->angle = PI/3;
+	game->player->angle = PI/4;
 	game->player->pos.x = 300;
 	game->player->pos.y = 300;
 	game->player->dx = cosf(game->player->angle);

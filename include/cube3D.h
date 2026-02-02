@@ -66,6 +66,12 @@ typedef struct
 	int y;
 } t_vector;
 
+typedef struct
+{
+	float x;
+	float y;
+} t_vector2f;
+
 typedef struct {
 	t_vector pos;
 	float angle;
@@ -75,10 +81,8 @@ typedef struct {
 
 typedef struct
 {
-	float hx;
-	float hy;
-	float vx;
-	float vy;
+	t_vector2f hori;
+	t_vector2f vert;
 } t_sect;
 
 typedef struct {
