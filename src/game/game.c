@@ -36,8 +36,8 @@ void draw_rays(void *param)
 	{
 		t_sect sect = cast_ray(game, player_angle);
 		// calculating distance from player to the intersections
-		float distH = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.hori.x, (int)sect.hori.y}));
-		float distV = v2_sqlen(v2_sub(p->pos, (t_vector){(int)sect.vert.x, (int)sect.vert.y}));
+		float distH = v2i_sqlen(v2i_sub(p->pos, v2i_build((int)sect.hori.x, (int)sect.hori.y)));
+		float distV = v2i_sqlen(v2i_sub(p->pos, v2i_build((int)sect.vert.x, (int)sect.vert.y)));
 
 		float dist;
 		if (distV > distH)
@@ -50,9 +50,9 @@ void draw_rays(void *param)
 		int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
 		int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
 		if ( distH > distV)
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.vert.x* MINIMAP_SIZE / WIDTH, (int)sect.vert.y* MINIMAP_SIZE / WIDTH), RED);
+			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.vert.x* MINIMAP_SIZE / WIDTH, (int)sect.vert.y* MINIMAP_SIZE / WIDTH), RED);
 		else
-			draw_line(game->image, build_v2(x1, y1), build_v2((int)sect.hori.x* MINIMAP_SIZE / WIDTH, (int)sect.hori.y* MINIMAP_SIZE / WIDTH), RED);
+			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x* MINIMAP_SIZE / WIDTH, (int)sect.hori.y* MINIMAP_SIZE / WIDTH), RED);
 
 		// 3D projection
 		float lineH = (WIDTH * WALL_HEIGHT/game->mapX)/corrected_dist;
@@ -60,9 +60,9 @@ void draw_rays(void *param)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		if (distV > distH)
-			draw_rectangle(game->image, build_v2(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x90E0EFff);
+			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x90E0EFff);
 		else
-			draw_rectangle(game->image, build_v2(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x48CAE4ff);
+			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x48CAE4ff);
 	}
 }
 

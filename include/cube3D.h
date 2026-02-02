@@ -197,8 +197,9 @@ int game_init(t_game *game);
 t_sect cast_ray(t_game *game, float player_angle);
 
 //vector
-t_vector build_v2(uint x, uint y);
-t_vector v2_add(t_vector v1, t_vector v2);
-t_vector v2_sub(t_vector v2, t_vector v1);
-unsigned int v2_sqlen(t_vector v);
+t_vector v2i_build(int x, int y);
+t_vector2f v2f_build(float x, float y);
+t_vector v2i_add(t_vector v1, t_vector v2);
+t_vector v2i_sub(t_vector v2, t_vector v1);
+unsigned int v2i_sqlen(t_vector v);
 #endif

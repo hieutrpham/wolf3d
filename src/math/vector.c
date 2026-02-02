@@ -12,22 +12,38 @@
 
 #include "cube3D.h"
 
-t_vector build_v2(uint x, uint y)
+t_vector2f v2f_build(float x, float y)
 {
-	return (t_vector){x, y};
+	t_vector2f v;
+	
+	v.x = x;
+	v.y = y;
+	return (v);
 }
 
-t_vector v2_add(t_vector v1, t_vector v2) {
+t_vector v2i_build(int x, int y)
+{
+	t_vector v;
+	
+	v.x = x;
+	v.y = y;
+	return (v);
+}
+
+t_vector v2i_add(t_vector v1, t_vector v2) {
 	t_vector ret = {v1.x + v2.x, v1.y + v2.y};
 	return ret;
 }
 
-t_vector v2_sub(t_vector v1, t_vector v2) {
-	t_vector ret = {v1.x - v2.x, v1.y - v2.y};
+t_vector v2i_sub(t_vector v1, t_vector v2) {
+	t_vector ret;
+	
+	ret.x = v1.x - v2.x;
+	ret.y = v1.y - v2.y;
 	return ret;
 }
 
-unsigned int v2_sqlen(t_vector v) {
+unsigned int v2i_sqlen(t_vector v)
+{
 	return v.x * v.x + v.y * v.y;
 }
-
