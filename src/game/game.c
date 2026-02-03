@@ -15,12 +15,12 @@
 static int map[] =
 {
 	1,1,1,1,1,1,1,1,
-	1,0,0,0,1,0,0,1,
-	1,0,1,0,1,0,0,1,
-	1,0,0,0,1,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,0,1,0,0,1,0,1,
-	1,0,1,0,0,0,0,1,
+	1,0,0,0,2,0,0,1,
+	1,0,2,0,5,0,0,1,
+	1,0,3,0,4,0,0,1,
+	1,0,0,5,0,0,0,1,
+	1,0,5,0,0,2,0,1,
+	1,0,4,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
 };
 
@@ -60,9 +60,9 @@ void draw_rays(void *param)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		if (distV > distH)
-			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x90E0EFff);
+			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, sect.color);
 		else
-			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, 0x48CAE4ff);
+			draw_rectangle(game->image, v2i_build(r*game->image->width/FOV, (int)line_offset), game->image->width/FOV, (int)lineH, sect.color);
 	}
 }
 

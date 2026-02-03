@@ -32,23 +32,23 @@
 #define RADIUS 50
 #define BG 0x222222FF
 #define RED 0xFF0000FF
+#define GREEN 0x00FF00FF
+#define YELLOW 0x0000FFFF
 # define FAIL 1
 # define SUCC 0
 # define WIDTH 1920
 # define HEIGHT 1080
 #define PI 3.14159265358979323846f
 #define RAD 0.017453292519943295f
-#define GREEN 0x00FF00FF
 #define WALL_HEIGHT 600.0f
 #define FOV 60
 #define MINIMAP_SIZE 180
 
-typedef struct
+typedef enum
 {
-	int32_t r;
-	int32_t g;
-	int32_t b;
-	int32_t a;
+	red,
+	green,
+	yellow,
 } t_color;
 
 typedef struct
@@ -83,6 +83,7 @@ typedef struct
 {
 	t_vector2f hori;
 	t_vector2f vert;
+	uint color;
 } t_sect;
 
 typedef struct {
