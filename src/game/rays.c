@@ -30,12 +30,11 @@ void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector2f step)
 {
 	int map_x;
 	int map_y;
-	float cell_size = WIDTH/game->mapX;
 
 	while (dof < game->mapX)
 	{
-		map_x = (int)(sect->hori.x/cell_size);
-		map_y = (int)(sect->hori.y/cell_size);
+		map_x = (int)(sect->hori.x/game->cell_size);
+		map_y = (int)(sect->hori.y/game->cell_size);
 		int map_index = map_y * game->mapX + map_x;
 		if (hit_wall(map_index, game))
 		{
@@ -56,12 +55,11 @@ void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector2f step)
 {
 	int map_x;
 	int map_y;
-	float cell_size = WIDTH/game->mapX;
 
 	while (dof < game->mapX)
 	{
-		map_x = (int)(sect->vert.x/cell_size);
-		map_y = (int)(sect->vert.y/cell_size);
+		map_x = (int)(sect->vert.x/game->cell_size);
+		map_y = (int)(sect->vert.y/game->cell_size);
 		int map_index = map_y * game->mapX + map_x;
 		if (hit_wall(map_index, game))
 		{
@@ -84,19 +82,18 @@ void get_hori_intersect(t_game *game, t_sect *sect, float player_angle)
 	int dof = 0;
 	float aTan = -1/tanf(player_angle);
 
-	float cell_size = WIDTH/game->mapY;
 	// looking up
 	if (player_angle > PI) {
-		sect->hori.y = floorf((float)p->pos.y / cell_size) * cell_size - 0.1f;
+		sect->hori.y = floorf((float)p->pos.y / game->cell_size) * game->cell_size - 0.1f;
 		sect->hori.x = (p->pos.y - sect->hori.y)*aTan + p->pos.x;
-		step.y = -cell_size;
+		step.y = -game->cell_size;
 		step.x = -step.y*aTan;
 	}
 	// looking down
 	else if (player_angle < PI && player_angle > 0) {
-		sect->hori.y = floorf(p->pos.y / cell_size) * cell_size + cell_size;
+		sect->hori.y = floorf(p->pos.y / game->cell_size) * game->cell_size + game->cell_size;
 		sect->hori.x = (p->pos.y - sect->hori.y)*aTan + p->pos.x;
-		step.y = cell_size;
+		step.y = game->cell_size;
 		step.x = -step.y*aTan;
 	}
 	else
@@ -110,21 +107,20 @@ void get_vert_intersect(t_game *game, t_sect *sect, float player_angle)
 	t_player *p = game->player;
 	int dof = 0;
 	float aTan = -tanf(player_angle);
-	float cell_size = WIDTH/game->mapY;
 
 	if ((player_angle > 3*PI/2 && player_angle < 2*PI) || (player_angle < PI/2 && player_angle > 0))
 	{
-		sect->vert.x = floorf(p->pos.x / cell_size) * cell_size + cell_size;
+		sect->vert.x = floorf(p->pos.x / game->cell_size) * game->cell_size + game->cell_size;
 		sect->vert.y = p->pos.y + (p->pos.x - sect->vert.x)*aTan;
-		step.x = cell_size;
+		step.x = game->cell_size;
 		step.y = -step.x*aTan;
 	}
 	// looking left
 	else if (player_angle > PI/2 && player_angle < 3*PI/2)
 	{
-		sect->vert.x = floorf(p->pos.x / cell_size) * cell_size - 0.001f;
+		sect->vert.x = floorf(p->pos.x / game->cell_size) * game->cell_size - 0.001f;
 		sect->vert.y = p->pos.y + (p->pos.x - sect->vert.x)*aTan;
-		step.x = -cell_size;
+		step.x = -game->cell_size;
 		step.y = -step.x*aTan;
 	}
 	else

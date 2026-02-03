@@ -17,8 +17,8 @@ static int map[] =
 	1,1,1,1,1,1,1,1,
 	1,0,0,0,2,0,0,1,
 	1,0,2,0,5,0,0,1,
-	1,0,3,0,4,0,0,1,
-	1,0,0,5,0,0,0,1,
+	1,0,3,0,4,0,5,1,
+	1,0,0,0,0,0,0,1,
 	1,0,5,0,0,2,0,1,
 	1,0,4,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
@@ -97,6 +97,7 @@ int game_init(t_game *game)
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
+	game->cell_size = WIDTH/game->mapX;
 	player_init(game);
 	return SUCC;
 }

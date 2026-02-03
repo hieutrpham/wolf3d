@@ -90,6 +90,7 @@ typedef struct {
 	mlx_t *mlx;
 	mlx_image_t *image;
 	t_player *player;
+	float cell_size;
 	int mapX;
 	int mapY;
 	int *map;
