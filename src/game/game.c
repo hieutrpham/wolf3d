@@ -15,12 +15,12 @@
 static int map[] =
 {
 	1,1,1,1,1,1,1,1,
-	1,0,0,0,2,0,0,1,
-	1,0,2,0,5,0,0,1,
-	1,0,3,0,4,0,5,1,
-	1,0,0,0,0,0,0,1,
-	1,0,5,0,0,2,0,1,
-	1,0,4,0,0,0,0,1,
+	1,0,0,0,1,0,0,1,
+	1,0,2,0,3,0,0,1,
+	1,0,5,0,1,0,1,1,
+	1,0,4,0,0,0,1,1,
+	1,0,1,0,0,1,0,1,
+	1,0,1,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
 };
 
@@ -34,6 +34,8 @@ void draw_rays(void *param)
 	// casting 60 rays from the player's perspective
 	for (int r = 0; r < WIDTH; r++, player_angle += FOV*RAD/WIDTH)
 	{
+		if (player_angle == PI || player_angle == PI/2 || player_angle == 3*PI/2 || player_angle == 2*PI)
+			player_angle += 0.0001f;
 		t_sect sect = cast_ray(game, player_angle);
 		// calculating distance from player to the intersections
 		float distH = v2i_sqlen(v2i_sub(p->pos, v2i_build((int)sect.hori.x, (int)sect.hori.y)));
@@ -53,16 +55,13 @@ void draw_rays(void *param)
 			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.vert.x * MINIMAP_SIZE / WIDTH, (int)sect.vert.y * MINIMAP_SIZE / WIDTH), RED);
 		else
 			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
-		//
+
 		// 3D projection
 		float lineH = (game->cell_size * WALL_HEIGHT)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		if (distV > distH)
-			draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, sect.color);
-		else
-			draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, sect.color);
+		draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, brightness(sect.color, lineH/900));
 	}
 }
 

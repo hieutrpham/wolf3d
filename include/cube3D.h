@@ -33,7 +33,7 @@
 #define BG 0x222222FF
 #define RED 0xFF0000FF
 #define GREEN 0x00FF00FF
-#define YELLOW 0x0000FFFF
+#define BLUE 0x0000FFFF
 # define FAIL 1
 # define SUCC 0
 # define WIDTH 1920
@@ -192,6 +192,7 @@ void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
+uint brightness(uint color, float factor);
 
 // game
 void game_loop(t_game *game);

@@ -21,10 +21,20 @@ void swap_int(int *i1, int *i2)
 	*i2 = temp;
 }
 
-// int32_t ft_pixel(t_color color)
-// {
-// 	return (color.r << 24 | color.g << 16 | color.b << 8 | color.a);
-// }
+uint brightness(uint color, float factor)
+{
+	float r = (float)((color >> 24) & 0xFF) * factor;
+	float g = (float)((color >> 16) & 0xFF) * factor;
+	float b = (float)((color >> 8) & 0xFF) * factor;
+	if ((int)r > 0xff)
+		r = 0xff;
+	if ((int)g > 0xff)
+		g = 0xff;
+	if ((int)b > 0xff)
+		b = 0xff;
+	int a = color & 0xFF;
+	return ((int)r << 24 | (int)g << 16 | (int)b << 8) | a;
+}
 
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
 {
