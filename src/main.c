@@ -37,12 +37,9 @@ int main()
 {
 	t_game game = {0};
 
-	mlx_texture_t* WE = mlx_load_png("./textures/WE.png");
 	if (game_init(&game))
 		return FAIL;
-	mlx_image_t* iWE = mlx_texture_to_image(game.mlx, WE);
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
-	mlx_image_to_window(game.mlx, iWE, 200, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
 	game_loop(&game);
 	mlx_loop(game.mlx);

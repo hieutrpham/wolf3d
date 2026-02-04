@@ -87,6 +87,8 @@ int player_init(t_game *game)
 
 int game_init(t_game *game)
 {
+	// mlx_texture_t* WE = mlx_load_png("./textures/WE.png");
+	// mlx_image_t* iWE = mlx_texture_to_image(game->mlx, WE);
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!game->mlx)
 		return FAIL;
