@@ -69,12 +69,6 @@ typedef struct
 	float y;
 } t_vector;
 
-typedef struct
-{
-	float x;
-	float y;
-} t_vector2f;
-
 typedef struct {
 	t_vector pos;
 	float angle;
@@ -84,8 +78,8 @@ typedef struct {
 
 typedef struct
 {
-	t_vector2f hori;
-	t_vector2f vert;
+	t_vector hori;
+	t_vector vert;
 } t_sect;
 
 typedef struct {
@@ -202,8 +196,7 @@ int game_init(t_game *game);
 t_sect cast_ray(t_game *game, float player_angle);
 
 //vector
-t_vector v2i_build(int x, int y);
-t_vector2f v2f_build(float x, float y);
+t_vector v2f_build(float x, float y);
 t_vector v2i_add(t_vector v1, t_vector v2);
 t_vector v2i_sub(t_vector v2, t_vector v1);
 float v2i_sqlen(t_vector v);

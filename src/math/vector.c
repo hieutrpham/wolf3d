@@ -12,16 +12,7 @@
 
 #include "cube3D.h"
 
-t_vector2f v2f_build(float x, float y)
-{
-	t_vector2f v;
-	
-	v.x = x;
-	v.y = y;
-	return (v);
-}
-
-t_vector v2i_build(int x, int y)
+t_vector v2f_build(float x, float y)
 {
 	t_vector v;
 	

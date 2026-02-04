@@ -38,8 +38,8 @@ void draw_rays(void *param)
 			player_angle += 0.0001f;
 		t_sect sect = cast_ray(game, player_angle);
 		// calculating distance from player to the intersections
-		float distH = v2i_sqlen(v2i_sub(p->pos, v2i_build((int)sect.hori.x, (int)sect.hori.y)));
-		float distV = v2i_sqlen(v2i_sub(p->pos, v2i_build((int)sect.vert.x, (int)sect.vert.y)));
+		float distH = v2i_sqlen(v2i_sub(p->pos, v2f_build((int)sect.hori.x, (int)sect.hori.y)));
+		float distV = v2i_sqlen(v2i_sub(p->pos, v2f_build((int)sect.vert.x, (int)sect.vert.y)));
 
 		float dist;
 		if (distV > distH)
@@ -61,7 +61,7 @@ void draw_rays(void *param)
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
+		draw_rectangle(game->image, v2f_build(r, (int)line_offset), 1, (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
 	}
 }
 

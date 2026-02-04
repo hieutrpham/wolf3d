@@ -19,7 +19,7 @@ bool hit_wall(int map_index, t_game *game)
 }
 
 // stepping the ray in the horizontal direction
-void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector2f step)
+void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector step)
 {
 	int map_x;
 	int map_y;
@@ -41,7 +41,7 @@ void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector2f step)
 }
 
 // stepping the ray in the vertical direction
-void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector2f step)
+void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector step)
 {
 	int map_x;
 	int map_y;
@@ -64,7 +64,7 @@ void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector2f step)
 
 void get_hori_intersect(t_game *game, t_sect *sect, float player_angle)
 {
-	t_vector2f step = {};
+	t_vector step = {};
 	t_player *p = game->player;
 	int dof = 0;
 	float aTan = -1/tanf(player_angle);
@@ -90,7 +90,7 @@ void get_hori_intersect(t_game *game, t_sect *sect, float player_angle)
 
 void get_vert_intersect(t_game *game, t_sect *sect, float player_angle)
 {
-	t_vector2f step = {};
+	t_vector step = {};
 	t_player *p = game->player;
 	int dof = 0;
 	float aTan = -tanf(player_angle);
