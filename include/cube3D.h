@@ -30,25 +30,28 @@
 #define BUFFER_SIZE 64
 # define MAX_FD 1024
 #define RADIUS 50
-#define BG 0x222222FF
-#define RED 0xFF0000FF
 # define FAIL 1
 # define SUCC 0
 # define WIDTH 1920
 # define HEIGHT 1080
 #define PI 3.14159265358979323846f
-#define DR (PI/180.f)
-#define GREEN 0x00FF00FF
+#define RAD 0.017453292519943295f
 #define WALL_HEIGHT 600.0f
-#define FOV 60.0f
+#define FOV 60
 #define MINIMAP_SIZE 180
+#define WHITE 0xffffffff
+#define BRIGHTNESS 500
+#define BG 0x222222FF
+#define GRAY 0x303030ff
+#define RED 0xFF0000FF
+#define GREEN 0x00FF00FF
+#define BLUE 0x0000FFFF
 
-typedef struct
+typedef enum
 {
-	int32_t r;
-	int32_t g;
-	int32_t b;
-	int32_t a;
+	red,
+	green,
+	yellow,
 } t_color;
 
 typedef struct
@@ -62,21 +65,28 @@ typedef struct
 
 typedef struct
 {
-	int x;
-	int y;
-} vector_t;
+	float x;
+	float y;
+} t_vector;
 
 typedef struct {
-	vector_t pos;
+	t_vector pos;
 	float angle;
 	float dx;
 	float dy;
 } t_player;
 
+typedef struct
+{
+	t_vector hori;
+	t_vector vert;
+} t_sect;
+
 typedef struct {
 	mlx_t *mlx;
 	mlx_image_t *image;
 	t_player *player;
+	float cell_size;
 	int mapX;
 	int mapY;
 	int *map;
@@ -173,20 +183,21 @@ void 	print_file(t_file *file);
 void	key_control(mlx_key_data_t keydata, void *param);
 void draw_map(void *param);
 void clear_bg(void *param);
-void draw_rectangle(mlx_image_t *image, vector_t origin, int width, int height, uint color);
-void draw_line2(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
-void draw_line(mlx_image_t *image, vector_t v1, vector_t v2, uint color);
+void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color);
+void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
+void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
+uint set_brightness(uint color, float factor);
 
 // game
 void game_loop(t_game *game);
 int game_init(t_game *game);
+t_sect cast_ray(t_game *game, float player_angle);
 
 //vector
-vector_t build_v2(uint x, uint y);
-vector_t v2_add(vector_t v1, vector_t v2);
-vector_t v2_sub(vector_t v2, vector_t v1);
-// float v2_sqlen(vector_t v);
-unsigned int v2_sqlen(vector_t v);
+t_vector v2f_build(float x, float y);
+t_vector v2i_add(t_vector v1, t_vector v2);
+t_vector v2i_sub(t_vector v2, t_vector v1);
+float v2i_sqlen(t_vector v);
 #endif
