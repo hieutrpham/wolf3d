@@ -21,7 +21,7 @@ void swap_int(int *i1, int *i2)
 	*i2 = temp;
 }
 
-uint brightness(uint color, float factor)
+uint set_brightness(uint color, float factor)
 {
 	float r = (float)((color >> 24) & 0xFF) * factor;
 	float g = (float)((color >> 16) & 0xFF) * factor;

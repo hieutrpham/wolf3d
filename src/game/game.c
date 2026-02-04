@@ -16,9 +16,9 @@ static int map[] =
 {
 	1,1,1,1,1,1,1,1,
 	1,0,0,0,1,0,0,1,
-	1,0,2,0,3,0,0,1,
-	1,0,5,0,1,0,1,1,
-	1,0,4,0,0,0,1,1,
+	1,0,0,0,1,0,0,1,
+	1,0,1,0,1,0,1,1,
+	1,0,1,0,0,0,1,1,
 	1,0,1,0,0,1,0,1,
 	1,0,1,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
@@ -49,19 +49,19 @@ void draw_rays(void *param)
 		float corrected_dist = dist * cosf(player_angle - p->angle);
 
 		// draw rays vision in minimap
-		int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
-		int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
-		if ( distH > distV)
-			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.vert.x * MINIMAP_SIZE / WIDTH, (int)sect.vert.y * MINIMAP_SIZE / WIDTH), RED);
-		else
-			draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
+		// int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
+		// int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
+		// if ( distH > distV)
+		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.vert.x * MINIMAP_SIZE / WIDTH, (int)sect.vert.y * MINIMAP_SIZE / WIDTH), RED);
+		// else
+		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
 
 		// 3D projection
 		float lineH = (game->cell_size * WALL_HEIGHT)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, brightness(sect.color, lineH/900));
+		draw_rectangle(game->image, v2i_build(r, (int)line_offset), 1, (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
 	}
 }
 

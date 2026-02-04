@@ -12,7 +12,7 @@
 
 NAME = cub3D
 CC = cc -g
-CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -Ofast
+CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -O3
 SRC_DIR = ./src
 SRC_SUBDIRS = 0_file_parsing 1_map_parsing utilities display control math game
 

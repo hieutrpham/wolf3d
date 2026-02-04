@@ -43,7 +43,7 @@ t_vector v2i_sub(t_vector v1, t_vector v2) {
 	return ret;
 }
 
-unsigned int v2i_sqlen(t_vector v)
+float v2i_sqlen(t_vector v)
 {
 	return v.x * v.x + v.y * v.y;
 }

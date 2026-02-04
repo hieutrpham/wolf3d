@@ -18,13 +18,6 @@ bool hit_wall(int map_index, t_game *game)
 		&& game->map[map_index] != 0);
 }
 
-static const uint color[] = {
-	0x979aa1ff,
-	0x09a630FF,
-	0x84cc16FF,
-	0xf1c915FF,
-	0xda5a00ff,
-};
 // stepping the ray in the horizontal direction
 void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector2f step)
 {
@@ -37,10 +30,7 @@ void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector2f step)
 		map_y = (int)(sect->hori.y/game->cell_size);
 		int map_index = map_y * game->mapX + map_x;
 		if (hit_wall(map_index, game))
-		{
-			sect->color = color[game->map[map_index] - 1];
 			break;
-		}
 		else
 		{
 			sect->hori.x += step.x;
@@ -62,10 +52,7 @@ void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector2f step)
 		map_y = (int)(sect->vert.y/game->cell_size);
 		int map_index = map_y * game->mapX + map_x;
 		if (hit_wall(map_index, game))
-		{
-			sect->color = color[game->map[map_index] - 1];
-			dof = game->mapX;
-		}
+			break;
 		else
 		{
 			sect->vert.x += step.x;
