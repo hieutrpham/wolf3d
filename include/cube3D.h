@@ -36,7 +36,7 @@
 # define HEIGHT 1080
 #define PI 3.14159265358979323846f
 #define RAD 0.017453292519943295f
-#define WALL_HEIGHT 600.0f
+#define WALL_HEIGHT (1662)
 #define FOV 60
 #define MINIMAP_SIZE 180
 #define WHITE 0xffffffff
@@ -46,6 +46,7 @@
 #define RED 0xFF0000FF
 #define GREEN 0x00FF00FF
 #define BLUE 0x0000FFFF
+#define CELL_SIZE 64
 
 typedef enum
 {

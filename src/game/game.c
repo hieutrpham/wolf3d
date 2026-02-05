@@ -57,7 +57,7 @@ void draw_rays(void *param)
 		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
 
 		// 3D projection
-		float lineH = (game->cell_size * WALL_HEIGHT)/corrected_dist;
+		float lineH = (WALL_HEIGHT)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
@@ -78,10 +78,10 @@ int player_init(t_game *game)
 	if (!game->player)
 		return FAIL;
 	game->player->angle = PI/4;
-	game->player->pos.x = 300;
-	game->player->pos.y = 300;
-	game->player->dx = cosf(game->player->angle);
-	game->player->dy = sinf(game->player->angle);
+	game->player->pos.x = 2.0f;
+	game->player->pos.y = 2.0f;
+	game->player->dx = cosf(game->player->angle) * 0.1f;
+	game->player->dy = sinf(game->player->angle) * 0.1f;
 	return SUCC;
 }
 
@@ -98,7 +98,7 @@ int game_init(t_game *game)
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
-	game->cell_size = WIDTH/game->mapX;
+	// game->cell_size = CELL_SIZE;
 	player_init(game);
 	return SUCC;
 }
