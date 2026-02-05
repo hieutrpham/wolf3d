@@ -40,7 +40,7 @@
 #define FOV 60
 #define MINIMAP_SIZE 180
 #define WHITE 0xffffffff
-#define BRIGHTNESS 500
+#define BRIGHTNESS 2000
 #define BG 0x222222FF
 #define GRAY 0x303030ff
 #define RED 0xFF0000FF
@@ -87,7 +87,6 @@ typedef struct {
 	mlx_t *mlx;
 	mlx_image_t *image;
 	t_player *player;
-	float cell_size;
 	int mapX;
 	int mapY;
 	int *map;
@@ -190,6 +189,7 @@ void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
+void draw_strip(mlx_image_t *image, t_vector origin, int height, uint color);
 
 // game
 void game_loop(t_game *game);

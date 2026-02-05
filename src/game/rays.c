@@ -14,7 +14,7 @@
 
 bool hit_wall(int map_index, t_game *game)
 {
-	return (map_index > 0 && map_index < game->mapX * game->mapY
+	return (map_index >= 0 && map_index < game->mapX * game->mapY
 		&& game->map[map_index] != 0);
 }
 
@@ -71,20 +71,24 @@ void get_hori_intersect(t_game *game, t_sect *sect, float player_angle)
 
 	// looking up
 	if (player_angle > PI) {
-		sect->hori.y = floorf(p->pos.y) - 0.1f;
+		sect->hori.y = floorf(p->pos.y) - 0.0001f;
 		sect->hori.x = (p->pos.y - sect->hori.y)*aTan + p->pos.x;
 		step.y = -1.0f;
-		step.x = -step.y*aTan;
+		step.x = aTan;
 	}
 	// looking down
 	else if (player_angle < PI && player_angle > 0) {
 		sect->hori.y = floorf(p->pos.y) + 1.0f;
 		sect->hori.x = (p->pos.y - sect->hori.y)*aTan + p->pos.x;
 		step.y = 1.0f;
-		step.x = -step.y*aTan;
+		step.x = -aTan;
 	}
 	else
+	{
+		sect->hori.x = p->pos.x;
+		sect->hori.y = p->pos.y;
 		dof = game->mapX;
+	}
 	ray_step_hori(game, sect, dof, step);
 }
 
@@ -105,13 +109,17 @@ void get_vert_intersect(t_game *game, t_sect *sect, float player_angle)
 	// looking left
 	else if (player_angle > PI/2 && player_angle < 3*PI/2)
 	{
-		sect->vert.x = floorf(p->pos.x) - 0.001f;
+		sect->vert.x = floorf(p->pos.x) - 0.0001f;
 		sect->vert.y = p->pos.y + (p->pos.x - sect->vert.x)*aTan;
 		step.x = -1.0f;
 		step.y = -step.x*aTan;
 	}
 	else
+	{
+		sect->vert.x = p->pos.x;
+		sect->vert.y = p->pos.y;
 		dof = game->mapX;
+	}
 	ray_step_vert(game, sect, dof, step);
 }
 

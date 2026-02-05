@@ -89,6 +89,21 @@
 // 	}
 // }
 
+void draw_strip(mlx_image_t *image, t_vector origin, int height, uint color)
+{
+	int y_start = (int)origin.y;
+	int y_end = (int)origin.y + height;
+
+	if (y_start < 0)
+		y_start = 0;
+	if (y_end > HEIGHT)
+		y_end = HEIGHT;
+	for (int y = y_start; y < y_end; y++)
+	{
+		put_pixel(image, (int)origin.x, y, color);
+	}
+}
+
 void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color)
 {
 	for (int y = (int)origin.y; y < (int)origin.y + height; y++)

@@ -15,12 +15,12 @@
 static int map[] =
 {
 	1,1,1,1,1,1,1,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
 	1,0,0,0,1,0,0,1,
-	1,0,0,0,1,0,0,1,
-	1,0,1,0,1,0,1,1,
-	1,0,1,0,0,0,1,1,
-	1,0,1,0,0,1,0,1,
-	1,0,1,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
+	1,0,0,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
 };
 
@@ -28,20 +28,18 @@ void draw_rays(void *param)
 {
 	t_game *game = param;
 	t_player *p = game->player;
-
+	float dist;
 	float player_angle = p->angle - 30.0f * RAD;
 
-	// casting 60 rays from the player's perspective
 	for (int r = 0; r < WIDTH; r++, player_angle += FOV*RAD/WIDTH)
 	{
 		if (player_angle == PI || player_angle == PI/2 || player_angle == 3*PI/2 || player_angle == 2*PI)
 			player_angle += 0.0001f;
 		t_sect sect = cast_ray(game, player_angle);
 		// calculating distance from player to the intersections
-		float distH = v2i_sqlen(v2i_sub(p->pos, v2f_build((int)sect.hori.x, (int)sect.hori.y)));
-		float distV = v2i_sqlen(v2i_sub(p->pos, v2f_build((int)sect.vert.x, (int)sect.vert.y)));
+		float distH = v2i_sqlen(v2i_sub(p->pos, sect.hori));
+		float distV = v2i_sqlen(v2i_sub(p->pos, sect.vert));
 
-		float dist;
 		if (distV > distH)
 			dist = sqrtf(distH);
 		else
@@ -57,11 +55,14 @@ void draw_rays(void *param)
 		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
 
 		// 3D projection
+		// float lineH = (WALL_HEIGHT)/corrected_dist;
 		float lineH = (WALL_HEIGHT)/corrected_dist;
 		if (lineH > HEIGHT)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
-		draw_rectangle(game->image, v2f_build(r, (int)line_offset), 1, (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
+		// draw_rectangle(game->image, v2f_build(r, line_offset), 1, (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
+		// draw_rectangle(game->image, v2f_build(r, (int)line_offset), 1, (int)lineH, WHITE);
+		draw_strip(game->image, v2f_build(r, line_offset), (int)lineH, set_brightness(WHITE, lineH/BRIGHTNESS));
 	}
 }
 
@@ -87,8 +88,6 @@ int player_init(t_game *game)
 
 int game_init(t_game *game)
 {
-	// mlx_texture_t* WE = mlx_load_png("./textures/WE.png");
-	// mlx_image_t* iWE = mlx_texture_to_image(game->mlx, WE);
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!game->mlx)
 		return FAIL;
@@ -98,7 +97,6 @@ int game_init(t_game *game)
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
-	// game->cell_size = CELL_SIZE;
 	player_init(game);
 	return SUCC;
 }
