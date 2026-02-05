@@ -87,6 +87,7 @@ typedef struct {
 	mlx_t *mlx;
 	mlx_image_t *image;
 	t_player *player;
+	mlx_texture_t *we;
 	int mapX;
 	int mapY;
 	int *map;
@@ -190,6 +191,8 @@ void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
 void draw_strip(mlx_image_t *image, t_vector origin, int height, uint color);
+uint get_color(int r, int g, int b, int a);
+uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game
 void game_loop(t_game *game);

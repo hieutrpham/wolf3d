@@ -41,3 +41,15 @@ void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
 	if (x < img->width && y < img->height)
 		mlx_put_pixel(img, x, y, color);
 }
+
+uint get_color(int r, int g, int b, int a)
+{
+	return r << 24 | g << 16 | b << 8 | a << 0;
+}
+
+uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty)
+{
+	int index = (ty * texture->width + tx) * texture->bytes_per_pixel;
+
+	return get_color(texture->pixels[index], texture->pixels[index+1], texture->pixels[index+2], texture->pixels[index+3]);
+}
