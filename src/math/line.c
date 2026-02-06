@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:27:40 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 11:28:41 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 11:10:28 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,18 +89,17 @@
 // 	}
 // }
 
-void draw_strip(mlx_image_t *image, t_vector origin, int height, uint color)
+void draw_strip(t_game *game, t_vector origin, int wall_height, int tx)
 {
 	int y_start = (int)origin.y;
-	int y_end = (int)origin.y + height;
+	// float texture_ratio = game->we->height/wall_height;
 
 	if (y_start < 0)
 		y_start = 0;
-	if (y_end > HEIGHT)
-		y_end = HEIGHT;
-	for (int y = y_start; y < y_end; y++)
+	for (int y = 0; y < wall_height; y++)
 	{
-		put_pixel(image, (int)origin.x, y, color);
+		uint color = get_pixel_from_texture(game->we, tx, (int)(y*game->we->height/wall_height));
+		put_pixel(game->image, (int)origin.x, y + y_start, color);
 	}
 }
 

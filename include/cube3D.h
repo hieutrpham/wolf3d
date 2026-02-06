@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 15:05:46 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 10:45:26 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,8 @@ void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
-void draw_strip(mlx_image_t *image, t_vector origin, int height, uint color);
 uint get_color(int r, int g, int b, int a);
+void draw_strip(t_game *game, t_vector origin, int height, int tx);
 uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game

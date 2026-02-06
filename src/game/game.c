@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/31 17:56:01 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 10:48:41 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,9 @@ void draw_rays(void *param)
 			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
-		// printf("%f\n", fmod(sect.hori.x, 1.0)*game->we->width);
-		uint color = get_pixel_from_texture(game->we, distV > distH ? (int)(fmod(sect.hori.x, 1.0)*game->we->width): (int)(fmod(sect.vert.y, 1.0)*game->we->width), 300);
+		int tx = distV > distH ? (int)(fmod(sect.hori.x, 1.0)*game->we->width): (int)(fmod(sect.vert.y, 1.0)*game->we->width);
 
-		draw_strip(game->image, origin, (int)lineH, set_brightness(color, lineH/BRIGHTNESS));
+		draw_strip(game, origin, (int)lineH, tx);
 		// draw_strip(game->image, origin, (int)lineH, set_brightness(RED, lineH/BRIGHTNESS));
 	}
 }
@@ -99,9 +98,6 @@ int game_init(t_game *game)
 	if (!game->image)
 		return FAIL;
 	game->we = mlx_load_png("./textures/WE.png");
-
-	// for (uint ti = 0; ti < game->we->width * game->we->height; ti++)
-	// 	printf("%x\n", get_color(game->we->pixels[ti], game->we->pixels[ti+1], game->we->pixels[ti+2], game->we->pixels[ti+3]));
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;
