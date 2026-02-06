@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 14:25:07 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 14:55:42 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void draw_rays(void *param)
 		// 3D projection.
 		// TODO: texture drawing
 		float lineH = (WALL_HEIGHT)/corrected_dist;
-		if (lineH > HEIGHT)
-			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
 		int tx = distV > distH ? (int)(fmod(sect.hori.x, 1.0)*game->we->width): (int)(fmod(sect.vert.y, 1.0)*game->we->width);

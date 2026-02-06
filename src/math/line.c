@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:27:40 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 11:10:28 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 14:57:51 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,16 +91,17 @@
 
 void draw_strip(t_game *game, t_vector origin, int wall_height, int tx)
 {
-	int y_start = (int)origin.y;
-	// float texture_ratio = game->we->height/wall_height;
+	int y_start;
+	int y;
+	uint color;
 
-	if (y_start < 0)
-		y_start = 0;
-	for (int y = 0; y < wall_height; y++)
+	y_start = (int)origin.y;
+	y = 0;
+	while (y < wall_height)
 	{
-		uint color = get_pixel_from_texture(game->we, tx, (int)(y*game->we->height/wall_height));
+		color = get_pixel_from_texture(game->we, tx, (int)(y*game->we->height/wall_height));
 		put_pixel(game->image, (int)origin.x, y + y_start, color);
-		// put_pixel(game->image, (int)origin.x, y + y_start, set_brightness(color, wall_height/200));
+		y++;
 	}
 }
 
