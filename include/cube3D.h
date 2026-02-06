@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 10:45:26 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 14:32:22 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 #define RED 0xFF0000FF
 #define GREEN 0x00FF00FF
 #define BLUE 0x0000FFFF
+#define FLOOR 0x492828FF
+#define CEILING 0x1A3263FF
 #define CELL_SIZE 64
 
 typedef enum
@@ -184,6 +186,8 @@ void 	print_file(t_file *file);
 void	key_control(mlx_key_data_t keydata, void *param);
 void draw_map(void *param);
 void clear_bg(void *param);
+void render_ceiling(void *param);
+void render_floor(void *param);
 void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color);
 void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);

@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 10:48:41 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 14:25:07 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ void draw_rays(void *param)
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
 		int tx = distV > distH ? (int)(fmod(sect.hori.x, 1.0)*game->we->width): (int)(fmod(sect.vert.y, 1.0)*game->we->width);
-
 		draw_strip(game, origin, (int)lineH, tx);
-		// draw_strip(game->image, origin, (int)lineH, set_brightness(RED, lineH/BRIGHTNESS));
 	}
 }
 
 void game_loop(t_game *game)
 {
 	mlx_loop_hook(game->mlx, clear_bg, game);
+	mlx_loop_hook(game->mlx, render_ceiling, game);
+	mlx_loop_hook(game->mlx, render_floor, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
 	mlx_loop_hook(game->mlx, draw_map, game);
 }
