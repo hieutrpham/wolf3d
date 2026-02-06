@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
 #include "cube3D.h"
 
 #if 0
@@ -33,7 +32,7 @@ int main(int argc, char *argv[])
 }
 #else
 
-int main()
+int main(void)
 {
 	t_game game = {0};
 

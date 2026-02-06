@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 15:05:46 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/06 14:32:22 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,19 @@
 # define HEIGHT 1080
 #define PI 3.14159265358979323846f
 #define RAD 0.017453292519943295f
-#define WALL_HEIGHT 600.0f
+#define WALL_HEIGHT (1662)
 #define FOV 60
 #define MINIMAP_SIZE 180
 #define WHITE 0xffffffff
-#define BRIGHTNESS 500
+#define BRIGHTNESS 2000
 #define BG 0x222222FF
 #define GRAY 0x303030ff
 #define RED 0xFF0000FF
 #define GREEN 0x00FF00FF
 #define BLUE 0x0000FFFF
+#define FLOOR 0x492828FF
+#define CEILING 0x1A3263FF
+#define CELL_SIZE 64
 
 typedef enum
 {
@@ -86,7 +89,7 @@ typedef struct {
 	mlx_t *mlx;
 	mlx_image_t *image;
 	t_player *player;
-	float cell_size;
+	mlx_texture_t *we;
 	int mapX;
 	int mapY;
 	int *map;
@@ -183,12 +186,17 @@ void 	print_file(t_file *file);
 void	key_control(mlx_key_data_t keydata, void *param);
 void draw_map(void *param);
 void clear_bg(void *param);
+void render_ceiling(void *param);
+void render_floor(void *param);
 void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color);
 void draw_line2(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void draw_line(mlx_image_t *image, t_vector v1, t_vector v2, uint color);
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
+uint get_color(int r, int g, int b, int a);
+void draw_strip(t_game *game, t_vector origin, int height, int tx);
+uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game
 void game_loop(t_game *game);

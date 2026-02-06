@@ -23,31 +23,31 @@ void	key_control(mlx_key_data_t keydata, void *param)
 		game->player->angle -= 0.1f;
 		if (game->player->angle < 0)
 			game->player->angle += 2*PI;
-		game->player->dx = cosf(game->player->angle) * 10;
-		game->player->dy = sinf(game->player->angle) * 10;
+		game->player->dx = cosf(game->player->angle);
+		game->player->dy = sinf(game->player->angle);
 	}
 	if (keydata.key == MLX_KEY_RIGHT)
 	{
 		game->player->angle += 0.1f;
-		if (game->player->angle < 0)
-			game->player->angle += 2*PI;
-		game->player->dx = cosf(game->player->angle) * 10;
-		game->player->dy = sinf(game->player->angle) * 10;
+		if (game->player->angle > 2* PI)
+			game->player->angle -= 2*PI;
+		game->player->dx = cosf(game->player->angle);
+		game->player->dy = sinf(game->player->angle);
 	}
 	// BUG: fix A, D movements
 	if (keydata.key == MLX_KEY_A)
-		game->player->pos.x = game->player->pos.x - (int)game->player->dx * 10;
+		game->player->pos.x = game->player->pos.x - game->player->dx * 0.5f;
 	if (keydata.key == MLX_KEY_D)
-		game->player->pos.x = game->player->pos.x + (int)game->player->dx * 10;
+		game->player->pos.x = game->player->pos.x + game->player->dx * 0.5f;
 	if (keydata.key == MLX_KEY_W)
 	{
-		game->player->pos.x = game->player->pos.x + (int)game->player->dx;
-		game->player->pos.y = game->player->pos.y + (int)game->player->dy;
+		game->player->pos.x = game->player->pos.x + game->player->dx * 0.1f;
+		game->player->pos.y = game->player->pos.y + game->player->dy * 0.1f;
 	}
 	if (keydata.key == MLX_KEY_S)
 	{
-		game->player->pos.x = game->player->pos.x - (int)game->player->dx;
-		game->player->pos.y = game->player->pos.y - (int)game->player->dy;
+		game->player->pos.x = game->player->pos.x - game->player->dx * 0.1f;
+		game->player->pos.y = game->player->pos.y - game->player->dy * 0.1f;
 	}
 }
 
