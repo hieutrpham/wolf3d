@@ -94,13 +94,15 @@ void draw_strip(t_game *game, t_vector origin, int wall_height, int tx)
 	int y_start;
 	int y;
 	uint color;
+	float brightness;
 
+	brightness = wall_height/BRIGHTNESS;
 	y_start = (int)origin.y;
 	y = 0;
 	while (y < wall_height)
 	{
 		color = get_pixel_from_texture(game->we, tx, (int)(y*game->we->height/wall_height));
-		put_pixel(game->image, (int)origin.x, y + y_start, color);
+		put_pixel(game->image, (int)origin.x, y + y_start, set_brightness(color, brightness));
 		y++;
 	}
 }

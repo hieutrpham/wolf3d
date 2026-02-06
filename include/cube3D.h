@@ -40,7 +40,7 @@
 #define FOV 60
 #define MINIMAP_SIZE 180
 #define WHITE 0xffffffff
-#define BRIGHTNESS 2000
+#define BRIGHTNESS 2000.0f
 #define BG 0x222222FF
 #define GRAY 0x303030ff
 #define RED 0xFF0000FF
