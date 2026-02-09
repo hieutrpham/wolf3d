@@ -34,9 +34,9 @@ t_vector v2f_scale(t_vector v, float factor) {
 	return ret;
 }
 
-float v2f_dot(t_vector v1, t_vector v2)
+int v2f_dot(t_vector v1, t_vector v2)
 {
-	return (v1.x * v2.x + v1.y * v2.y);
+	return (int)(v1.x * v2.x + v1.y * v2.y);
 }
 
 t_vector v2f_sub(t_vector v1, t_vector v2) {

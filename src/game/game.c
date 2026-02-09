@@ -17,8 +17,8 @@ static int map[] =
 	1,1,1,1,1,1,1,1,
 	1,0,0,0,0,0,0,1,
 	1,0,0,0,0,0,0,1,
-	1,0,0,0,1,0,0,1,
 	1,0,0,0,0,0,0,1,
+	1,0,0,0,1,0,0,1,
 	1,0,0,0,0,0,0,1,
 	1,0,0,0,0,0,0,1,
 	1,1,1,1,1,1,1,1,
@@ -30,14 +30,14 @@ void draw_rays(void *param)
 	t_player *p = game->player;
 	float dist;
 	float player_angle = p->angle - 30.0f * RAD;
+	int tx;
 
 	for (int r = 0; r < WIDTH; r++, player_angle += FOV*RAD/WIDTH)
 	{
-		if (player_angle == PI || player_angle == PI/2 || player_angle == 3*PI/2 || player_angle == 2*PI)
+		if (player_angle == PI || player_angle == PI/2
+			|| player_angle == 3*PI/2 || player_angle == 2*PI)
 			player_angle += 0.0001f;
 		t_sect sect = cast_ray(game, player_angle);
-		// printf("%f %f %f %f\n", sect.hori.x, sect.hori.y, sect.vert.x, sect.vert.y);
-		// calculating distance from player to the intersections
 		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
 		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
 
@@ -47,21 +47,31 @@ void draw_rays(void *param)
 			dist = sqrtf(distV);
 		float corrected_dist = dist * cosf(player_angle - p->angle);
 
-		// draw rays vision in minimap
-		// int x1 = (int)p->pos.x * MINIMAP_SIZE / WIDTH;
-		// int y1 = (int)p->pos.y * MINIMAP_SIZE / WIDTH;
-		// if ( distH > distV)
-		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.vert.x * MINIMAP_SIZE / WIDTH, (int)sect.vert.y * MINIMAP_SIZE / WIDTH), RED);
-		// else
-		// 	draw_line(game->image, v2i_build(x1, y1), v2i_build((int)sect.hori.x * MINIMAP_SIZE / WIDTH, (int)sect.hori.y * MINIMAP_SIZE / WIDTH), RED);
-
 		// 3D projection.
-		// TODO: texture drawing
 		float lineH = (WALL_HEIGHT)/corrected_dist;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
-		int tx = distV > distH ? (int)(fmod(sect.hori.x, 1.0)*game->we->width): (int)(fmod(sect.vert.y, 1.0)*game->we->width);
-		draw_strip(game, origin, (int)lineH, tx);
+		if (distV > distH)
+			tx = (int)(fmod(sect.hori.x, 1.0)*game->we->width);
+		else
+			tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
+
+		t_uvmap uv = {
+			.origin = origin,
+			.height = (int)lineH,
+			.tx = tx,
+		};
+		// ray hits horizontal and opposite the y axis
+		if (distV > distH && sinf(player_angle) < 0)
+			draw_texture(game, uv, SO);
+		// ray hits horizontal and same direction with the y axis
+		else if (distV > distH && sinf(player_angle) > 0)
+			draw_texture(game, uv, NO);
+		// ray hits vertical and same direction with the x axis
+		else if (distV < distH && cosf(player_angle) > 0)
+			draw_texture(game, uv, EA);
+		else if (distV < distH && cosf(player_angle) < 0)
+			draw_texture(game, uv, WE);
 	}
 }
 
@@ -90,7 +100,7 @@ int player_init(t_game *game)
 	game->player = malloc(sizeof(*game->player));
 	if (!game->player)
 		return FAIL;
-	game->player->angle = PI/4;
+	game->player->angle = PI/2;
 	game->player->pos = v2f_build(2.0f, 2.0f);
 	game->player->dir.x = cosf(game->player->angle) * 0.1f;
 	game->player->dir.y = sinf(game->player->angle) * 0.1f;
@@ -106,6 +116,9 @@ int game_init(t_game *game)
 	if (!game->image)
 		return FAIL;
 	game->we = mlx_load_png("./textures/WE.png");
+	game->no = mlx_load_png("./textures/NO.png");
+	game->ea = mlx_load_png("./textures/EA.png");
+	game->so = mlx_load_png("./textures/boris.png");
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;

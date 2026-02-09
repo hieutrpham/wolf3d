@@ -53,10 +53,26 @@
 
 typedef enum
 {
-	red,
-	green,
-	yellow,
-} t_color;
+	EA,
+	WE,
+	NO,
+	SO
+} t_texture;
+
+typedef struct
+{
+	float x;
+	float y;
+} t_vector;
+
+// structure containing information about texture uv mapping
+typedef struct
+{
+	t_vector origin;
+	int height;
+	int tx;
+	t_texture texture;
+} t_uvmap;
 
 typedef struct
 {
@@ -66,12 +82,6 @@ typedef struct
 	int y2;
 	int intercept;
 } t_line;
-
-typedef struct
-{
-	float x;
-	float y;
-} t_vector;
 
 typedef struct {
 	t_vector pos;
@@ -90,6 +100,9 @@ typedef struct {
 	mlx_image_t *image;
 	t_player *player;
 	mlx_texture_t *we;
+	mlx_texture_t *ea;
+	mlx_texture_t *no;
+	mlx_texture_t *so;
 	double last_time;
 	int mapX;
 	int mapY;
@@ -196,7 +209,7 @@ void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
 uint get_color(int r, int g, int b, int a);
-void draw_strip(t_game *game, t_vector origin, int height, int tx);
+void draw_texture(t_game *game, t_uvmap uv, t_texture t);
 uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game
@@ -209,6 +222,6 @@ t_vector v2f_build(float x, float y);
 t_vector v2f_add(t_vector v1, t_vector v2);
 t_vector v2f_sub(t_vector v2, t_vector v1);
 t_vector v2f_scale(t_vector v, float factor);
-float v2f_dot(t_vector v1, t_vector v2);
+int v2f_dot(t_vector v1, t_vector v2);
 float v2i_sqlen(t_vector v);
 #endif
