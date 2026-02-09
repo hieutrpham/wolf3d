@@ -29,15 +29,15 @@ void draw_rays(void *param)
 	t_game *game = param;
 	t_player *p = game->player;
 	float dist;
-	float player_angle = p->angle - 30.0f * RAD;
+	float ray_angle = p->angle - 30.0f * RAD;
 	int tx;
 
-	for (int r = 0; r < WIDTH; r++, player_angle += FOV*RAD/WIDTH)
+	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
-		if (player_angle == PI || player_angle == PI/2
-			|| player_angle == 3*PI/2 || player_angle == 2*PI)
-			player_angle += 0.0001f;
-		t_sect sect = cast_ray(game, player_angle);
+		if (ray_angle == PI || ray_angle == PI/2
+			|| ray_angle == 3*PI/2 || ray_angle == 2*PI)
+			ray_angle += 0.0001f;
+		t_sect sect = cast_ray(game, ray_angle);
 		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
 		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
 
@@ -45,7 +45,7 @@ void draw_rays(void *param)
 			dist = sqrtf(distH);
 		else
 			dist = sqrtf(distV);
-		float corrected_dist = dist * cosf(player_angle - p->angle);
+		float corrected_dist = dist * cosf(ray_angle - p->angle);
 
 		// 3D projection.
 		float lineH = (WALL_HEIGHT)/corrected_dist;
@@ -53,7 +53,7 @@ void draw_rays(void *param)
 		t_vector origin = {r, line_offset};
 
 		// ray hits horizontal and opposite the y axis
-		if (distV > distH && sinf(player_angle) < 0)
+		if (distV > distH && sinf(ray_angle) < 0)
 		{
 			tx = (int)(fmod(sect.hori.x, 1.0)*game->so->width);
 			t_uvmap uv = {
@@ -64,7 +64,7 @@ void draw_rays(void *param)
 			draw_texture(game, uv, SO);
 		}
 		// ray hits horizontal and same direction with the y axis
-		else if (distV > distH && sinf(player_angle) > 0)
+		else if (distV > distH && sinf(ray_angle) > 0)
 		{
 			tx = (int)(fmod(sect.hori.x, 1.0)*game->no->width);
 			t_uvmap uv = {
@@ -75,7 +75,7 @@ void draw_rays(void *param)
 			draw_texture(game, uv, NO);
 		}
 		// ray hits vertical and same direction with the x axis
-		else if (distV < distH && cosf(player_angle) > 0)
+		else if (distV < distH && cosf(ray_angle) > 0)
 		{
 			tx = (int)(fmod(sect.vert.y, 1.0)*game->ea->width);
 			t_uvmap uv = {
@@ -85,7 +85,7 @@ void draw_rays(void *param)
 			};
 			draw_texture(game, uv, EA);
 		}
-		else if (distV < distH && cosf(player_angle) < 0)
+		else if (distV < distH && cosf(ray_angle) < 0)
 		{
 			tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
 			t_uvmap uv = {
