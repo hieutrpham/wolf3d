@@ -21,12 +21,25 @@ t_vector v2f_build(float x, float y)
 	return (v);
 }
 
-t_vector v2i_add(t_vector v1, t_vector v2) {
+t_vector v2f_add(t_vector v1, t_vector v2) {
 	t_vector ret = {v1.x + v2.x, v1.y + v2.y};
 	return ret;
 }
 
-t_vector v2i_sub(t_vector v1, t_vector v2) {
+t_vector v2f_scale(t_vector v, float factor) {
+	t_vector ret;
+
+	ret.x = v.x * factor;
+	ret.y = v.y * factor;
+	return ret;
+}
+
+float v2f_dot(t_vector v1, t_vector v2)
+{
+	return (v1.x * v2.x + v1.y * v2.y);
+}
+
+t_vector v2f_sub(t_vector v1, t_vector v2) {
 	t_vector ret;
 	
 	ret.x = v1.x - v2.x;

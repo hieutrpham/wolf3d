@@ -27,6 +27,7 @@
 # include "libft.h"
 #include "MLX42/MLX42.h"
 
+#define SPEED 0.1f
 #define BUFFER_SIZE 64
 # define MAX_FD 1024
 #define RADIUS 50
@@ -74,9 +75,8 @@ typedef struct
 
 typedef struct {
 	t_vector pos;
+	t_vector dir;
 	float angle;
-	float dx;
-	float dy;
 } t_player;
 
 typedef struct
@@ -90,6 +90,7 @@ typedef struct {
 	mlx_image_t *image;
 	t_player *player;
 	mlx_texture_t *we;
+	double last_time;
 	int mapX;
 	int mapY;
 	int *map;
@@ -205,7 +206,9 @@ t_sect cast_ray(t_game *game, float player_angle);
 
 //vector
 t_vector v2f_build(float x, float y);
-t_vector v2i_add(t_vector v1, t_vector v2);
-t_vector v2i_sub(t_vector v2, t_vector v1);
+t_vector v2f_add(t_vector v1, t_vector v2);
+t_vector v2f_sub(t_vector v2, t_vector v1);
+t_vector v2f_scale(t_vector v, float factor);
+float v2f_dot(t_vector v1, t_vector v2);
 float v2i_sqlen(t_vector v);
 #endif

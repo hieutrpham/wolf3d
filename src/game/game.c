@@ -38,8 +38,8 @@ void draw_rays(void *param)
 		t_sect sect = cast_ray(game, player_angle);
 		// printf("%f %f %f %f\n", sect.hori.x, sect.hori.y, sect.vert.x, sect.vert.y);
 		// calculating distance from player to the intersections
-		float distH = v2i_sqlen(v2i_sub(p->pos, sect.hori));
-		float distV = v2i_sqlen(v2i_sub(p->pos, sect.vert));
+		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
+		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
 
 		if (distV > distH)
 			dist = sqrtf(distH);
@@ -65,8 +65,19 @@ void draw_rays(void *param)
 	}
 }
 
+void fps_hook(void* param)
+{
+	t_game* game = param;
+	double current_time = mlx_get_time();
+	double delta_time = current_time - game->last_time;
+	game->last_time = current_time;
+	double fps = 1.0 / delta_time;
+	printf("%f\n", fps);
+}
+
 void game_loop(t_game *game)
 {
+	// mlx_loop_hook(game->mlx, fps_hook, game);
 	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
@@ -80,10 +91,9 @@ int player_init(t_game *game)
 	if (!game->player)
 		return FAIL;
 	game->player->angle = PI/4;
-	game->player->pos.x = 2.0f;
-	game->player->pos.y = 2.0f;
-	game->player->dx = cosf(game->player->angle) * 0.1f;
-	game->player->dy = sinf(game->player->angle) * 0.1f;
+	game->player->pos = v2f_build(2.0f, 2.0f);
+	game->player->dir.x = cosf(game->player->angle) * 0.1f;
+	game->player->dir.y = sinf(game->player->angle) * 0.1f;
 	return SUCC;
 }
 
