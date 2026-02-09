@@ -51,27 +51,50 @@ void draw_rays(void *param)
 		float lineH = (WALL_HEIGHT)/corrected_dist;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
-		if (distV > distH)
-			tx = (int)(fmod(sect.hori.x, 1.0)*game->we->width);
-		else
-			tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
 
-		t_uvmap uv = {
-			.origin = origin,
-			.height = (int)lineH,
-			.tx = tx,
-		};
 		// ray hits horizontal and opposite the y axis
 		if (distV > distH && sinf(player_angle) < 0)
+		{
+			tx = (int)(fmod(sect.hori.x, 1.0)*game->so->width);
+			t_uvmap uv = {
+				.origin = origin,
+				.height = (int)lineH,
+				.tx = tx,
+			};
 			draw_texture(game, uv, SO);
+		}
 		// ray hits horizontal and same direction with the y axis
 		else if (distV > distH && sinf(player_angle) > 0)
+		{
+			tx = (int)(fmod(sect.hori.x, 1.0)*game->no->width);
+			t_uvmap uv = {
+				.origin = origin,
+				.height = (int)lineH,
+				.tx = tx,
+			};
 			draw_texture(game, uv, NO);
+		}
 		// ray hits vertical and same direction with the x axis
 		else if (distV < distH && cosf(player_angle) > 0)
+		{
+			tx = (int)(fmod(sect.vert.y, 1.0)*game->ea->width);
+			t_uvmap uv = {
+				.origin = origin,
+				.height = (int)lineH,
+				.tx = tx,
+			};
 			draw_texture(game, uv, EA);
+		}
 		else if (distV < distH && cosf(player_angle) < 0)
+		{
+			tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
+			t_uvmap uv = {
+				.origin = origin,
+				.height = (int)lineH,
+				.tx = tx,
+			};
 			draw_texture(game, uv, WE);
+		}
 	}
 }
 
@@ -118,7 +141,7 @@ int game_init(t_game *game)
 	game->we = mlx_load_png("./textures/WE.png");
 	game->no = mlx_load_png("./textures/NO.png");
 	game->ea = mlx_load_png("./textures/EA.png");
-	game->so = mlx_load_png("./textures/boris.png");
+	game->so = mlx_load_png("./textures/SO.png");
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;

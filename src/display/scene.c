@@ -58,7 +58,7 @@ void draw_texture(t_game *game, t_uvmap uv, t_texture t)
 	int y;
 	uint color;
 	float brightness;
-	mlx_texture_t *texture;
+	mlx_texture_t *texture = NULL;
 
 	if (t == SO)
 		texture = game->so;
