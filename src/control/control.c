@@ -15,39 +15,39 @@
 void	key_control(mlx_key_data_t keydata, void *param)
 {
 	t_game *game = param;
+	t_player *p = game->player;
 
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(game->mlx);
 	if (keydata.key == MLX_KEY_LEFT)
 	{
-		game->player->angle -= 0.1f;
-		if (game->player->angle < 0)
-			game->player->angle += 2*PI;
-		game->player->dx = cosf(game->player->angle);
-		game->player->dy = sinf(game->player->angle);
+		p->angle -= 0.1f;
+		if (p->angle < 0)
+			p->angle += 2*PI;
+		p->dir.x = cosf(p->angle);
+		p->dir.y = sinf(p->angle);
 	}
 	if (keydata.key == MLX_KEY_RIGHT)
 	{
-		game->player->angle += 0.1f;
-		if (game->player->angle > 2* PI)
-			game->player->angle -= 2*PI;
-		game->player->dx = cosf(game->player->angle);
-		game->player->dy = sinf(game->player->angle);
+		p->angle += 0.1f;
+		if (p->angle > 2* PI)
+			p->angle -= 2*PI;
+		p->dir.x = cosf(p->angle);
+		p->dir.y = sinf(p->angle);
 	}
-	// BUG: fix A, D movements
 	if (keydata.key == MLX_KEY_A)
-		game->player->pos.x = game->player->pos.x - game->player->dx * 0.5f;
+	{
+		t_vector new_dir = {p->dir.y, -p->dir.x};
+		p->pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+	}
 	if (keydata.key == MLX_KEY_D)
-		game->player->pos.x = game->player->pos.x + game->player->dx * 0.5f;
+	{
+		t_vector new_dir = {-p->dir.y, p->dir.x};
+		p->pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+	}
 	if (keydata.key == MLX_KEY_W)
-	{
-		game->player->pos.x = game->player->pos.x + game->player->dx * 0.1f;
-		game->player->pos.y = game->player->pos.y + game->player->dy * 0.1f;
-	}
+		p->pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED));
 	if (keydata.key == MLX_KEY_S)
-	{
-		game->player->pos.x = game->player->pos.x - game->player->dx * 0.1f;
-		game->player->pos.y = game->player->pos.y - game->player->dy * 0.1f;
-	}
+		p->pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED));
 }
 

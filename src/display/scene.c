@@ -51,3 +51,30 @@ void render_floor(void *param)
 		y++;
 	}
 }
+
+void draw_texture(t_game *game, t_uvmap uv, t_texture t)
+{
+	int y_start;
+	int y;
+	uint color;
+	float brightness;
+	mlx_texture_t *texture = NULL;
+
+	if (t == SO)
+		texture = game->so;
+	if (t == WE)
+		texture = game->we;
+	if (t == EA)
+		texture = game->ea;
+	if (t == NO)
+		texture = game->no;
+	brightness = uv.height/BRIGHTNESS;
+	y_start = (int)uv.origin.y;
+	y = 0;
+	while (y < uv.height)
+	{
+		color = get_pixel_from_texture(texture, uv.tx, (int)(y*texture->height/uv.height));
+		put_pixel(game->image, (int)uv.origin.x, y + y_start, set_brightness(color, brightness));
+		y++;
+	}
+}

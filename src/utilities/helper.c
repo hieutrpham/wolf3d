@@ -23,17 +23,20 @@ void swap_int(int *i1, int *i2)
 
 uint set_brightness(uint color, float factor)
 {
-	float r = (float)((color >> 24) & 0xFF) * factor;
-	float g = (float)((color >> 16) & 0xFF) * factor;
-	float b = (float)((color >> 8) & 0xFF) * factor;
-	if ((int)r > 0xff)
-		r = 0xff;
-	if ((int)g > 0xff)
-		g = 0xff;
-	if ((int)b > 0xff)
-		b = 0xff;
-	int a = color & 0xFF;
-	return ((int)r << 24 | (int)g << 16 | (int)b << 8) | a;
+	float r;
+	float g;
+	float b;
+	int a;
+
+	if (factor < 0)
+		factor = 0;
+	if (factor > 1.0f)
+		factor = 1.0f;
+	r = ((color >> 24) & 0xFF) * factor;
+	g = ((color >> 16) & 0xFF) * factor;
+	b = ((color >> 8) & 0xFF) * factor;
+	a = color & 0xFF;
+	return (((int)r << 24 | (int)g << 16 | (int)b << 8) | a);
 }
 
 void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
@@ -44,12 +47,16 @@ void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color)
 
 uint get_color(int r, int g, int b, int a)
 {
-	return r << 24 | g << 16 | b << 8 | a << 0;
+	return (r << 24 | g << 16 | b << 8 | a << 0);
 }
 
 uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty)
 {
-	int index = (ty * texture->width + tx) * texture->bytes_per_pixel;
+	int index;
 
-	return get_color(texture->pixels[index], texture->pixels[index+1], texture->pixels[index+2], texture->pixels[index+3]);
+	index = (ty * texture->width + tx) * texture->bytes_per_pixel;
+	return (get_color(texture->pixels[index],
+				   texture->pixels[index+1],
+				   texture->pixels[index+2],
+				   texture->pixels[index+3]));
 }

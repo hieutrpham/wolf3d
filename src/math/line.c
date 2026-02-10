@@ -89,22 +89,6 @@
 // 	}
 // }
 
-void draw_strip(t_game *game, t_vector origin, int wall_height, int tx)
-{
-	int y_start;
-	int y;
-	uint color;
-
-	y_start = (int)origin.y;
-	y = 0;
-	while (y < wall_height)
-	{
-		color = get_pixel_from_texture(game->we, tx, (int)(y*game->we->height/wall_height));
-		put_pixel(game->image, (int)origin.x, y + y_start, color);
-		y++;
-	}
-}
-
 void draw_rectangle(mlx_image_t *image, t_vector origin, int width, int height, uint color)
 {
 	for (int y = (int)origin.y; y < (int)origin.y + height; y++)
