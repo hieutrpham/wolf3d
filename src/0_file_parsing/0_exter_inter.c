@@ -45,9 +45,15 @@ int	process_infile(t_file *file)
 	if (map_check(file) == FAIL)
 		status = FAIL;
 	// printf("Finish reading\n");
-	if (status == FAIL || file->no_direc < 6)
-		return (FAIL);
-	return (SUCC);
+	// if (status == FAIL || file->no_direc < 6)
+	// {
+	// 	printf("Value of status: %d\n", status);
+	// 	printf("Value of no_direct: %d\n", file->no_direc);
+	// 	printf("We are here with height: %d\n", file->map_height);
+	// 	return (FAIL);
+	// }
+	// return (SUCC);
+	return(status);
 }
 
 static void	process_line(t_file *file, char *line, int *status)
