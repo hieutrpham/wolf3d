@@ -1,7 +1,7 @@
-NO ./textures/NO.png
-SO ./textures/SO.png
-WE ./textures/WE.png
-EA ./textures/EA.png
+NO ./textures/no2.png
+SO ./textures/taylor.png
+WE ./textures/we1.png
+EA ./textures/ea1.png
 
 F 220,100,0
 C 225,30,0

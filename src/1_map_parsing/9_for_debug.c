@@ -10,7 +10,6 @@ void	print_map(char **map)
 	j = 0;
 	while (map[i])
 	{
-		printf("row %d is :\n", i);
 		j = 0;
 		while (map[i][j])
 		{

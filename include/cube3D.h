@@ -106,7 +106,7 @@ typedef struct {
 	double last_time;
 	int mapX;
 	int mapY;
-	int *map;
+	char **map;
 } t_game;
 
 typedef struct s_str
@@ -214,7 +214,7 @@ uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game
 void game_loop(t_game *game);
-int game_init(t_game *game);
+int game_init(t_game *game, t_file *file);
 t_sect cast_ray(t_game *game, float player_angle);
 
 //vector

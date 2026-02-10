@@ -12,10 +12,10 @@
 
 #include "cube3D.h"
 
-bool hit_wall(int map_index, t_game *game)
+bool hit_wall(int map_x, int map_y, t_game *game)
 {
-	return (map_index >= 0 && map_index < game->mapX * game->mapY
-		&& game->map[map_index] != 0);
+	return (map_x >= 0 && map_x < game->mapX && map_y >= 0 && map_y < game->mapY
+		&& game->map[map_y][map_x] > '0');
 }
 
 // stepping the ray in the horizontal direction
@@ -28,8 +28,7 @@ void ray_step_hori(t_game *game, t_sect *sect, int dof, t_vector step)
 	{
 		map_x = (int)(sect->hori.x);
 		map_y = (int)(sect->hori.y);
-		int map_index = map_y * game->mapX + map_x;
-		if (hit_wall(map_index, game))
+		if (hit_wall(map_x, map_y, game))
 			break;
 		else
 		{
@@ -50,8 +49,7 @@ void ray_step_vert(t_game *game, t_sect *sect, int dof, t_vector step)
 	{
 		map_x = (int)(sect->vert.x);
 		map_y = (int)(sect->vert.y);
-		int map_index = map_y * game->mapX + map_x;
-		if (hit_wall(map_index, game))
+		if (hit_wall(map_x, map_y, game))
 			break;
 		else
 		{

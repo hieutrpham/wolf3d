@@ -12,18 +12,6 @@
 
 #include "cube3D.h"
 
-static int map[] =
-{
-	1,1,1,1,1,1,1,1,
-	1,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,0,0,0,1,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,0,0,0,0,0,0,1,
-	1,1,1,1,1,1,1,1,
-};
-
 void draw_rays(void *param)
 {
 	t_game *game = param;
@@ -115,7 +103,7 @@ int player_init(t_game *game)
 	return SUCC;
 }
 
-int game_init(t_game *game)
+int game_init(t_game *game, t_file *file)
 {
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!game->mlx)
@@ -123,13 +111,13 @@ int game_init(t_game *game)
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
 		return FAIL;
-	game->we = mlx_load_png("./textures/we1.png");
-	game->no = mlx_load_png("./textures/no2.png");
-	game->ea = mlx_load_png("./textures/ea1.png");
-	game->so = mlx_load_png("./textures/taylor.png");
-	game->map = map;
-	game->mapX = 8;
-	game->mapY = 8;
+	game->we = mlx_load_png(file->we_path);
+	game->no = mlx_load_png(file->no_path);
+	game->ea = mlx_load_png(file->ea_path);
+	game->so = mlx_load_png(file->so_path);
+	game->map = file->parse_map;
+	game->mapX = file->map_width;
+	game->mapY = file->map_height;
 	player_init(game);
 	return SUCC;
 }
