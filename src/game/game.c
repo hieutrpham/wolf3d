@@ -30,7 +30,6 @@ void draw_rays(void *param)
 	t_player *p = game->player;
 	float dist;
 	float ray_angle = p->angle - 30.0f * RAD;
-	int tx;
 
 	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
@@ -51,48 +50,34 @@ void draw_rays(void *param)
 		float lineH = (WALL_HEIGHT)/corrected_dist;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
-
+		t_uvmap uv = {
+			.origin = origin,
+			.height = (int)lineH,
+			.tx = 0,
+		};
+		float r_dir_y = sinf(ray_angle);
+		float r_dir_x = cosf(ray_angle);
 		// ray hits horizontal and opposite the y axis
-		if (distV > distH && sinf(ray_angle) < 0)
+		if (distV > distH && r_dir_y < 0)
 		{
-			tx = (int)(fmod(sect.hori.x, 1.0)*game->so->width);
-			t_uvmap uv = {
-				.origin = origin,
-				.height = (int)lineH,
-				.tx = tx,
-			};
+			uv.tx = (int)(fmod(sect.hori.x, 1.0)*game->so->width);
 			draw_texture(game, uv, SO);
 		}
 		// ray hits horizontal and same direction with the y axis
-		else if (distV > distH && sinf(ray_angle) > 0)
+		else if (distV > distH && r_dir_y > 0)
 		{
-			tx = (int)(fmod(sect.hori.x, 1.0)*game->no->width);
-			t_uvmap uv = {
-				.origin = origin,
-				.height = (int)lineH,
-				.tx = tx,
-			};
+			uv.tx = (int)(fmod(sect.hori.x, 1.0)*game->no->width);
 			draw_texture(game, uv, NO);
 		}
 		// ray hits vertical and same direction with the x axis
-		else if (distV < distH && cosf(ray_angle) > 0)
+		else if (distV < distH && r_dir_x > 0)
 		{
-			tx = (int)(fmod(sect.vert.y, 1.0)*game->ea->width);
-			t_uvmap uv = {
-				.origin = origin,
-				.height = (int)lineH,
-				.tx = tx,
-			};
+			uv.tx = (int)(fmod(sect.vert.y, 1.0)*game->ea->width);
 			draw_texture(game, uv, EA);
 		}
-		else if (distV < distH && cosf(ray_angle) < 0)
+		else if (distV < distH && r_dir_x < 0)
 		{
-			tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
-			t_uvmap uv = {
-				.origin = origin,
-				.height = (int)lineH,
-				.tx = tx,
-			};
+			uv.tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
 			draw_texture(game, uv, WE);
 		}
 	}
@@ -138,10 +123,10 @@ int game_init(t_game *game)
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
 		return FAIL;
-	game->we = mlx_load_png("./textures/WE.png");
-	game->no = mlx_load_png("./textures/NO.png");
-	game->ea = mlx_load_png("./textures/EA.png");
-	game->so = mlx_load_png("./textures/SO.png");
+	game->we = mlx_load_png("./textures/we1.png");
+	game->no = mlx_load_png("./textures/no2.png");
+	game->ea = mlx_load_png("./textures/ea1.png");
+	game->so = mlx_load_png("./textures/taylor.png");
 	game->map = map;
 	game->mapX = 8;
 	game->mapY = 8;

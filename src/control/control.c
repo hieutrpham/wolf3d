@@ -11,7 +11,18 @@
 /* ************************************************************************** */
 
 #include "cube3D.h"
+#define P_GIRTH 0.2f
 
+bool is_wall(t_game *game, t_vector pos)
+{
+	int map_x = (int)pos.x;
+	int map_y = (int)pos.y;
+	if (map_x < 0)
+		map_x = 0;
+	if (map_y < 0)
+		map_y = 0;
+	return (game->map[map_y * game->mapX + map_x] > 0);
+}
 void	key_control(mlx_key_data_t keydata, void *param)
 {
 	t_game *game = param;
@@ -38,16 +49,28 @@ void	key_control(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_A)
 	{
 		t_vector new_dir = {p->dir.y, -p->dir.x};
-		p->pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+		if (!is_wall(game, new_pos))
+			p->pos = new_pos;
 	}
 	if (keydata.key == MLX_KEY_D)
 	{
 		t_vector new_dir = {-p->dir.y, p->dir.x};
-		p->pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED));
+		if (!is_wall(game, new_pos))
+			p->pos = new_pos;
 	}
 	if (keydata.key == MLX_KEY_W)
-		p->pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED));
+	{
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED));
+		if (!is_wall(game, new_pos))
+			p->pos = new_pos;
+	}
 	if (keydata.key == MLX_KEY_S)
-		p->pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED));
+	{
+		t_vector new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED));
+		if (!is_wall(game, new_pos))
+			p->pos = new_pos;
+	}
 }
 
