@@ -22,7 +22,7 @@ int	map_check(t_file *file)
 	free_2d_array(map_2d_draft);
 	if (!file->parse_map)
 		return (FAIL);
-	print_map(file->parse_map);
+	// print_map(file->parse_map);
 	find_player_pos(file);
 	if (player_can_move(file) == FAIL)
 		return (err_message("Player cannot move\n", FAIL));
