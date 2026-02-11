@@ -88,16 +88,17 @@ void game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
-	mlx_loop_hook(game->mlx, draw_map, game);
+	// mlx_loop_hook(game->mlx, draw_map, game);
 }
 
-int player_init(t_game *game)
+int player_init(t_game *game, t_file *file)
 {
 	game->player = malloc(sizeof(*game->player));
 	if (!game->player)
 		return FAIL;
 	game->player->angle = PI/2;
-	game->player->pos = v2f_build(2.0f, 2.0f);
+	game->player->pos.x = file->player_x;
+	game->player->pos.y = file->player_y;
 	game->player->dir.x = cosf(game->player->angle) * 0.1f;
 	game->player->dir.y = sinf(game->player->angle) * 0.1f;
 	return SUCC;
@@ -118,6 +119,6 @@ int game_init(t_game *game, t_file *file)
 	game->map = file->parse_map;
 	game->mapX = file->map_width;
 	game->mapY = file->map_height;
-	player_init(game);
+	player_init(game, file);
 	return SUCC;
 }
