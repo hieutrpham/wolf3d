@@ -15,7 +15,7 @@
 bool hit_wall(int map_x, int map_y, t_game *game)
 {
 	return (map_x >= 0 && map_x < game->mapX && map_y >= 0 && map_y < game->mapY
-		&& game->map[map_y][map_x] > '0');
+		&& game->map[map_y][map_x] == WALL);
 }
 
 // stepping the ray in the horizontal direction

@@ -21,7 +21,7 @@ bool is_wall(t_game *game, t_vector pos)
 		map_x = 0;
 	if (map_y < 0)
 		map_y = 0;
-	return (game->map[map_y * game->mapX + map_x] > 0);
+	return (game->map[map_y][map_x] == WALL);
 }
 void	key_control(mlx_key_data_t keydata, void *param)
 {

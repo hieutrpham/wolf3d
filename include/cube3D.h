@@ -50,6 +50,7 @@
 #define FLOOR 0x492828FF
 #define CEILING 0x1A3263FF
 #define CELL_SIZE 64
+#define WALL '1'
 
 typedef enum
 {

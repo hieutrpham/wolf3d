@@ -16,9 +16,11 @@ void draw_rays(void *param)
 {
 	t_game *game = param;
 	t_player *p = game->player;
+	// printf("%f %f\n", p->pos.x, p->pos.y);
 	float dist;
 	float ray_angle = p->angle - 30.0f * RAD;
 
+	// printf("player angle: %f\n", p->angle);
 	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
 		if (ray_angle == PI || ray_angle == PI/2
@@ -97,8 +99,8 @@ int player_init(t_game *game, t_file *file)
 	if (!game->player)
 		return FAIL;
 	game->player->angle = PI/2;
-	game->player->pos.x = file->player_x;
-	game->player->pos.y = file->player_y;
+	game->player->pos.x = file->player_x + 0.5f;
+	game->player->pos.y = file->player_y + 0.5f;
 	game->player->dir.x = cosf(game->player->angle) * 0.1f;
 	game->player->dir.y = sinf(game->player->angle) * 0.1f;
 	return SUCC;
