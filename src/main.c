@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
 		return FAIL;
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
+	mlx_set_cursor_mode(game.mlx, MLX_MOUSE_DISABLED);
 	game_loop(&game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);

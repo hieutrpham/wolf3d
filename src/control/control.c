@@ -50,28 +50,27 @@ void	key_control(mlx_key_data_t keydata, void *param)
 	if (mlx_is_key_down(game->mlx, MLX_KEY_A))
 	{
 		t_vector new_dir = {p->dir.y, -p->dir.x};
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * game->delta_time));
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (keydata.key == MLX_KEY_D)
 	{
 		t_vector new_dir = {-p->dir.y, p->dir.x};
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * game->delta_time));
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (keydata.key == MLX_KEY_W)
 	{
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED * game->delta_time));
+		t_vector new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED * (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (keydata.key == MLX_KEY_S)
 	{
-		t_vector new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED * game->delta_time));
+		t_vector new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED * (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 }
-

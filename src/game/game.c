@@ -36,6 +36,8 @@ void draw_rays(void *param)
 
 		// 3D projection.
 		float lineH = (WALL_HEIGHT)/corrected_dist;
+		if (lineH > HEIGHT)
+			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
 		t_uvmap uv = {
@@ -84,9 +86,24 @@ void fps_hook(void* param)
 	game->delta_time = delta_time;
 }
 
+void mouse_rotation(void *param)
+{
+	int x;
+	int y;
+	t_game *game = param;
+	t_player *p = game->player;
+	mlx_get_mouse_pos(game->mlx, &x, &y);
+	int delta_x = x - WIDTH/2;
+	p->angle += delta_x * 0.002f; //run
+	p->dir.x = cosf(p->angle);
+	p->dir.y = sinf(p->angle);
+	mlx_set_mouse_pos(game->mlx, WIDTH/2, HEIGHT/2);
+}
+
 void game_loop(t_game *game)
 {
 	mlx_loop_hook(game->mlx, fps_hook, game);
+	mlx_loop_hook(game->mlx, mouse_rotation, game);
 	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
@@ -97,6 +114,7 @@ void game_loop(t_game *game)
 int player_init(t_game *game, t_file *file)
 {
 	game->player = malloc(sizeof(*game->player));
+	game->player->angle = PI;
 	if (!game->player)
 		return FAIL;
 	if (file->player_dir == 'N')
