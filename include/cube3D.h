@@ -104,6 +104,8 @@ typedef struct {
 	mlx_texture_t *ea;
 	mlx_texture_t *no;
 	mlx_texture_t *so;
+	uint floor_color;
+	uint ceil_color;
 	double last_time;
 	int mapX;
 	int mapY;

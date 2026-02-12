@@ -98,7 +98,15 @@ int player_init(t_game *game, t_file *file)
 	game->player = malloc(sizeof(*game->player));
 	if (!game->player)
 		return FAIL;
-	game->player->angle = PI/2;
+	if (file->player_dir == 'N')
+		game->player->angle = 3*PI/2;
+	if (file->player_dir == 'E')
+		game->player->angle = PI;
+	if (file->player_dir == 'W')
+		game->player->angle = 2*PI;
+	if (file->player_dir == 'S')
+		game->player->angle = PI/2;
+
 	game->player->pos.x = file->player_x + 0.5f;
 	game->player->pos.y = file->player_y + 0.5f;
 	game->player->dir.x = cosf(game->player->angle) * 0.1f;
@@ -118,6 +126,8 @@ int game_init(t_game *game, t_file *file)
 	game->no = mlx_load_png(file->no_path);
 	game->ea = mlx_load_png(file->ea_path);
 	game->so = mlx_load_png(file->so_path);
+	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1], file->ce_rgb[2], 0xFF);
+	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1], file->fl_rgb[2], 0xFF);
 	game->map = file->parse_map;
 	game->mapX = file->map_width;
 	game->mapY = file->map_height;
