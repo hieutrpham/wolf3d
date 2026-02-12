@@ -16,11 +16,9 @@ void draw_rays(void *param)
 {
 	t_game *game = param;
 	t_player *p = game->player;
-	// printf("%f %f\n", p->pos.x, p->pos.y);
 	float dist;
 	float ray_angle = p->angle - 30.0f * RAD;
 
-	// printf("player angle: %f\n", p->angle);
 	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
 		if (ray_angle == PI || ray_angle == PI/2
@@ -75,17 +73,20 @@ void draw_rays(void *param)
 
 void fps_hook(void* param)
 {
-	t_game* game = param;
-	double current_time = mlx_get_time();
-	double delta_time = current_time - game->last_time;
+	t_game* game;
+	double current_time;
+	double delta_time;
+
+	game = param;
+	current_time = mlx_get_time();
+	delta_time = current_time - game->last_time;
 	game->last_time = current_time;
-	double fps = 1.0 / delta_time;
-	printf("%f\n", fps);
+	game->delta_time = delta_time;
 }
 
 void game_loop(t_game *game)
 {
-	// mlx_loop_hook(game->mlx, fps_hook, game);
+	mlx_loop_hook(game->mlx, fps_hook, game);
 	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
@@ -123,9 +124,17 @@ int game_init(t_game *game, t_file *file)
 	if (!game->image)
 		return FAIL;
 	game->we = mlx_load_png(file->we_path);
+	if (!game->we)
+		return FAIL;
 	game->no = mlx_load_png(file->no_path);
+	if (!game->no)
+		return FAIL;
 	game->ea = mlx_load_png(file->ea_path);
+	if (!game->ea)
+		return FAIL;
 	game->so = mlx_load_png(file->so_path);
+	if (!game->so)
+		return FAIL;
 	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1], file->ce_rgb[2], 0xFF);
 	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1], file->fl_rgb[2], 0xFF);
 	game->map = file->parse_map;

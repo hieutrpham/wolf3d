@@ -27,7 +27,7 @@
 # include "libft.h"
 #include "MLX42/MLX42.h"
 
-#define SPEED 0.1f
+#define SPEED 5.0f
 #define BUFFER_SIZE 64
 # define MAX_FD 1024
 #define RADIUS 50
@@ -51,7 +51,7 @@
 #define CEILING 0x1A3263FF
 #define CELL_SIZE 64
 #define WALL '1'
-
+#define SNAP_FACTOR 0.000001f
 typedef enum
 {
 	EA,
@@ -107,6 +107,7 @@ typedef struct {
 	uint floor_color;
 	uint ceil_color;
 	double last_time;
+	double delta_time;
 	int mapX;
 	int mapY;
 	char **map;

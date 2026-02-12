@@ -69,7 +69,7 @@ void get_hori_intersect(t_game *game, t_sect *sect, float player_angle)
 
 	// looking up
 	if (player_angle > PI) {
-		sect->hori.y = floorf(p->pos.y) - 0.0001f;
+		sect->hori.y = floorf(p->pos.y) - SNAP_FACTOR;
 		sect->hori.x = (p->pos.y - sect->hori.y)*aTan + p->pos.x;
 		step.y = -1.0f;
 		step.x = aTan;
@@ -107,7 +107,7 @@ void get_vert_intersect(t_game *game, t_sect *sect, float player_angle)
 	// looking left
 	else if (player_angle > PI/2 && player_angle < 3*PI/2)
 	{
-		sect->vert.x = floorf(p->pos.x) - 0.0001f;
+		sect->vert.x = floorf(p->pos.x) - SNAP_FACTOR;
 		sect->vert.y = p->pos.y + (p->pos.x - sect->vert.x)*aTan;
 		step.x = -1.0f;
 		step.y = -step.x*aTan;
