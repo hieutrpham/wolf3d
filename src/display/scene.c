@@ -25,7 +25,7 @@ void render_ceiling(void *param)
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(game->image, x, y, CEILING);
+			put_pixel(game->image, x, y, set_brightness(game->ceil_color, (HEIGHT/2-y)/BRIGHTNESS));
 			x++;
 		}
 		y++;
@@ -45,7 +45,7 @@ void render_floor(void *param)
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(game->image, x, y, FLOOR);
+			put_pixel(game->image, x, y, set_brightness(game->floor_color, (y - HEIGHT/2)/BRIGHTNESS));
 			x++;
 		}
 		y++;

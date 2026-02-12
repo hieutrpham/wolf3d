@@ -41,7 +41,7 @@
 #define FOV 60
 #define MINIMAP_SIZE 180
 #define WHITE 0xffffffff
-#define BRIGHTNESS 2000.0f
+#define BRIGHTNESS 1000.0f
 #define BG 0x222222FF
 #define GRAY 0x303030ff
 #define RED 0xFF0000FF
@@ -50,6 +50,7 @@
 #define FLOOR 0x492828FF
 #define CEILING 0x1A3263FF
 #define CELL_SIZE 64
+#define WALL '1'
 
 typedef enum
 {
@@ -103,10 +104,12 @@ typedef struct {
 	mlx_texture_t *ea;
 	mlx_texture_t *no;
 	mlx_texture_t *so;
+	uint floor_color;
+	uint ceil_color;
 	double last_time;
 	int mapX;
 	int mapY;
-	int *map;
+	char **map;
 } t_game;
 
 typedef struct s_str
@@ -214,7 +217,7 @@ uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game
 void game_loop(t_game *game);
-int game_init(t_game *game);
+int game_init(t_game *game, t_file *file);
 t_sect cast_ray(t_game *game, float player_angle);
 
 //vector

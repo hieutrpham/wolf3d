@@ -12,10 +12,10 @@
 
 #include "cube3D.h"
 
-#if 0
 int main(int argc, char *argv[])
 {
 	t_file	file;
+	t_game game = {0};
 
 	if (argc != 2)
 		return (err_message("Usage: ./cub3D <map.cub>\n", FAIL));
@@ -27,16 +27,8 @@ int main(int argc, char *argv[])
 		free_file(&file);
 		return (FAIL);
 	}
-	free_file(&file);
-	return (SUCC);
-}
-#else
 
-int main(void)
-{
-	t_game game = {0};
-
-	if (game_init(&game))
+	if (game_init(&game, &file))
 		return FAIL;
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
@@ -44,6 +36,6 @@ int main(void)
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
 	free(game.player);
-	return SUCC;
+	free_file(&file);
+	return (SUCC);
 }
-#endif
