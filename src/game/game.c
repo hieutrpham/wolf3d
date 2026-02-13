@@ -94,7 +94,7 @@ void mouse_rotation(void *param)
 	t_player *p = game->player;
 	mlx_get_mouse_pos(game->mlx, &x, &y);
 	int delta_x = x - WIDTH/2;
-	p->angle += delta_x * 0.002f; //run
+	p->angle += delta_x * MOUSE_SENSITIVITY;
 	p->dir.x = cosf(p->angle);
 	p->dir.y = sinf(p->angle);
 	mlx_set_mouse_pos(game->mlx, WIDTH/2, HEIGHT/2);
@@ -103,6 +103,7 @@ void mouse_rotation(void *param)
 void game_loop(t_game *game)
 {
 	mlx_loop_hook(game->mlx, fps_hook, game);
+	mlx_loop_hook(game->mlx, handle_movement, game);
 	mlx_loop_hook(game->mlx, mouse_rotation, game);
 	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);

@@ -52,6 +52,8 @@
 #define CELL_SIZE 64
 #define WALL '1'
 #define SNAP_FACTOR 0.000001f
+#define MOUSE_SENSITIVITY 0.001f
+
 typedef enum
 {
 	EA,
@@ -111,14 +113,13 @@ typedef struct {
 	int mapX;
 	int mapY;
 	char **map;
+	bool forward;
+	bool backward;
+	bool left;
+	bool right;
+	bool turn_left;
+	bool turn_right;
 } t_game;
-
-typedef struct s_str
-{
-	char *str;
-	size_t count;
-	size_t cap;
-} t_str;
 
 typedef struct s_bounds
 {
@@ -220,6 +221,7 @@ uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 void game_loop(t_game *game);
 int game_init(t_game *game, t_file *file);
 t_sect cast_ray(t_game *game, float player_angle);
+void handle_movement(void *param);
 
 //vector
 t_vector v2f_build(float x, float y);
