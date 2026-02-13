@@ -36,8 +36,6 @@ void draw_rays(void *param)
 
 		// 3D projection.
 		float lineH = (WALL_HEIGHT)/corrected_dist;
-		if (lineH > HEIGHT)
-			lineH = HEIGHT;
 		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
 		t_vector origin = {r, line_offset};
 		t_uvmap uv = {

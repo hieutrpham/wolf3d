@@ -71,9 +71,10 @@ void draw_texture(t_game *game, t_uvmap uv, t_texture t)
 	brightness = uv.height/BRIGHTNESS;
 	y_start = (int)uv.origin.y;
 	y = 0;
+	float step = (float)texture->height/(float)uv.height;
 	while (y < uv.height)
 	{
-		color = get_pixel_from_texture(texture, uv.tx, (int)(y*texture->height/uv.height));
+		color = get_pixel_from_texture(texture, uv.tx, (int)(y*step));
 		put_pixel(game->image, (int)uv.origin.x, y + y_start, set_brightness(color, brightness));
 		y++;
 	}

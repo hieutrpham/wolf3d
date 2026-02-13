@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "MLX42/MLX42.h"
 #include "cube3D.h"
-#define P_GIRTH 0.2f
 
 bool is_wall(t_game *game, t_vector pos)
 {
