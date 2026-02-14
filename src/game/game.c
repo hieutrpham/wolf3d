@@ -21,9 +21,6 @@ void draw_rays(void *param)
 
 	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
-		if (ray_angle == PI || ray_angle == PI/2
-			|| ray_angle == 3*PI/2 || ray_angle == 2*PI)
-			ray_angle += 0.0001f;
 		t_sect sect = cast_ray(game, ray_angle);
 		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
 		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
@@ -34,15 +31,20 @@ void draw_rays(void *param)
 			dist = sqrtf(distV);
 		float corrected_dist = dist * cosf(ray_angle - p->angle);
 
-		// 3D projection.
-		float lineH = (WALL_HEIGHT)/corrected_dist;
-		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
+		// INFO: 3D projection.
+		float wall_height = (PROJECTION_DIST)/corrected_dist; // calculation based on similar triangles
+		float line_offset = (HEIGHT/2.0f) - (wall_height/2.0f);
 		t_vector origin = {r, line_offset};
+		// struct containing info about the texture to be drawn
+		// origin is the top left coord of the texture
+		// height is the wall height that will be used to calculate the ratio between the texture height and wall height
+		// tx is the x coordinate of the texture to be sampled
 		t_uvmap uv = {
 			.origin = origin,
-			.height = (int)lineH,
+			.height = (int)wall_height,
 			.tx = 0,
 		};
+		// variables to indicate where direction the ray hits the wall
 		float r_dir_y = sinf(ray_angle);
 		float r_dir_x = cosf(ray_angle);
 		// ray hits horizontal and opposite the y axis
