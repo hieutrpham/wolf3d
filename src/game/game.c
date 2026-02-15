@@ -16,16 +16,11 @@ void draw_rays(void *param)
 {
 	t_game *game = param;
 	t_player *p = game->player;
-	// printf("%f %f\n", p->pos.x, p->pos.y);
 	float dist;
 	float ray_angle = p->angle - 30.0f * RAD;
 
-	// printf("player angle: %f\n", p->angle);
 	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
 	{
-		if (ray_angle == PI || ray_angle == PI/2
-			|| ray_angle == 3*PI/2 || ray_angle == 2*PI)
-			ray_angle += 0.0001f;
 		t_sect sect = cast_ray(game, ray_angle);
 		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
 		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
@@ -36,15 +31,20 @@ void draw_rays(void *param)
 			dist = sqrtf(distV);
 		float corrected_dist = dist * cosf(ray_angle - p->angle);
 
-		// 3D projection.
-		float lineH = (WALL_HEIGHT)/corrected_dist;
-		float line_offset = (HEIGHT/2.0f) - (lineH/2.0f);
+		// INFO: 3D projection.
+		float wall_height = (PROJECTION_DIST)/corrected_dist; // calculation based on similar triangles
+		float line_offset = (HEIGHT/2.0f) - (wall_height/2.0f);
 		t_vector origin = {r, line_offset};
+		// struct containing info about the texture to be drawn
+		// origin is the top left coord of the texture
+		// height is the wall height that will be used to calculate the ratio between the texture height and wall height
+		// tx is the x coordinate of the texture to be sampled
 		t_uvmap uv = {
 			.origin = origin,
-			.height = (int)lineH,
+			.height = (int)wall_height,
 			.tx = 0,
 		};
+		// variables to indicate where direction the ray hits the wall
 		float r_dir_y = sinf(ray_angle);
 		float r_dir_x = cosf(ray_angle);
 		// ray hits horizontal and opposite the y axis
@@ -75,17 +75,36 @@ void draw_rays(void *param)
 
 void fps_hook(void* param)
 {
-	t_game* game = param;
-	double current_time = mlx_get_time();
-	double delta_time = current_time - game->last_time;
+	t_game* game;
+	double current_time;
+	double delta_time;
+
+	game = param;
+	current_time = mlx_get_time();
+	delta_time = current_time - game->last_time;
 	game->last_time = current_time;
-	double fps = 1.0 / delta_time;
-	printf("%f\n", fps);
+	game->delta_time = delta_time;
+}
+
+void mouse_rotation(void *param)
+{
+	int x;
+	int y;
+	t_game *game = param;
+	t_player *p = game->player;
+	mlx_get_mouse_pos(game->mlx, &x, &y);
+	int delta_x = x - WIDTH/2;
+	p->angle += delta_x * MOUSE_SENSITIVITY;
+	p->dir.x = cosf(p->angle);
+	p->dir.y = sinf(p->angle);
+	mlx_set_mouse_pos(game->mlx, WIDTH/2, HEIGHT/2);
 }
 
 void game_loop(t_game *game)
 {
-	// mlx_loop_hook(game->mlx, fps_hook, game);
+	mlx_loop_hook(game->mlx, fps_hook, game);
+	mlx_loop_hook(game->mlx, handle_movement, game);
+	mlx_loop_hook(game->mlx, mouse_rotation, game);
 	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
@@ -96,6 +115,7 @@ void game_loop(t_game *game)
 int player_init(t_game *game, t_file *file)
 {
 	game->player = malloc(sizeof(*game->player));
+	game->player->angle = PI;
 	if (!game->player)
 		return FAIL;
 	if (file->player_dir == 'N')
@@ -123,9 +143,17 @@ int game_init(t_game *game, t_file *file)
 	if (!game->image)
 		return FAIL;
 	game->we = mlx_load_png(file->we_path);
+	if (!game->we)
+		return FAIL;
 	game->no = mlx_load_png(file->no_path);
+	if (!game->no)
+		return FAIL;
 	game->ea = mlx_load_png(file->ea_path);
+	if (!game->ea)
+		return FAIL;
 	game->so = mlx_load_png(file->so_path);
+	if (!game->so)
+		return FAIL;
 	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1], file->ce_rgb[2], 0xFF);
 	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1], file->fl_rgb[2], 0xFF);
 	game->map = file->parse_map;

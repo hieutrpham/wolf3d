@@ -26,21 +26,3 @@ int	err_message(char *string, int code)
 	}
 	return (code);
 }
-
-t_str *str_append(t_str *str, char *line)
-{
-	int i;
-
-	i = 0;
-	if (str->count >= str->cap)
-	{
-		if (str->cap == 0)
-			str->cap = 256;
-		else
-			str->cap *=2;
-		str->str = realloc(str->str, str->cap * sizeof(*str->str));
-	}
-	while (line[i] != '\n')
-		str->str[str->count++] = line[i++];
-	return str;
-}
