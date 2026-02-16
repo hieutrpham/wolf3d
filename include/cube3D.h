@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 14:32:22 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/16 11:36:31 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,21 @@
 #define WALL '1'
 #define SNAP_FACTOR 0.000001f
 #define MOUSE_SENSITIVITY 0.001f
+#define TURN_ANGLE 0.1f
+
+typedef enum
+{
+	LEFT,
+	RIGHT
+} t_turn;
+
+typedef enum
+{
+	FORWARD,
+	BACKWARD,
+	MOVE_LEFT,
+	MOVE_RIGHT
+} t_move;
 
 typedef enum
 {
@@ -201,8 +216,13 @@ char 	*get_path(char *line);
 void 	skip_space(char **str);
 void 	print_file(t_file *file);
 
-// draw functions
+// control functions
 void	key_control(mlx_key_data_t keydata, void *param);
+void	turn(t_game *game, t_turn dir);
+void	move(t_game *game, t_move dir);
+void	move_left_or_right(t_game *game, t_move dir);
+void	handle_movement(void *param);
+// draw functions
 void draw_map(void *param);
 void clear_bg(void *param);
 void render_ceiling(void *param);
