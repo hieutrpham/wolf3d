@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/16 11:36:31 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/16 13:23:24 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef enum
 	WE,
 	NO,
 	SO
-} t_texture;
+} t_texture_type;
 
 typedef struct
 {
@@ -89,7 +89,7 @@ typedef struct
 	t_vector origin;
 	int height;
 	int tx;
-	t_texture texture;
+	t_texture_type texture;
 } t_uvmap;
 
 typedef struct
@@ -135,6 +135,17 @@ typedef struct {
 	bool turn_left;
 	bool turn_right;
 } t_game;
+
+typedef struct {
+	mlx_texture_t	*texture;
+	float			brightness;
+	float			step;
+	float			tex_y;
+	uint			color;
+	int				offset;
+	int				draw_start;
+	int				draw_end;
+} t_texture;
 
 typedef struct s_bounds
 {
@@ -234,7 +245,7 @@ void	put_pixel(mlx_image_t *img, uint16_t x, uint16_t y, uint32_t color);
 void swap_int(int *i1, int *i2);
 uint set_brightness(uint color, float factor);
 uint get_color(int r, int g, int b, int a);
-void draw_texture(t_game *game, t_uvmap uv, t_texture t);
+void draw_texture(t_game *game, t_uvmap uv, t_texture_type t);
 uint get_pixel_from_texture(mlx_texture_t *texture, int tx, int ty);
 
 // game

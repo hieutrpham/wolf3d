@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/06 14:55:42 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/16 13:20:52 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ void	game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, fps_hook, game);
 	mlx_loop_hook(game->mlx, handle_movement, game);
 	mlx_loop_hook(game->mlx, mouse_rotation, game);
-	mlx_loop_hook(game->mlx, clear_bg, game);
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
