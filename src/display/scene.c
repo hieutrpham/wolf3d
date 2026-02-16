@@ -12,53 +12,61 @@
 
 #include "cube3D.h"
 
-void render_ceiling(void *param)
+void	render_ceiling(void *param)
 {
-	t_game *game;
-	int y;
-	int x;
+	t_game	*game;
+	int		y;
+	int		x;
 
 	game = param;
 	y = 0;
-	while (y < HEIGHT/2)
+	while (y < HEIGHT / 2)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(game->image, x, y, set_brightness(game->ceil_color, (HEIGHT/2-y)/BRIGHTNESS));
+			put_pixel(game->image, x, y, set_brightness(game->ceil_color,
+					(HEIGHT / 2 - y) / BRIGHTNESS));
 			x++;
 		}
 		y++;
 	}
 }
 
-void render_floor(void *param)
+void	render_floor(void *param)
 {
-	t_game *game;
-	uint y;
-	uint x;
+	t_game	*game;
+	uint	y;
+	uint	x;
 
 	game = param;
-	y = HEIGHT/2;
+	y = HEIGHT / 2;
 	while (y < HEIGHT)
 	{
 		x = 0;
 		while (x < WIDTH)
 		{
-			put_pixel(game->image, x, y, set_brightness(game->floor_color, (y - HEIGHT/2)/BRIGHTNESS));
+			put_pixel(game->image, x, y, set_brightness(game->floor_color, (y
+						- HEIGHT / 2) / BRIGHTNESS));
 			x++;
 		}
 		y++;
 	}
 }
 
-void draw_texture(t_game *game, t_uvmap uv, t_texture t)
+void	draw_texture(t_game *game, t_uvmap uv, t_texture t)
 {
-	float y_start;
-	uint color;
-	float brightness;
-	mlx_texture_t *texture = NULL;
+	float			y_start;
+	uint			color;
+	float			brightness;
+	mlx_texture_t	*texture;
+	int				offset;
+	int				draw_start;
+	float			step;
+	float			tex_y;
+	int				draw_end;
 
+	texture = NULL;
 	if (t == SO)
 		texture = game->so;
 	if (t == WE)
@@ -67,19 +75,16 @@ void draw_texture(t_game *game, t_uvmap uv, t_texture t)
 		texture = game->ea;
 	if (t == NO)
 		texture = game->no;
-	brightness = fminf(1.0f, uv.height/BRIGHTNESS);
+	brightness = fminf(1.0f, uv.height / BRIGHTNESS);
 	y_start = uv.origin.y;
-
-	int offset;
-	int draw_start = (int)y_start;
+	draw_start = (int)y_start;
 	if (y_start < 0)
 		offset = -draw_start;
 	else
 		offset = 0;
-	float step = (float)texture->height/(float)uv.height;
-	float tex_y = offset * step;
-	int draw_end = (int)y_start + uv.height;
-
+	step = (float)texture->height / (float)uv.height;
+	tex_y = offset * step;
+	draw_end = (int)y_start + uv.height;
 	if (draw_end > HEIGHT)
 		draw_end = HEIGHT;
 	if (draw_start < 0)
@@ -87,7 +92,8 @@ void draw_texture(t_game *game, t_uvmap uv, t_texture t)
 	while (draw_start < draw_end)
 	{
 		color = get_pixel_from_texture(texture, uv.tx, (int)(tex_y));
-		put_pixel(game->image, (int)uv.origin.x, (int)draw_start, set_brightness(color, brightness));
+		put_pixel(game->image, (int)uv.origin.x, (int)draw_start,
+			set_brightness(color, brightness));
 		tex_y += step;
 		draw_start++;
 	}

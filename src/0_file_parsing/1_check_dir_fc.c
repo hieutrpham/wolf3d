@@ -1,11 +1,20 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   1_check_dir_fc.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:00:59 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:01:14 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 int	check_dir_fc(t_file *file, char *line)
 {
 	if (file->start_map == 0)
 	{
-		// print_file(file);
 		return (parse_dir_fc(file, line));
 	}
 	return (SUCC);
@@ -29,9 +38,6 @@ int	parse_dir_fc(t_file *file, char *line)
 	else if (ft_strncmp(line, "C ", 2))
 		return (parse_ceil(file, line));
 	else if (file->start_map == 1)
-	{
 		return (map_read_from_file(file, line));
-		// return (err_message("Start to read the map\n", SUCC));
-	}
 	return (err_message("Wrong character before map\n", FAIL));
 }

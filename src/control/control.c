@@ -12,10 +12,13 @@
 
 #include "cube3D.h"
 
-bool is_wall(t_game *game, t_vector pos)
+bool	is_wall(t_game *game, t_vector pos)
 {
-	int map_x = (int)pos.x;
-	int map_y = (int)pos.y;
+	int	map_x;
+	int	map_y;
+
+	map_x = (int)pos.x;
+	map_y = (int)pos.y;
 	if (map_x < 0)
 		map_x = 0;
 	if (map_y < 0)
@@ -23,49 +26,58 @@ bool is_wall(t_game *game, t_vector pos)
 	return (game->map[map_y][map_x] == WALL);
 }
 
-void handle_movement(void *param)
+void	handle_movement(void *param)
 {
-	t_game *game = param;
-	t_player *p = game->player;
+	t_game		*game;
+	t_player	*p;
+	t_vector	new_dir;
+	t_vector	new_pos;
+
+	game = param;
+	p = game->player;
 	if (game->turn_left)
 	{
 		p->angle -= 0.1f;
 		if (p->angle < 0)
-			p->angle += 2*PI;
+			p->angle += 2 * PI;
 		p->dir.x = cosf(p->angle);
 		p->dir.y = sinf(p->angle);
 	}
 	if (game->turn_right)
 	{
 		p->angle += 0.1f;
-		if (p->angle > 2* PI)
-			p->angle -= 2*PI;
+		if (p->angle > 2 * PI)
+			p->angle -= 2 * PI;
 		p->dir.x = cosf(p->angle);
 		p->dir.y = sinf(p->angle);
 	}
 	if (game->left)
 	{
-		t_vector new_dir = {p->dir.y, -p->dir.x};
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * (float)game->delta_time));
+		new_dir = (t_vector){p->dir.y, -p->dir.x};
+		new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED
+					* (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (game->right)
 	{
-		t_vector new_dir = {-p->dir.y, p->dir.x};
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED * (float)game->delta_time));
+		new_dir = (t_vector){-p->dir.y, p->dir.x};
+		new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED
+					* (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (game->forward)
 	{
-		t_vector new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED * (float)game->delta_time));
+		new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED
+					* (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
 	if (game->backward)
 	{
-		t_vector new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED * (float)game->delta_time));
+		new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED
+					* (float)game->delta_time));
 		if (!is_wall(game, new_pos))
 			p->pos = new_pos;
 	}
@@ -73,8 +85,9 @@ void handle_movement(void *param)
 
 void	key_control(mlx_key_data_t keydata, void *param)
 {
-	t_game *game = param;
+	t_game	*game;
 
+	game = param;
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == MLX_PRESS)
 		mlx_close_window(game->mlx);
 	if (keydata.action == MLX_PRESS)

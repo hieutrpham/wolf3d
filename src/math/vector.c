@@ -12,42 +12,47 @@
 
 #include "cube3D.h"
 
-t_vector v2f_build(float x, float y)
+t_vector	v2f_build(float x, float y)
 {
-	t_vector v;
-	
+	t_vector	v;
+
 	v.x = x;
 	v.y = y;
 	return (v);
 }
 
-t_vector v2f_add(t_vector v1, t_vector v2) {
-	t_vector ret = {v1.x + v2.x, v1.y + v2.y};
-	return ret;
+t_vector	v2f_add(t_vector v1, t_vector v2)
+{
+	t_vector	ret;
+
+	ret = (t_vector){v1.x + v2.x, v1.y + v2.y};
+	return (ret);
 }
 
-t_vector v2f_scale(t_vector v, float factor) {
-	t_vector ret;
+t_vector	v2f_scale(t_vector v, float factor)
+{
+	t_vector	ret;
 
 	ret.x = v.x * factor;
 	ret.y = v.y * factor;
-	return ret;
+	return (ret);
 }
 
-int v2f_dot(t_vector v1, t_vector v2)
+int	v2f_dot(t_vector v1, t_vector v2)
 {
 	return (int)(v1.x * v2.x + v1.y * v2.y);
 }
 
-t_vector v2f_sub(t_vector v1, t_vector v2) {
-	t_vector ret;
-	
+t_vector	v2f_sub(t_vector v1, t_vector v2)
+{
+	t_vector	ret;
+
 	ret.x = v1.x - v2.x;
 	ret.y = v1.y - v2.y;
-	return ret;
+	return (ret);
 }
 
-float v2i_sqlen(t_vector v)
+float	v2i_sqlen(t_vector v)
 {
-	return v.x * v.x + v.y * v.y;
+	return (v.x * v.x + v.y * v.y);
 }

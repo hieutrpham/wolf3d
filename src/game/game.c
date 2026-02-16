@@ -12,29 +12,39 @@
 
 #include "cube3D.h"
 
-void draw_rays(void *param)
+void	draw_rays(void *param)
 {
-	t_game *game = param;
-	t_player *p = game->player;
-	float dist;
-	float ray_angle = p->angle - 30.0f * RAD;
+	t_game		*game;
+	t_player	*p;
+	float		dist;
+	float		ray_angle;
+	t_sect		sect;
+	float		distH;
+	float		distV;
+	float		corrected_dist;
+	float		line_offset;
+	t_vector	origin;
+	float		r_dir_y;
+	float		r_dir_x;
 
-	for (int r = 0; r < WIDTH; r++, ray_angle += FOV*RAD/WIDTH)
+	game = param;
+	p = game->player;
+	ray_angle = p->angle - 30.0f * RAD;
+	for (int r = 0; r < WIDTH; r++, ray_angle += FOV * RAD / WIDTH)
 	{
-		t_sect sect = cast_ray(game, ray_angle);
-		float distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
-		float distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
-
+		sect = cast_ray(game, ray_angle);
+		distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
+		distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
 		if (distV > distH)
 			dist = sqrtf(distH);
 		else
 			dist = sqrtf(distV);
-		float corrected_dist = dist * cosf(ray_angle - p->angle);
-
+		corrected_dist = dist * cosf(ray_angle - p->angle);
 		// INFO: 3D projection.
-		float wall_height = (PROJECTION_DIST)/corrected_dist; // calculation based on similar triangles
-		float line_offset = (HEIGHT/2.0f) - (wall_height/2.0f);
-		t_vector origin = {r, line_offset};
+		float wall_height = (PROJECTION_DIST) / corrected_dist;
+			// calculation based on similar triangles
+		line_offset = (HEIGHT / 2.0f) - (wall_height / 2.0f);
+		origin = (t_vector){r, line_offset};
 		// struct containing info about the texture to be drawn
 		// origin is the top left coord of the texture
 		// height is the wall height that will be used to calculate the ratio between the texture height and wall height
@@ -45,39 +55,39 @@ void draw_rays(void *param)
 			.tx = 0,
 		};
 		// variables to indicate where direction the ray hits the wall
-		float r_dir_y = sinf(ray_angle);
-		float r_dir_x = cosf(ray_angle);
+		r_dir_y = sinf(ray_angle);
+		r_dir_x = cosf(ray_angle);
 		// ray hits horizontal and opposite the y axis
 		if (distV > distH && r_dir_y < 0)
 		{
-			uv.tx = (int)(fmod(sect.hori.x, 1.0)*game->so->width);
+			uv.tx = (int)(fmod(sect.hori.x, 1.0) * game->so->width);
 			draw_texture(game, uv, SO);
 		}
 		// ray hits horizontal and same direction with the y axis
 		else if (distV > distH && r_dir_y > 0)
 		{
-			uv.tx = (int)(fmod(sect.hori.x, 1.0)*game->no->width);
+			uv.tx = (int)(fmod(sect.hori.x, 1.0) * game->no->width);
 			draw_texture(game, uv, NO);
 		}
 		// ray hits vertical and same direction with the x axis
 		else if (distV < distH && r_dir_x > 0)
 		{
-			uv.tx = (int)(fmod(sect.vert.y, 1.0)*game->ea->width);
+			uv.tx = (int)(fmod(sect.vert.y, 1.0) * game->ea->width);
 			draw_texture(game, uv, EA);
 		}
 		else if (distV < distH && r_dir_x < 0)
 		{
-			uv.tx = (int)(fmod(sect.vert.y, 1.0)*game->we->width);
+			uv.tx = (int)(fmod(sect.vert.y, 1.0) * game->we->width);
 			draw_texture(game, uv, WE);
 		}
 	}
 }
 
-void fps_hook(void* param)
+void	fps_hook(void *param)
 {
-	t_game* game;
-	double current_time;
-	double delta_time;
+	t_game	*game;
+	double	current_time;
+	double	delta_time;
 
 	game = param;
 	current_time = mlx_get_time();
@@ -86,21 +96,25 @@ void fps_hook(void* param)
 	game->delta_time = delta_time;
 }
 
-void mouse_rotation(void *param)
+void	mouse_rotation(void *param)
 {
-	int x;
-	int y;
-	t_game *game = param;
-	t_player *p = game->player;
+	int			x;
+	int			y;
+	t_game		*game;
+	t_player	*p;
+	int			delta_x;
+
+	game = param;
+	p = game->player;
 	mlx_get_mouse_pos(game->mlx, &x, &y);
-	int delta_x = x - WIDTH/2;
+	delta_x = x - WIDTH / 2;
 	p->angle += delta_x * MOUSE_SENSITIVITY;
 	p->dir.x = cosf(p->angle);
 	p->dir.y = sinf(p->angle);
-	mlx_set_mouse_pos(game->mlx, WIDTH/2, HEIGHT/2);
+	mlx_set_mouse_pos(game->mlx, WIDTH / 2, HEIGHT / 2);
 }
 
-void game_loop(t_game *game)
+void	game_loop(t_game *game)
 {
 	mlx_loop_hook(game->mlx, fps_hook, game);
 	mlx_loop_hook(game->mlx, handle_movement, game);
@@ -112,53 +126,54 @@ void game_loop(t_game *game)
 	// mlx_loop_hook(game->mlx, draw_map, game);
 }
 
-int player_init(t_game *game, t_file *file)
+int	player_init(t_game *game, t_file *file)
 {
 	game->player = malloc(sizeof(*game->player));
 	game->player->angle = PI;
 	if (!game->player)
-		return FAIL;
+		return (FAIL);
 	if (file->player_dir == 'N')
-		game->player->angle = 3*PI/2;
+		game->player->angle = 3 * PI / 2;
 	if (file->player_dir == 'E')
 		game->player->angle = PI;
 	if (file->player_dir == 'W')
-		game->player->angle = 2*PI;
+		game->player->angle = 2 * PI;
 	if (file->player_dir == 'S')
-		game->player->angle = PI/2;
-
+		game->player->angle = PI / 2;
 	game->player->pos.x = file->player_x + 0.5f;
 	game->player->pos.y = file->player_y + 0.5f;
 	game->player->dir.x = cosf(game->player->angle) * 0.1f;
 	game->player->dir.y = sinf(game->player->angle) * 0.1f;
-	return SUCC;
+	return (SUCC);
 }
 
-int game_init(t_game *game, t_file *file)
+int	game_init(t_game *game, t_file *file)
 {
 	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
 	if (!game->mlx)
-		return FAIL;
+		return (FAIL);
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
-		return FAIL;
+		return (FAIL);
 	game->we = mlx_load_png(file->we_path);
 	if (!game->we)
-		return FAIL;
+		return (FAIL);
 	game->no = mlx_load_png(file->no_path);
 	if (!game->no)
-		return FAIL;
+		return (FAIL);
 	game->ea = mlx_load_png(file->ea_path);
 	if (!game->ea)
-		return FAIL;
+		return (FAIL);
 	game->so = mlx_load_png(file->so_path);
 	if (!game->so)
-		return FAIL;
-	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1], file->ce_rgb[2], 0xFF);
-	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1], file->fl_rgb[2], 0xFF);
+		return (FAIL);
+	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1],
+			file->ce_rgb[2], 0xFF);
+	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1],
+			file->fl_rgb[2], 0xFF);
 	game->map = file->parse_map;
 	game->mapX = file->map_width;
 	game->mapY = file->map_height;
 	player_init(game, file);
-	return SUCC;
+	return (SUCC);
 }

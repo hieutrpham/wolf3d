@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   3_par_fc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:02:08 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:02:13 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 int	parse_floor(t_file *file, char *line)
@@ -20,7 +30,7 @@ int	parse_ceil(t_file *file, char *line)
 int	check_fc(t_file *file, char *line, char *dir)
 {
 	int	i;
-	
+
 	i = 0;
 	while (line[i] == ' ')
 		i++;

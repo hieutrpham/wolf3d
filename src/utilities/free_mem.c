@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free_mem.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:02:21 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:02:23 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 void	free_file(t_file *file)
@@ -17,7 +27,7 @@ void	free_file(t_file *file)
 	file->ea_path = NULL;
 	if (file->map)
 		free(file->map);
-	if (file ->parse_map)
+	if (file->parse_map)
 		free_2d_array(file->parse_map);
 	if (file->fd != -1)
 		close(file->fd);
