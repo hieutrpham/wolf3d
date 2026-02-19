@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 10:57:33 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:23:21 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@
 # include <stdbool.h>
 # include <stdint.h>
 # include <stdio.h>
-# include <stdio.h>
-# include <stdlib.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/types.h>
@@ -83,7 +81,12 @@ typedef struct s_vector
 	float			y;
 }					t_vector;
 
-// structure containing information about texture uv mapping
+/* struct containing info about the texture to be drawn
+ origin is the top left coord of the texture
+ height is the wall height that will be used to calculate the ratio
+ between the texture height and wall height
+ tx is the x coordinate of the texture to be sampled
+*/
 typedef struct s_uvmap
 {
 	t_vector		origin;
@@ -116,8 +119,9 @@ typedef struct s_game
 	mlx_texture_t	*so;
 	uint			floor_color;
 	uint			ceil_color;
-	double			last_time;
-	double			delta_time;
+	float			last_time;
+	float			delta_time;
+	float			delta_angle;
 	int				map_width;
 	int				map_height;
 	char			**map;
@@ -174,6 +178,22 @@ typedef struct s_file
 	int				player_y;
 	char			player_dir;
 }					t_file;
+
+typedef struct s_ray
+{
+	float		dist;
+	float		ray_angle;
+	float		distH;
+	float		distV;
+	float		corrected_dist;
+	float		line_offset;
+	float		r_dir_y;
+	float		r_dir_x;
+	float		wall_height;
+	t_uvmap		uv;
+	t_sect		sect;
+	int r;
+} t_ray;
 
 int					err_message(char *string, int code);
 int					clean_up(char *map, char *line, int fd, int code);
@@ -242,14 +262,17 @@ uint				get_pixel_from_texture(mlx_texture_t *texture, int tx,
 						int ty);
 
 // game
+bool				load_texture(t_game *game, t_file *file);
 void				game_loop(t_game *game);
-int					game_init(t_game *game, t_file *file);
+bool				game_init(t_game *game, t_file *file);
 t_sect				cast_ray(t_game *game, float player_angle);
 bool				hit_wall(int map_x, int map_y, t_game *game);
 void				get_vert_intersect(t_game *game, t_sect *sect,
 						float player_angle);
 void				get_hori_intersect(t_game *game, t_sect *sect,
 						float player_angle);
+void				draw_rays(void *param);
+void				render_texture(t_ray ray, t_game *game);
 
 // vector
 t_vector			v2f_build(float x, float y);

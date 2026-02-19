@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 		return (FAIL);
 	}
 
-	if (game_init(&game, &file))
+	if (!game_init(&game, &file))
 		return FAIL;
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);

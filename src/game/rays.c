@@ -35,3 +35,40 @@ t_sect	cast_ray(t_game *game, float player_angle)
 	get_vert_intersect(game, &sect, player_angle);
 	return (sect);
 }
+
+void	calc_ray(t_ray *ray)
+{
+	ray->wall_height = (PROJECTION_DIST) / ray->corrected_dist;
+	ray->line_offset = (HEIGHT / 2.0f) - (ray->wall_height / 2.0f);
+	ray->uv.origin = (t_vector){ray->r, ray->line_offset};
+	ray->uv.height = (int)ray->wall_height;
+	ray->r_dir_y = sinf(ray->ray_angle);
+	ray->r_dir_x = cosf(ray->ray_angle);
+}
+
+void	draw_rays(void *param)
+{
+	t_game		*game;
+	t_player	*p;
+	t_ray		ray;
+
+	ray = (t_ray){};
+	game = param;
+	p = game->player;
+	ray.ray_angle = p->angle - 30.0f * RAD;
+	while (ray.r < WIDTH)
+	{
+		ray.sect = cast_ray(game, ray.ray_angle);
+		ray.distH = v2i_sqlen(v2f_sub(p->pos, ray.sect.hori));
+		ray.distV = v2i_sqlen(v2f_sub(p->pos, ray.sect.vert));
+		if (ray.distV > ray.distH)
+			ray.dist = sqrtf(ray.distH);
+		else
+			ray.dist = sqrtf(ray.distV);
+		ray.corrected_dist = ray.dist * cosf(ray.ray_angle - p->angle);
+		calc_ray(&ray);
+		render_texture(ray, game);
+		ray.r++;
+		ray.ray_angle += game->delta_angle;
+	}
+}

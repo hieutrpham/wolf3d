@@ -6,89 +6,17 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 10:56:22 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:23:04 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3D.h"
 
-void	draw_rays(void *param)
-{
-	t_game		*game;
-	t_player	*p;
-	float		dist;
-	float		ray_angle;
-	t_sect		sect;
-	float		distH;
-	float		distV;
-	float		corrected_dist;
-	float		line_offset;
-	t_vector	origin;
-	float		r_dir_y;
-	float		r_dir_x;
-	float		wall_height;
-
-	game = param;
-	p = game->player;
-	ray_angle = p->angle - 30.0f * RAD;
-	for (int r = 0; r < WIDTH; r++, ray_angle += FOV * RAD / WIDTH)
-	{
-		sect = cast_ray(game, ray_angle);
-		distH = v2i_sqlen(v2f_sub(p->pos, sect.hori));
-		distV = v2i_sqlen(v2f_sub(p->pos, sect.vert));
-		if (distV > distH)
-			dist = sqrtf(distH);
-		else
-			dist = sqrtf(distV);
-		corrected_dist = dist * cosf(ray_angle - p->angle);
-		// INFO: 3D projection.
-		wall_height = (PROJECTION_DIST) / corrected_dist;
-		// calculation based on similar triangles
-		line_offset = (HEIGHT / 2.0f) - (wall_height / 2.0f);
-		origin = (t_vector){r, line_offset};
-		// struct containing info about the texture to be drawn
-		// origin is the top left coord of the texture
-		// height is the wall height that will be used to calculate the ratio between the texture height and wall height
-		// tx is the x coordinate of the texture to be sampled
-		t_uvmap uv = {
-			.origin = origin,
-			.height = (int)wall_height,
-			.tx = 0,
-		};
-		// variables to indicate where direction the ray hits the wall
-		r_dir_y = sinf(ray_angle);
-		r_dir_x = cosf(ray_angle);
-		// ray hits horizontal and opposite the y axis
-		if (distV > distH && r_dir_y < 0)
-		{
-			uv.tx = (int)(fmod(sect.hori.x, 1.0) * game->so->width);
-			draw_texture(game, uv, SO);
-		}
-		// ray hits horizontal and same direction with the y axis
-		else if (distV > distH && r_dir_y > 0)
-		{
-			uv.tx = (int)(fmod(sect.hori.x, 1.0) * game->no->width);
-			draw_texture(game, uv, NO);
-		}
-		// ray hits vertical and same direction with the x axis
-		else if (distV < distH && r_dir_x > 0)
-		{
-			uv.tx = (int)(fmod(sect.vert.y, 1.0) * game->ea->width);
-			draw_texture(game, uv, EA);
-		}
-		else if (distV < distH && r_dir_x < 0)
-		{
-			uv.tx = (int)(fmod(sect.vert.y, 1.0) * game->we->width);
-			draw_texture(game, uv, WE);
-		}
-	}
-}
-
 void	fps_hook(void *param)
 {
 	t_game	*game;
-	double	current_time;
-	double	delta_time;
+	float	current_time;
+	float	delta_time;
 
 	game = param;
 	current_time = mlx_get_time();
@@ -129,12 +57,11 @@ void	game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, draw_rays, game);
 }
 
-int	player_init(t_game *game, t_file *file)
+bool	player_init(t_game *game, t_file *file)
 {
 	game->player = malloc(sizeof(*game->player));
-	game->player->angle = PI;
 	if (!game->player)
-		return (FAIL);
+		return (false);
 	if (file->player_dir == 'N')
 		game->player->angle = 3 * PI / 2;
 	if (file->player_dir == 'E')
@@ -145,31 +72,22 @@ int	player_init(t_game *game, t_file *file)
 		game->player->angle = PI / 2;
 	game->player->pos.x = file->player_x + 0.5f;
 	game->player->pos.y = file->player_y + 0.5f;
-	game->player->dir.x = cosf(game->player->angle) * 0.1f;
-	game->player->dir.y = sinf(game->player->angle) * 0.1f;
-	return (SUCC);
+	game->player->dir.x = cosf(game->player->angle);
+	game->player->dir.y = sinf(game->player->angle);
+	return (true);
 }
 
-int	game_init(t_game *game, t_file *file)
+bool	game_init(t_game *game, t_file *file)
 {
+	game->delta_angle = FOV * RAD / WIDTH;
 	game->mlx = mlx_init(WIDTH, HEIGHT, "wolf3D", true);
 	if (!game->mlx)
-		return (FAIL);
+		return (false);
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
 	if (!game->image)
-		return (FAIL);
-	game->we = mlx_load_png(file->we_path);
-	if (!game->we)
-		return (FAIL);
-	game->no = mlx_load_png(file->no_path);
-	if (!game->no)
-		return (FAIL);
-	game->ea = mlx_load_png(file->ea_path);
-	if (!game->ea)
-		return (FAIL);
-	game->so = mlx_load_png(file->so_path);
-	if (!game->so)
-		return (FAIL);
+		return (false);
+	if (!load_texture(game, file))
+		return (false);
 	game->ceil_color = get_color(file->ce_rgb[0], file->ce_rgb[1],
 			file->ce_rgb[2], 0xFF);
 	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1],
@@ -177,6 +95,7 @@ int	game_init(t_game *game, t_file *file)
 	game->map = file->parse_map;
 	game->map_width = file->map_width;
 	game->map_height = file->map_height;
-	player_init(game, file);
-	return (SUCC);
+	if (!player_init(game, file))
+		return (false);
+	return (true);
 }

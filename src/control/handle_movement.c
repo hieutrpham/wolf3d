@@ -49,10 +49,10 @@ void	move(t_game *game, t_move dir)
 	p = game->player;
 	if (dir == FORWARD)
 		new_pos = v2f_add(p->pos, v2f_scale(p->dir, SPEED
-					* (float)game->delta_time));
+					* game->delta_time));
 	else
 		new_pos = v2f_sub(p->pos, v2f_scale(p->dir, SPEED
-					* (float)game->delta_time));
+					* game->delta_time));
 	if (!is_wall(game, new_pos))
 		p->pos = new_pos;
 }
@@ -69,7 +69,7 @@ void	move_left_or_right(t_game *game, t_move dir)
 	else
 		new_dir = (t_vector){-p->dir.y, p->dir.x};
 	new_pos = v2f_add(p->pos, v2f_scale(new_dir, SPEED
-				* (float)game->delta_time));
+				* game->delta_time));
 	if (!is_wall(game, new_pos))
 		p->pos = new_pos;
 }
