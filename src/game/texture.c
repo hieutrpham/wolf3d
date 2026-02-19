@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/19 13:22:42 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:23:04 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:54:49 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 void	render_texture(t_ray ray, t_game *game)
 {
-	if (ray.distV > ray.distH && ray.r_dir_y < 0)
+	if (ray.dist_vert > ray.dist_hori && ray.r_dir_y < 0)
 	{
 		ray.uv.tx = (int)(fmod(ray.sect.hori.x, 1.0) * game->so->width);
 		draw_texture(game, ray.uv, SO);
 	}
-	else if (ray.distV > ray.distH && ray.r_dir_y > 0)
+	else if (ray.dist_vert > ray.dist_hori && ray.r_dir_y > 0)
 	{
 		ray.uv.tx = (int)(fmod(ray.sect.hori.x, 1.0) * game->no->width);
 		draw_texture(game, ray.uv, NO);
 	}
-	else if (ray.distV < ray.distH && ray.r_dir_x > 0)
+	else if (ray.dist_vert < ray.dist_hori && ray.r_dir_x > 0)
 	{
 		ray.uv.tx = (int)(fmod(ray.sect.vert.y, 1.0) * game->ea->width);
 		draw_texture(game, ray.uv, EA);
 	}
-	else if (ray.distV < ray.distH && ray.r_dir_x < 0)
+	else if (ray.dist_vert < ray.dist_hori && ray.r_dir_x < 0)
 	{
 		ray.uv.tx = (int)(fmod(ray.sect.vert.y, 1.0) * game->we->width);
 		draw_texture(game, ray.uv, WE);

@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:23:21 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:54:49 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,19 +181,19 @@ typedef struct s_file
 
 typedef struct s_ray
 {
-	float		dist;
-	float		ray_angle;
-	float		distH;
-	float		distV;
-	float		corrected_dist;
-	float		line_offset;
-	float		r_dir_y;
-	float		r_dir_x;
-	float		wall_height;
-	t_uvmap		uv;
-	t_sect		sect;
-	int r;
-} t_ray;
+	float			dist;
+	float			ray_angle;
+	float			dist_hori;
+	float			dist_vert;
+	float			corrected_dist;
+	float			line_offset;
+	float			r_dir_y;
+	float			r_dir_x;
+	float			wall_height;
+	t_uvmap			uv;
+	t_sect			sect;
+	int				r;
+}					t_ray;
 
 int					err_message(char *string, int code);
 int					clean_up(char *map, char *line, int fd, int code);
@@ -264,7 +264,7 @@ uint				get_pixel_from_texture(mlx_texture_t *texture, int tx,
 // game
 bool				load_texture(t_game *game, t_file *file);
 void				game_loop(t_game *game);
-bool				game_init(t_game *game, t_file *file);
+bool				game_init(t_game *game, t_file *file, t_player *player);
 t_sect				cast_ray(t_game *game, float player_angle);
 bool				hit_wall(int map_x, int map_y, t_game *game);
 void				get_vert_intersect(t_game *game, t_sect *sect,

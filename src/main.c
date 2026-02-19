@@ -6,37 +6,44 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:28:46 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 15:19:24 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:53:32 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube3D.h"
 
-int main(int argc, char *argv[])
+static void	unload_textures(t_game *game)
 {
-	t_file	file;
-	t_game game = {0};
+	mlx_delete_texture(game->so);
+	mlx_delete_texture(game->we);
+	mlx_delete_texture(game->ea);
+	mlx_delete_texture(game->no);
+}
 
+int	main(int argc, char *argv[])
+{
+	t_file		file;
+	t_game		game;
+	t_player	player;
+
+	game = (t_game){};
+	player = (t_player){};
 	if (argc != 2)
 		return (err_message("Usage: ./cub3D <map.cub>\n", FAIL));
 	if (check_exter(argv[1]) == FAIL)
 		return (err_message("map is wrong\n", FAIL));
 	ft_bzero(&file, sizeof(t_file));
 	if (check_inter(&file, argv[1]) == FAIL)
-	{
-		free_file(&file);
+		return (free_file(&file), FAIL);
+	if (!game_init(&game, &file, &player))
 		return (FAIL);
-	}
-
-	if (!game_init(&game, &file))
-		return FAIL;
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
 	mlx_set_cursor_mode(game.mlx, MLX_MOUSE_DISABLED);
 	game_loop(&game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
-	free(game.player);
+	unload_textures(&game);
 	free_file(&file);
 	return (SUCC);
 }

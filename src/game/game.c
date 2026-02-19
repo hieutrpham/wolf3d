@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:23:04 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:45:09 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,9 @@ void	game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, draw_rays, game);
 }
 
-bool	player_init(t_game *game, t_file *file)
+bool	player_init(t_game *game, t_player *player, t_file *file)
 {
-	game->player = malloc(sizeof(*game->player));
-	if (!game->player)
-		return (false);
+	game->player = player;
 	if (file->player_dir == 'N')
 		game->player->angle = 3 * PI / 2;
 	if (file->player_dir == 'E')
@@ -77,7 +75,7 @@ bool	player_init(t_game *game, t_file *file)
 	return (true);
 }
 
-bool	game_init(t_game *game, t_file *file)
+bool	game_init(t_game *game, t_file *file, t_player *player)
 {
 	game->delta_angle = FOV * RAD / WIDTH;
 	game->mlx = mlx_init(WIDTH, HEIGHT, "wolf3D", true);
@@ -95,7 +93,7 @@ bool	game_init(t_game *game, t_file *file)
 	game->map = file->parse_map;
 	game->map_width = file->map_width;
 	game->map_height = file->map_height;
-	if (!player_init(game, file))
+	if (!player_init(game, player, file))
 		return (false);
 	return (true);
 }

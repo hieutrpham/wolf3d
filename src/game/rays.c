@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/31 17:17:57 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 10:56:22 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 13:54:49 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void	draw_rays(void *param)
 	while (ray.r < WIDTH)
 	{
 		ray.sect = cast_ray(game, ray.ray_angle);
-		ray.distH = v2i_sqlen(v2f_sub(p->pos, ray.sect.hori));
-		ray.distV = v2i_sqlen(v2f_sub(p->pos, ray.sect.vert));
-		if (ray.distV > ray.distH)
-			ray.dist = sqrtf(ray.distH);
+		ray.dist_hori = v2i_sqlen(v2f_sub(p->pos, ray.sect.hori));
+		ray.dist_vert = v2i_sqlen(v2f_sub(p->pos, ray.sect.vert));
+		if (ray.dist_vert > ray.dist_hori)
+			ray.dist = sqrtf(ray.dist_hori);
 		else
-			ray.dist = sqrtf(ray.distV);
+			ray.dist = sqrtf(ray.dist_vert);
 		ray.corrected_dist = ray.dist * cosf(ray.ray_angle - p->angle);
 		calc_ray(&ray);
 		render_texture(ray, game);
