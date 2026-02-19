@@ -77,10 +77,8 @@ void	move_left_or_right(t_game *game, t_move dir)
 void	handle_movement(void *param)
 {
 	t_game		*game;
-	t_player	*p;
 
 	game = param;
-	p = game->player;
 	if (game->turn_left)
 		turn(game, LEFT);
 	if (game->turn_right)

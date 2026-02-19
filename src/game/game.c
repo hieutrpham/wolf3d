@@ -19,7 +19,7 @@ void	fps_hook(void *param)
 	float	delta_time;
 
 	game = param;
-	current_time = mlx_get_time();
+	current_time = (float)mlx_get_time();
 	delta_time = current_time - game->last_time;
 	game->last_time = current_time;
 	game->delta_time = delta_time;
