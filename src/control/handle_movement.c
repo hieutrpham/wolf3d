@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 11:34:40 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:11 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 15:20:15 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,8 @@ void	handle_movement(void *param)
 		move(game, FORWARD);
 	if (game->backward)
 		move(game, BACKWARD);
+	if (game->mouse_enabled)
+		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_DISABLED);
+	else
+		mlx_set_cursor_mode(game->mlx, MLX_MOUSE_NORMAL);
 }

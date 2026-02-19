@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:45:09 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 15:21:09 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,17 @@ void	mouse_rotation(void *param)
 	p = game->player;
 	mlx_get_mouse_pos(game->mlx, &x, &y);
 	delta_x = x - WIDTH / 2;
-	p->angle += delta_x * MOUSE_SENSITIVITY;
-	if (p->angle < 0)
-		p->angle += 2 * PI;
-	if (p->angle > 2 * PI)
-		p->angle -= 2 * PI;
-	p->dir.x = cosf(p->angle);
-	p->dir.y = sinf(p->angle);
-	mlx_set_mouse_pos(game->mlx, WIDTH / 2, HEIGHT / 2);
+	if (game->mouse_enabled)
+	{
+		p->angle += delta_x * MOUSE_SENSITIVITY;
+		if (p->angle < 0)
+			p->angle += 2 * PI;
+		if (p->angle > 2 * PI)
+			p->angle -= 2 * PI;
+		p->dir.x = cosf(p->angle);
+		p->dir.y = sinf(p->angle);
+		mlx_set_mouse_pos(game->mlx, WIDTH / 2, HEIGHT / 2);
+	}
 }
 
 void	game_loop(t_game *game)

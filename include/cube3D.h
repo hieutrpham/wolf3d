@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:35:33 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:54:49 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 15:12:16 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ typedef struct s_game
 	bool			right;
 	bool			turn_left;
 	bool			turn_right;
+	bool			mouse_enabled;
 }					t_game;
 
 typedef struct s_texture

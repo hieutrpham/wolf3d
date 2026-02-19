@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:37 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:19 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 15:14:41 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	handle_key_press(t_game *game, mlx_key_data_t keydata)
 		game->forward = true;
 	if (keydata.key == MLX_KEY_S)
 		game->backward = true;
+	if (keydata.key == MLX_KEY_M)
+		game->mouse_enabled = !game->mouse_enabled;
 }
 
 static void	handle_key_release(t_game *game, mlx_key_data_t keydata)

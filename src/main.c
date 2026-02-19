@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 15:28:46 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/19 13:53:32 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 15:20:28 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	main(int argc, char *argv[])
 		return (FAIL);
 	mlx_image_to_window(game.mlx, game.image, 0, 0);
 	mlx_key_hook(game.mlx, key_control, &game);
-	mlx_set_cursor_mode(game.mlx, MLX_MOUSE_DISABLED);
 	game_loop(&game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
