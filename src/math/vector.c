@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:26:46 by trupham           #+#    #+#             */
-/*   Updated: 2026/01/27 11:27:12 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/16 13:27:04 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ t_vector	v2f_scale(t_vector v, float factor)
 	ret.x = v.x * factor;
 	ret.y = v.y * factor;
 	return (ret);
-}
-
-int	v2f_dot(t_vector v1, t_vector v2)
-{
-	return (int)(v1.x * v2.x + v1.y * v2.y);
 }
 
 t_vector	v2f_sub(t_vector v1, t_vector v2)

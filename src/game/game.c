@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 13:47:55 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/16 13:20:52 by trupham          ###   ########.fr       */
+/*   Updated: 2026/02/19 10:56:22 by trupham          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	draw_rays(void *param)
 	t_vector	origin;
 	float		r_dir_y;
 	float		r_dir_x;
+	float		wall_height;
 
 	game = param;
 	p = game->player;
@@ -41,8 +42,8 @@ void	draw_rays(void *param)
 			dist = sqrtf(distV);
 		corrected_dist = dist * cosf(ray_angle - p->angle);
 		// INFO: 3D projection.
-		float wall_height = (PROJECTION_DIST) / corrected_dist;
-			// calculation based on similar triangles
+		wall_height = (PROJECTION_DIST) / corrected_dist;
+		// calculation based on similar triangles
 		line_offset = (HEIGHT / 2.0f) - (wall_height / 2.0f);
 		origin = (t_vector){r, line_offset};
 		// struct containing info about the texture to be drawn
@@ -126,7 +127,6 @@ void	game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, render_ceiling, game);
 	mlx_loop_hook(game->mlx, render_floor, game);
 	mlx_loop_hook(game->mlx, draw_rays, game);
-	// mlx_loop_hook(game->mlx, draw_map, game);
 }
 
 int	player_init(t_game *game, t_file *file)
@@ -152,7 +152,7 @@ int	player_init(t_game *game, t_file *file)
 
 int	game_init(t_game *game, t_file *file)
 {
-	game->mlx = mlx_init(WIDTH, HEIGHT, "cub3d", true);
+	game->mlx = mlx_init(WIDTH, HEIGHT, "wolf3D", true);
 	if (!game->mlx)
 		return (FAIL);
 	game->image = mlx_new_image(game->mlx, WIDTH, HEIGHT);
@@ -175,8 +175,8 @@ int	game_init(t_game *game, t_file *file)
 	game->floor_color = get_color(file->fl_rgb[0], file->fl_rgb[1],
 			file->fl_rgb[2], 0xFF);
 	game->map = file->parse_map;
-	game->mapX = file->map_width;
-	game->mapY = file->map_height;
+	game->map_width = file->map_width;
+	game->map_height = file->map_height;
 	player_init(game, file);
 	return (SUCC);
 }
