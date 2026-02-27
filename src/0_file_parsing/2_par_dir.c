@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   2_par_dir.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:01:52 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:01:54 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 int	parse_no(t_file *file, char *line)
@@ -51,7 +61,7 @@ char	*check_dir(char *line, char *dir)
 	int		fd;
 	char	*path;
 
-	i = 0 ;
+	i = 0;
 	skip_space(&line);
 	if (ft_strncmp(dir, &line[i], 3) == 0)
 		return (NULL);

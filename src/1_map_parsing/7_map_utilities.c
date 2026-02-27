@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   7_map_utilities.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:03:10 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:03:22 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 void	find_height_width(t_file *file, char **map)
@@ -34,7 +44,7 @@ void	find_player_pos(t_file *file)
 		while (j < file->map_width)
 		{
 			if (file->parse_map[i][j] == 'N' || file->parse_map[i][j] == 'S'
-				||file->parse_map[i][j] == 'W' || file->parse_map[i][j] == 'E')
+				|| file->parse_map[i][j] == 'W' || file->parse_map[i][j] == 'E')
 			{
 				file->player_y = i;
 				file->player_x = j;
@@ -45,26 +55,6 @@ void	find_player_pos(t_file *file)
 		i++;
 	}
 }
-
-// int	flood_fill(char **map, int x, int y, int w, int h)
-// {
-// 	if (x < 0 || y < 0 || x >= w || y >= h)
-// 		return (FAIL);
-// 	if (map[y][x] == ' ')
-// 		return (FAIL);
-// 	if (map[y][x] == '1' || map[y][x] == 'V')
-// 		return (SUCC);
-// 	map[y][x] = 'V';
-// 	if (flood_fill(map, x + 1, y, w, h) == FAIL)
-// 		return (FAIL);
-// 	if (flood_fill(map, x -1, y, w, h) == FAIL)
-// 		return (FAIL);
-// 	if (flood_fill(map, x, y + 1, w, h) == FAIL)
-// 		return (FAIL);
-// 	if (flood_fill(map, x, y - 1, w, h) == FAIL)
-// 		return (FAIL);
-// 	return (SUCC);
-// }
 
 int	flood_fill(char **map, int x, int y, t_bounds b)
 {
@@ -77,7 +67,7 @@ int	flood_fill(char **map, int x, int y, t_bounds b)
 	map[y][x] = 'V';
 	if (flood_fill(map, x + 1, y, b) == FAIL)
 		return (FAIL);
-	if (flood_fill(map, x -1, y, b) == FAIL)
+	if (flood_fill(map, x - 1, y, b) == FAIL)
 		return (FAIL);
 	if (flood_fill(map, x, y + 1, b) == FAIL)
 		return (FAIL);

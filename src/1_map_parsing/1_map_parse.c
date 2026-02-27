@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   1_map_parse.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:03:48 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:04:06 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../include/cube3D.h"
 
@@ -11,18 +22,14 @@ int	map_check(t_file *file)
 		return (FAIL);
 	if (map_empty(file) == FAIL)
 		return (err_message("Empty line inside map\n", FAIL));
-	// printf("Value of map: %s\n", file->map);
 	map_2d_draft = ft_split(file->map, '\n');
 	if (!map_2d_draft)
 		return (err_message("Copy map error\n", FAIL));
 	find_height_width(file, map_2d_draft);
-	// printf("Height of map: %d\n", file->map_height);
-	// printf("Width of map: %d\n", file->map_width);
 	file->parse_map = pad_map(file, map_2d_draft);
 	free_2d_array(map_2d_draft);
 	if (!file->parse_map)
 		return (FAIL);
-	// print_map(file->parse_map);
 	find_player_pos(file);
 	if (player_can_move(file) == FAIL)
 		return (err_message("Player cannot move\n", FAIL));
@@ -42,8 +49,8 @@ int	map_wrong_character(t_file *file)
 	while (file->map[i])
 	{
 		c = file->map[i];
-		if (c != ' ' && c != '0' && c != '1' && c != '\n'
-			&& c != 'N' && c != 'S' && c != 'E' && c != 'W')
+		if (c != ' ' && c != '0' && c != '1' && c != '\n' && c != 'N'
+			&& c != 'S' && c != 'E' && c != 'W')
 			return (err_message("Wrong character in map\n", FAIL));
 		if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			no_player++;
@@ -81,8 +88,6 @@ int	check_map_close(t_file *file)
 		return (err_message("Copy map for flood fail\n", FAIL));
 	b.w = file->map_width;
 	b.h = file->map_height;
-	// res = flood_fill(map_flood, file->player_x,
-	// 		file->player_y, file->map_width, file->map_height);
 	res = flood_fill(map_flood, file->player_x, file->player_y, b);
 	free_2d_array(map_flood);
 	if (res == FAIL)

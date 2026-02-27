@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   0_exter_inter.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:02:31 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:02:50 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 static void	process_line(t_file *file, char *line, int *status);
@@ -44,28 +54,18 @@ int	process_infile(t_file *file)
 	}
 	if (map_check(file) == FAIL)
 		status = FAIL;
-	// printf("Finish reading\n");
-	// if (status == FAIL || file->no_direc < 6)
-	// {
-	// 	printf("Value of status: %d\n", status);
-	// 	printf("Value of no_direct: %d\n", file->no_direc);
-	// 	printf("We are here with height: %d\n", file->map_height);
-	// 	return (FAIL);
-	// }
-	// return (SUCC);
-	return(status);
+	return (status);
 }
 
 static void	process_line(t_file *file, char *line, int *status)
 {
-	if (*status == SUCC && file->start_map == 0
-		&& *line != '\n' && *line != '\0')
+	if (*status == SUCC && file->start_map == 0 && *line != '\n'
+		&& *line != '\0')
 	{
 		if (check_dir_fc(file, line) == FAIL)
 			*status = FAIL;
 	}
-	else if (*status == SUCC && file->start_map == 1
-		&& *line != '\0')
+	else if (*status == SUCC && file->start_map == 1 && *line != '\0')
 	{
 		if (map_read_from_file(file, line) == FAIL)
 			*status = FAIL;

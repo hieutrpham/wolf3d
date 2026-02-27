@@ -1,4 +1,14 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   0_map_copy.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/02/16 11:02:55 by trupham           #+#    #+#             */
+/*   Updated: 2026/02/16 11:03:07 by trupham          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../include/cube3D.h"
 
 static int	pad_row(char *dest, char *src, int width);
@@ -51,7 +61,7 @@ char	**pad_map(t_file *file, char **map)
 	return (map_after);
 }
 
-static	int	pad_row(char *dest, char *src, int width)
+static int	pad_row(char *dest, char *src, int width)
 {
 	int	j;
 
