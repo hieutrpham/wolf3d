@@ -14,16 +14,39 @@ NAME = cub3D
 CC = cc -g
 CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -O3
 SRC_DIR = ./src
-SRC_SUBDIRS = 0_file_parsing 1_map_parsing utilities display control math game
+
+FILE_PARS = $(SRC_DIR)/0_file_parsing
+MAP_PARS = $(SRC_DIR)/1_map_parsing
+UTILITIES = $(SRC_DIR)/utilities
+DISPLAY = $(SRC_DIR)/display
+CONTROL = $(SRC_DIR)/control
+MATH = $(SRC_DIR)/math
+GAME = $(SRC_DIR)/game
 
 OBJ_DIR = ./object
 
 LIBFT_DIR = ./libft
 LIBFT = $(LIBFT_DIR)/libft.a
-MAIN_FILES = main.c \
+MAIN_FILES = main.c
+PARS_FILES = 0_exter_inter.c  1_check_dir_fc.c  2_par_dir.c	3_par_fc.c  7_file_utilities.c
+MAP_FILES = 0_map_copy.c  1_map_parse.c  7_map_utilities.c	8_free_map.c  9_for_debug.c
+UTI_FILES = free_mem.c  helper.c  message.c
+DIS_FILES = scene.c
+CON_FILES = control.c handle_movement.c
+MATH_FILES = vector.c
+GAME_FILES = game.c	ray_horizontal.c  rays.c  ray_vertical.c  texture.c
 
-SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
-      $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
+# SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
+#       $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
+
+SRC =	$(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
+		$(addprefix $(FILE_PARS)/, $(PARS_FILES)) \
+		$(addprefix $(MAP_PARS)/, $(MAP_FILES)) \
+		$(addprefix $(UTILITIES)/, $(UTI_FILES)) \
+		$(addprefix $(DISPLAY)/, $(DIS_FILES)) \
+		$(addprefix $(CONTROL)/, $(CON_FILES)) \
+		$(addprefix $(MATH)/, $(MATH_FILES)) \
+		$(addprefix $(GAME)/, $(GAME_FILES)) \
 
 # MLX lib
 LIBMLX = ./MLX42

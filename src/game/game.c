@@ -80,6 +80,7 @@ bool	player_init(t_game *game, t_player *player, t_file *file)
 
 bool	game_init(t_game *game, t_file *file, t_player *player)
 {
+	mlx_set_setting(MLX_STRETCH_IMAGE, 1);
 	game->delta_angle = FOV * RAD / WIDTH;
 	game->mlx = mlx_init(WIDTH, HEIGHT, "wolf3D", true);
 	if (!game->mlx)
