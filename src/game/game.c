@@ -97,6 +97,7 @@ bool	game_init(t_game *game, t_file *file, t_player *player)
 	game->map = file->parse_map;
 	game->map_width = file->map_width;
 	game->map_height = file->map_height;
+	game->mouse_enabled = 1;
 	if (!player_init(game, player, file))
 		return (false);
 	return (true);

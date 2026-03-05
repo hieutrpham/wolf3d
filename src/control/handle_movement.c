@@ -17,12 +17,10 @@ static bool	is_wall(t_game *game, t_vector pos)
 	int	map_x;
 	int	map_y;
 
-	map_x = (int)pos.x;
-	map_y = (int)pos.y;
-	if (map_x < 0)
-		map_x = 0;
-	if (map_y < 0)
-		map_y = 0;
+	map_x = (int)fmaxf(0, pos.x);
+	map_y = (int)fmaxf(0, pos.y);
+	if (map_x >= game->map_width - 1 || map_y >= game->map_height -1)
+		return (true);
 	return (game->map[map_y][map_x] == WALL);
 }
 
