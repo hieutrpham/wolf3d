@@ -31,10 +31,10 @@ int	map_check(t_file *file)
 	if (!file->parse_map)
 		return (FAIL);
 	find_player_pos(file);
-	if (player_can_move(file) == FAIL)
-		return (err_message("Player cannot move\n", FAIL));
 	if (check_map_close(file) == FAIL)
 		return (FAIL);
+	if (player_can_move(file) == FAIL)
+		return (err_message("Player cannot move\n", FAIL));
 	return (SUCC);
 }
 

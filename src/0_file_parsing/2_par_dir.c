@@ -60,6 +60,7 @@ char	*check_dir(char *line, char *dir)
 	int		i;
 	int		fd;
 	char	*path;
+	char	buffer;
 
 	i = 0;
 	skip_space(&line);
@@ -71,7 +72,7 @@ char	*check_dir(char *line, char *dir)
 	if (!path)
 		return (NULL);
 	fd = open(path, O_RDONLY);
-	if (fd == -1)
+	if (fd == -1 || read(fd, &buffer, 1) == 0)
 	{
 		free(path);
 		return (NULL);
