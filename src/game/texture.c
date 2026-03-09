@@ -52,3 +52,15 @@ bool	load_texture(t_game *game, t_file *file)
 		return (false);
 	return (true);
 }
+
+void	unload_textures(t_game *game)
+{
+	if (game->we)
+		mlx_delete_texture(game->we);
+	if (game->no)
+		mlx_delete_texture(game->no);
+	if (game->ea)
+		mlx_delete_texture(game->ea);
+	if (game->so)
+		mlx_delete_texture(game->so);
+}

@@ -199,6 +199,7 @@ typedef struct s_ray
 int					err_message(char *string, int code);
 int					clean_up(char *map, char *line, int fd, int code);
 void				free_file(t_file *file);
+void				clean_game(t_game *game, t_file *file);
 
 void				ft_bzero(void *s, size_t n);
 char				*ft_strjoin(char const *s1, char const *s2);
@@ -275,6 +276,7 @@ void				get_hori_intersect(t_game *game, t_sect *sect,
 						float player_angle);
 void				draw_rays(void *param);
 void				render_texture(t_ray ray, t_game *game);
+void				unload_textures(t_game *game);
 
 // vector
 t_vector			v2f_build(float x, float y);
