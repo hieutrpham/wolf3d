@@ -59,3 +59,15 @@ void	free_2d_array(char **str)
 	}
 	free(str);
 }
+
+void	clean_game(t_game *game, t_file *file)
+{
+	if (game->mlx)
+	{
+		unload_textures(game);
+		if (game->image)
+			mlx_delete_image(game->mlx, game->image);
+		mlx_terminate(game->mlx);
+	}
+	free_file(file);
+}
