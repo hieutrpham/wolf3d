@@ -26,3 +26,10 @@ void	clear_previous(char **str, int len)
 	}
 	free(str);
 }
+
+bool	in_bounds(t_file *file, int y, int x)
+{
+	if (y < 0 || x < 0 || y >= file->map_height || x >= file->map_width)
+		return (FAIL);
+	return (SUCC);
+}

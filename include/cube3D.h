@@ -234,6 +234,7 @@ void				free_2d_array(char **str);
 void				find_player_pos(t_file *file);
 int					player_can_move(t_file *file);
 int					is_walkable(char c);
+bool				in_bounds(t_file *file, int y, int x);
 char				**arr_2d_copy(char **str, int len);
 int					check_map_close(t_file *file);
 int					flood_fill(char **map, int x, int y, t_bounds b);

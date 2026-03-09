@@ -78,7 +78,9 @@ int	flood_fill(char **map, int x, int y, t_bounds b)
 
 int	is_walkable(char c)
 {
-	return (c == '0');
+	if (c)
+		return (c == '0');
+	return (0);
 }
 
 int	player_can_move(t_file *file)
@@ -88,6 +90,9 @@ int	player_can_move(t_file *file)
 
 	x = file->player_x;
 	y = file->player_y;
+	if (in_bounds(file, y, x + 1) || in_bounds(file, y, x - 1)
+		|| in_bounds(file, y + 1, x) || in_bounds(file, y - 1, x))
+		return (FAIL);
 	if (is_walkable(file->parse_map[y][x + 1]))
 		return (SUCC);
 	if (is_walkable(file->parse_map[y][x - 1]))
