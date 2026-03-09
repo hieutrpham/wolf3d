@@ -12,14 +12,6 @@
 
 #include "cube3D.h"
 
-// static void	unload_textures(t_game *game)
-// {
-// 	mlx_delete_texture(game->so);
-// 	mlx_delete_texture(game->we);
-// 	mlx_delete_texture(game->ea);
-// 	mlx_delete_texture(game->no);
-// }
-
 int	main(int argc, char *argv[])
 {
 	t_file		file;
