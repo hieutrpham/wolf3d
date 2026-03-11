@@ -6,7 +6,7 @@
 /*   By: trupham <trupham@student.hive.fi>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 11:02:08 by trupham           #+#    #+#             */
-/*   Updated: 2026/02/16 11:02:13 by trupham          ###   ########.fr       */
+/*   Updated: 2026/03/11 15:45:32 by vinguyen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../include/cube3D.h"
@@ -71,12 +71,14 @@ int	check_value(char *num, int *i)
 	out = 0;
 	if (!(num[*i] >= '0' && num[*i] <= '9'))
 		return (err_message("color has invalid character\n", FAIL));
-	while (num[*i] >= '0' && num[*i] <= '9')
+	while (ft_isdigit(num[*i]))
 	{
 		out = out * 10 + (num[*i] - '0');
 		if (out > 255)
 			return (err_message("color has number over 255\n", FAIL));
 		(*i)++;
 	}
+	if (num[*i] != ',' && num[*i] != '\0' && num[*i] != '\n')
+		return (err_message("color has non numeric character\n", FAIL));
 	return (out);
 }
