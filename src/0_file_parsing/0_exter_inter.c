@@ -53,7 +53,10 @@ int	process_infile(t_file *file)
 			free(line);
 	}
 	if (map_check(file) == FAIL)
+	{
+		printf("Map check is fail\n");
 		status = FAIL;
+	}
 	return (status);
 }
 

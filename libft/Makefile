@@ -17,12 +17,13 @@ AR = ar rcs
 OBJ_DIR = obj
 
 SRCS = ft_bzero.c \
+		ft_isdigit.c \
 	   ft_split.c \
 	   ft_strcmp.c \
 	   ft_strdup.c \
 	   ft_strjoin.c \
 	   get_next_line_bonus.c \
-	   get_next_line_utils_bonus.c 
+	   get_next_line_utils_bonus.c
 
 OBJ = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
