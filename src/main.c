@@ -14,13 +14,15 @@
 
 static void	run_game(t_game *game, t_file *file)
 {
-	mlx_image_to_window(game->mlx, game->image, 0, 0);
+	if (mlx_image_to_window(game->mlx, game->image, 0, 0) < 0)
+	{
+		clean_game(game, file);
+		exit(FAIL);
+	}
 	mlx_key_hook(game->mlx, key_control, game);
 	game_loop(game);
 	mlx_loop(game->mlx);
-	mlx_terminate(game->mlx);
-	unload_textures(game);
-	free_file(file);
+	clean_game(game, file);
 }
 
 int	main(int argc, char *argv[])
