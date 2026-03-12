@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = cub3D
-CC = cc -g
+CC = cc
 CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -O3
 SRC_DIR = ./src
 
@@ -34,10 +34,7 @@ UTI_FILES = free_mem.c  helper.c  message.c
 DIS_FILES = scene.c
 CON_FILES = control.c handle_movement.c
 MATH_FILES = vector.c
-GAME_FILES = game.c	ray_horizontal.c  rays.c  ray_vertical.c  texture.c
-
-# SRC = $(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
-#       $(foreach dir,$(SRC_SUBDIRS),$(wildcard $(SRC_DIR)/$(dir)/*.c))
+GAME_FILES = game.c ray_horizontal.c  rays.c  ray_vertical.c  texture.c
 
 SRC =	$(addprefix $(SRC_DIR)/, $(MAIN_FILES)) \
 		$(addprefix $(FILE_PARS)/, $(PARS_FILES)) \

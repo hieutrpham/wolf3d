@@ -60,7 +60,7 @@ void	game_loop(t_game *game)
 	mlx_loop_hook(game->mlx, draw_rays, game);
 }
 
-bool	player_init(t_game *game, t_player *player, t_file *file)
+static void	player_init(t_game *game, t_player *player, t_file *file)
 {
 	game->player = player;
 	if (file->player_dir == 'N')
@@ -75,7 +75,6 @@ bool	player_init(t_game *game, t_player *player, t_file *file)
 	game->player->pos.y = file->player_y + 0.5f;
 	game->player->dir.x = cosf(game->player->angle);
 	game->player->dir.y = sinf(game->player->angle);
-	return (true);
 }
 
 bool	game_init(t_game *game, t_file *file, t_player *player)
@@ -97,8 +96,6 @@ bool	game_init(t_game *game, t_file *file, t_player *player)
 	game->map = file->parse_map;
 	game->map_width = file->map_width;
 	game->map_height = file->map_height;
-	game->mouse_enabled = 1;
-	if (!player_init(game, player, file))
-		return (false);
+	player_init(game, player, file);
 	return (true);
 }
