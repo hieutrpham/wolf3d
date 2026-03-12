@@ -12,7 +12,7 @@
 
 NAME = cub3D
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -MMD -MP -Wunreachable-code -O3
+CFLAGS = -Wall -Werror -Wextra -Wfloat-conversion -Wunreachable-code -O3
 SRC_DIR = ./src
 
 FILE_PARS = $(SRC_DIR)/0_file_parsing
