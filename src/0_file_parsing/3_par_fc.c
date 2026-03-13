@@ -53,13 +53,13 @@ int	check_color(char *num, int *color)
 
 	i = 0;
 	color[0] = check_value(num, &i);
-	if (color[0] == FAIL || num[i++] != ',')
+	if (color[0] == -1 || num[i++] != ',')
 		return (FAIL);
 	color[1] = check_value(num, &i);
-	if (color[1] == FAIL || num[i++] != ',')
+	if (color[1] == -1 || num[i++] != ',')
 		return (FAIL);
 	color[2] = check_value(num, &i);
-	if (color[2] == FAIL)
+	if (color[2] == -1 || num[i++] != '\n')
 		return (FAIL);
 	return (SUCC);
 }
@@ -70,15 +70,15 @@ int	check_value(char *num, int *i)
 
 	out = 0;
 	if (!(num[*i] >= '0' && num[*i] <= '9'))
-		return (err_message("color has invalid character\n", FAIL));
+		return (err_message("color has invalid character\n", -1));
 	while (ft_isdigit(num[*i]))
 	{
 		out = out * 10 + (num[*i] - '0');
 		if (out > 255)
-			return (err_message("color has number over 255\n", FAIL));
+			return (err_message("color has number over 255\n", -1));
 		(*i)++;
 	}
 	if (num[*i] != ',' && num[*i] != '\0' && num[*i] != '\n')
-		return (err_message("color has non numeric character\n", FAIL));
+		return (err_message("color has non numeric character\n", -1));
 	return (out);
 }
